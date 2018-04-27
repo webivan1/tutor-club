@@ -1,0 +1,21 @@
+.form-control-search {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 5rem;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.search-container {
+  .dropdown-menu, .dropdown-item {
+    min-width: 100%;
+  }
+
+  .dropdown-menu {
+    max-height: 20rem;
+    overflow-y: auto;
+  }
+}

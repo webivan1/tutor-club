@@ -1,0 +1,3 @@
+select.form-control:not([size]):not([multiple]), select.custom-file-control:not([size]):not([multiple]) {
+  height: 33px !important;
+}

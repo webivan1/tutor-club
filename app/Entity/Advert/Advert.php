@@ -1,0 +1,245 @@
+<?php
+
+namespace App\Entity\Advert;
+
+use App\Entity\Attribute;
+use App\Entity\Category;
+use App\Entity\Files;
+use App\Entity\TutorProfile;
+use App\Entity\User;
+use App\Services\ElasticSearch\ModelSearch;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Carbon;
+
+/**
+ * @property integer $user_id
+ * @property integer $profile_id
+ * @property string $description
+ * @property string $title
+ * @property string $lang
+ * @property string $status
+ * @property string $presentation Презентация, видеобращение
+ * @property boolean $test Бесплатный пробный урок
+ * @property integer $experience Опыт (лет)
+ * @property Carbon $updated_at
+ * @property Carbon $created_at
+ */
+class Advert extends Model implements ModelSearch
+{
+    use AdvertSearchTrait;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'profile_id', 'title', 'description', 'lang',
+        'status', 'presentation', 'experience'
+    ];
+
+    /**
+     * @var string
+     */
+    public $table = 'adverts';
+
+    /**
+     * @var array
+     */
+    public $casts = [
+        'test' => 'boolean'
+    ];
+
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_WAIT = 'wait';
+    public const STATUS_MODERATION = 'moderation';
+    public const STATUS_REJECT = 'reject';
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_DISABLED = 'disabled';
+
+    /**
+     * @return array
+     */
+    public static function statuses(): array
+    {
+        return [
+            self::STATUS_DRAFT => 'черновик',
+            self::STATUS_DISABLED => 'закрыто',
+            self::STATUS_MODERATION => 'на модерации',
+            self::STATUS_ACTIVE => 'активно',
+            self::STATUS_WAIT => 'на редактировании',
+            self::STATUS_REJECT => 'заблокировано'
+        ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDraft(): bool
+    {
+        return $this->status === self::STATUS_DRAFT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWait(): bool
+    {
+        return $this->status === self::STATUS_WAIT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return $this->status === self::STATUS_DISABLED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isModeration(): bool
+    {
+        return $this->status === self::STATUS_MODERATION;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReject(): bool
+    {
+        return $this->status === self::STATUS_REJECT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function accessSendToModeration(): bool
+    {
+        return $this->isDraft() || $this->isWait() || $this->isDisabled();
+    }
+
+    public function toStatusDraft(): void
+    {
+        if ($this->isActive()) {
+            $this->status = self::STATUS_DRAFT;
+            $this->save();
+        }
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function prices()
+    {
+        return $this->hasMany(AdvertPrice::class, 'advert_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function profile()
+    {
+        return $this->belongsTo(TutorProfile::class, 'profile_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function files()
+    {
+        return $this->belongsToMany(Files::class, 'advert_gallery', null, 'file_id');
+
+        //return $this->hasManyThrough(Files::class, AdvertGallery::class, 'advert_id', 'id', null, 'file_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function category()
+    {
+        return $this->hasManyThrough(Category::class, AdvertPrice::class, 'advert_id', 'id', null, 'category_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attributeValues()
+    {
+        return $this->hasMany(AdvertAttribute::class, 'advert_id', 'id');
+    }
+
+    /**
+     * All attributes with value
+     *
+     * @return array
+     */
+    public function getAllAttributes(): array
+    {
+        static $result = [];
+
+        if (!empty($result)) {
+            return $result;
+        }
+
+        /** @var Category $category */
+        foreach ($this->category ?? [] as $category) {
+            /** @var Attribute[] $attributes */
+            $attributes = $category->allAttributes(function (HasMany $builder): array {
+                return $builder
+                    ->select(['attributes.*', 'advert_attribute.value AS value'])
+                    ->leftJoin('advert_attribute', function (JoinClause $join) {
+                        return $join->on('advert_attribute.attribute_id', 'attributes.id')
+                            ->where('advert_attribute.advert_id', $this->id);
+                    })
+                    ->groupBy('attributes.id', 'advert_attribute.value')
+                    ->getModels();
+            });
+
+            foreach ($attributes as $attribute) {
+                if (!array_key_exists($attribute->id, $result)) {
+                    $result[$attribute->id] = $attribute;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Root category
+     *
+     * @return Category
+     */
+    public function getRootCategory(): Category
+    {
+        /** @var Category $category */
+        $category = $this->category()->firstOrFail();
+
+        $rootCategory = Category::where($category->getLftName(), '<', $category->getLft())
+            ->where($category->getRgtName(), '>', $category->getRgt())
+            ->whereNull('parent_id')
+            ->firstOrFail();
+
+        return $rootCategory;
+    }
+}

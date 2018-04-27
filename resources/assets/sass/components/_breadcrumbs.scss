@@ -1,0 +1,9 @@
+.breadcrumb-item {
+  font-size: 85%;
+}
+
+.breadcrumb-color-white {
+  a, .breadcrumb-item:before, .breadcrumb-item.active {
+    color: $white;
+  }
+}
