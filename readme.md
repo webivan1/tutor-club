@@ -8,11 +8,24 @@
     
 # Install
 
+При использовании docker, все клонсольные команды начинаютя с `docker-compose exec php-cli`
+
+- cp .env.example .env (Указать все параметры в новом файле .env)
+- chmod -R 777 ./storage
+- chmod -R 777 ./bootstrap
+
+### Проблема с запуском
+    - php artisan key:generate - Генерация ключа
+    - Please provide a valid cache path (https://stackoverflow.com/questions/38483837/please-provide-a-valid-cache-path)
+    
+### Миграции
+    - php artisan migrate
+
 ### Установка ролей
-    - docker-compose exec php-cli php artisan user:roles
+    - php artisan user:roles
     
 ### После регистрации, активируем своего пользователя
-    - docker-compose exec php-cli php artisan user:verify {email}
+    - php artisan user:verify {email}
     
 ### Устанавливаем роль админа
-    - docker-compose exec php-cli php artisan user:assign {email} {role}
+    - php artisan user:assign {email} {role}
