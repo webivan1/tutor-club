@@ -42,9 +42,9 @@ interface ModelSearch
     /**
      * Get all data
      *
-     * @return \Generator
+     * @return \Generator|null
      */
-    public function getAllIndexes(): \Generator;
+    public function getAllIndexes(): ?\Generator;
 
     /**
      * Get item by model object

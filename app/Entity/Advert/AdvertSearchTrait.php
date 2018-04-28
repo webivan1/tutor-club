@@ -134,12 +134,14 @@ trait AdvertSearchTrait
     /**
      * {@inheritdoc}
      */
-    public function getAllIndexes(): \Generator
+    public function getAllIndexes(): ?\Generator
     {
         /** @var Advert $item */
         foreach (self::select(['id'])->cursor() as $item) {
             yield $this->getIndex($item->id);
         }
+
+        return null;
     }
 
     /**

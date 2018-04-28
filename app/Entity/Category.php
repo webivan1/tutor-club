@@ -172,11 +172,13 @@ class Category extends Model implements ModelSearch
     /**
      * {@inheritdoc}
      */
-    public function getAllIndexes(): \Generator
+    public function getAllIndexes(): ?\Generator
     {
         foreach (self::select(['id'])->cursor() as $item) {
             yield $this->getIndex($item->id);
         }
+
+        return null;
     }
 
     /**

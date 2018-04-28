@@ -119,8 +119,12 @@ class ElasticSearchService
     {
         $this->clearModels($model);
 
-        /** @var \Generator $generator */
+        /** @var \Generator|null $generator */
         $generator = $model->getAllIndexes();
+
+        if (!$generator) {
+            return;
+        }
 
         $generator->rewind();
 
