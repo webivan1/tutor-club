@@ -86,7 +86,8 @@ trait AdvertSearchTrait
                         'type' => 'integer',
                     ],
                     'value_string' => [
-                        'type' => 'value_string'
+                        'type' => 'string',
+                        'index' => 'not_analyzed',
                     ]
                 ]
             ],
@@ -103,7 +104,8 @@ trait AdvertSearchTrait
                         'type' => 'integer',
                     ],
                     'price_type' => [
-                        'type' => 'value_string'
+                        'type' => 'string',
+                        'index' => 'not_analyzed',
                     ],
                     'categories' => [
                         'type' => 'integer',
