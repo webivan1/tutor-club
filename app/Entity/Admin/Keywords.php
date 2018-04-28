@@ -28,8 +28,8 @@ class Keywords extends Base
             ->with(['word' => function ($query) use ($request) {
                 return $query->where('lang', $request->input('language', app()->getLocale()));
             }])
-            ->from($this->getTable() . ' as wk')
-            ->groupBy(['wk.id']);
+            ->from($this->getTable() . ' as wk');
+            //->groupBy(['wk.id']);
 
         $search = new TranslateSearch($query);
         $search->search($request->all());
