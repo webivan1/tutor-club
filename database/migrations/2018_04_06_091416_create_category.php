@@ -15,8 +15,8 @@ class CreateCategory extends Migration
     {
         Schema::create('category', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->index();
-            $table->string('slug')->index();
+            $table->string('name', 150)->index();
+            $table->string('slug', 150)->index();
             $table->integer('parent_id')->nullable()->references('id')->on('category')->onDelete('CASCADE');
             $table->timestamps();
             $table->string('title', 150);

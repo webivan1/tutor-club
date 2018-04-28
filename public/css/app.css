@@ -20775,6 +20775,13 @@ footer {
   overflow-y: auto;
 }
 
+.close-search-form {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  z-index: 1001;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

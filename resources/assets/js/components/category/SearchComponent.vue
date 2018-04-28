@@ -8,6 +8,12 @@
             @keydown="change()"
         />
 
+        <div v-if="(items.length && search.length >= 2) || errors" class="close-search-form">
+            <a href="javascript:void(0)" class="text-danger" @click="closeDropdown()">
+                <i class="material-icons">close</i>
+            </a>
+        </div>
+
         <div v-if="errors">
             <div class="dropdown-menu show">
                 <div class="alert alert-danger mb-0">
@@ -69,6 +75,12 @@
                 });
             }
           });
+        },
+
+        closeDropdown() {
+          this.items = [];
+          this.errors = null;
+          this.search = '';
         }
       }
     }

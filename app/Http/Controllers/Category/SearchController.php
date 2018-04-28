@@ -31,6 +31,7 @@ class SearchController extends Controller
     /**
      * Search category
      *
+     * @method POST
      * @param SearchRequest $request
      * @return array
      */
