@@ -122,11 +122,9 @@ class ElasticSearchService
         /** @var \Generator|null $generator */
         $generator = $model->getAllIndexes();
 
-        if (!$generator) {
+        if (!$generator instanceof \Generator) {
             return;
         }
-
-        $generator->rewind();
 
         foreach ($generator as $item) {
             $this->add($model, $item);
