@@ -332,6 +332,10 @@ trait AdvertSearchTrait
         /** @var Advert $advert */
         $advert = self::where('id', $id)->with(['prices', 'user'])->first();
 
+        if (!$advert->isActive()) {
+            return [];
+        }
+
         $prices = [];
         $categories = [];
 

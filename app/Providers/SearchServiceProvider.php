@@ -29,19 +29,23 @@ class SearchServiceProvider extends ServiceProvider
                 list($model) = $params;
 
                 if ($model instanceof ModelSearch) {
-                    /** @var ElasticSearchService $service */
-                    $service = app()->make(ElasticSearchService::class);
+                    try {
+                        /** @var ElasticSearchService $service */
+                        $service = app()->make(ElasticSearchService::class);
 
-                    if (strpos($event, 'eloquent.updated') === 0) {
-                        $service->update($model);
-                    }
+                        if (strpos($event, 'eloquent.updated') === 0) {
+                            $service->update($model);
+                        }
 
-                    if (strpos($event, 'eloquent.created') === 0) {
-                        $service->add($model);
-                    }
+                        if (strpos($event, 'eloquent.created') === 0) {
+                            $service->add($model);
+                        }
 
-                    if (strpos($event, 'eloquent.deleted') === 0) {
-                        $service->delete($model);
+                        if (strpos($event, 'eloquent.deleted') === 0) {
+                            $service->delete($model);
+                        }
+                    } catch (\Exception $e) {
+                        app('log')->error('Error index Elasticsearch ' . $event . ' - ' . $e->getMessage());
                     }
                 }
             }

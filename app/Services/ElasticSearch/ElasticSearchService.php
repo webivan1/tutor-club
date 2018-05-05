@@ -141,7 +141,7 @@ class ElasticSearchService
     {
         $item = !$item ? $model->getIndex($model->id) : $item;
 
-        $this->search()->index([
+        empty($item['id']) ?: $this->search()->index([
             'index' => $model->getIndexName(),
             'type' => $model->getSourceName(),
             'id' => $item['id'],

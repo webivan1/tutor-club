@@ -49,8 +49,8 @@
                     />
                 </div>
 
-                <div class="form-group" v-for="attr in data.attributes">
-                    <div v-if="attr.type === 'select'">
+                <div v-for="attr in data.attributes">
+                    <div v-if="attr.type === 'select'" class="form-group">
                         <label class="bmd-label-static">
                             {{ attr.label }}
                         </label>
@@ -70,7 +70,7 @@
                             /> <small>{{ attr.label }}</small>
                         </label>
                     </div>
-                    <div v-if="attr.type === 'number' || attr.type === 'float'">
+                    <div v-if="attr.type === 'number' || attr.type === 'float'" class="form-group">
                         <label class="bmd-label-static">
                             {{ attr.label }}
                         </label>
