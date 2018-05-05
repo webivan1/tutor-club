@@ -63,7 +63,7 @@ class UpdatePricesAdvertService
             !empty($existCategory) ?: $advert->toStatusDraft();
         });
 
-        Advert::saved(function (AdvertPrice $model) use ($advert) {
+        AdvertPrice::saved(function (AdvertPrice $model) use ($advert) {
             $this->triggerUpdatedAdvert($advert);
         });
 
