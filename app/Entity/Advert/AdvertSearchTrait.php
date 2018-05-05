@@ -332,7 +332,7 @@ trait AdvertSearchTrait
         /** @var Advert $advert */
         $advert = self::where('id', $id)->with(['prices', 'user'])->first();
 
-        if (!$advert->isActive()) {
+        if (empty($advert->prices)) {
             return [];
         }
 
