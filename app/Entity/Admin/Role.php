@@ -46,8 +46,8 @@ class Role extends Base
     public function listData(Request $request, int $paginationSize = 10, array $defaultOrder = [])
     {
         $query = self::from('roles as r')
-            ->select(['r.*'])
-            ->groupBy(['r.id']);
+            ->select(['r.*']);
+            //->groupBy(['r.id']);
 
         $search = new RoleSearch($query);
         $search->search($request->all());

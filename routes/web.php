@@ -31,6 +31,10 @@ Route::group(
         Route::get('/category/{category_slug}', 'Advert\ListController@index')
             ->where('category_slug', '[a-z0-9\-]+')
             ->name('category.show');
+        Route::post('/category/{category_slug}/form', 'Advert\ListController@form')
+            ->where('category_slug', '[a-z0-9\-]+');
+        Route::post('/category/{category_slug}/list', 'Advert\ListController@list')
+            ->where('category_slug', '[a-z0-9\-]+');
 
         Route::group(['prefix' => '/auth', 'namespace' => 'Auth'], function () {
             Route::group(['middleware' => ['guest']], function () {

@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2018-04-25 22:33:50.
+    * Generated on 2018-05-04 07:52:06.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -45,6 +45,7 @@ namespace PHPSTORM_META {
         'Silber\Bouncer\Bouncer' => \Silber\Bouncer\Bouncer::class,
         'Mcamara\LaravelLocalization\LaravelLocalization' => \Mcamara\LaravelLocalization\LaravelLocalization::class,
         'App\Services\SmsSender\SmsSenderInterface' => \App\Services\SmsSender\SmsRu::class,
+        'App\Services\ElasticSearch\ElasticSearchService' => \App\Services\ElasticSearch\ElasticSearchService::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -190,6 +191,7 @@ namespace PHPSTORM_META {
         'Silber\Bouncer\Bouncer' => \Silber\Bouncer\Bouncer::class,
         'Mcamara\LaravelLocalization\LaravelLocalization' => \Mcamara\LaravelLocalization\LaravelLocalization::class,
         'App\Services\SmsSender\SmsSenderInterface' => \App\Services\SmsSender\SmsRu::class,
+        'App\Services\ElasticSearch\ElasticSearchService' => \App\Services\ElasticSearch\ElasticSearchService::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -335,6 +337,7 @@ namespace PHPSTORM_META {
         'Silber\Bouncer\Bouncer' => \Silber\Bouncer\Bouncer::class,
         'Mcamara\LaravelLocalization\LaravelLocalization' => \Mcamara\LaravelLocalization\LaravelLocalization::class,
         'App\Services\SmsSender\SmsSenderInterface' => \App\Services\SmsSender\SmsRu::class,
+        'App\Services\ElasticSearch\ElasticSearchService' => \App\Services\ElasticSearch\ElasticSearchService::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -480,6 +483,7 @@ namespace PHPSTORM_META {
         'Silber\Bouncer\Bouncer' => \Silber\Bouncer\Bouncer::class,
         'Mcamara\LaravelLocalization\LaravelLocalization' => \Mcamara\LaravelLocalization\LaravelLocalization::class,
         'App\Services\SmsSender\SmsSenderInterface' => \App\Services\SmsSender\SmsRu::class,
+        'App\Services\ElasticSearch\ElasticSearchService' => \App\Services\ElasticSearch\ElasticSearchService::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -625,6 +629,7 @@ namespace PHPSTORM_META {
         'Silber\Bouncer\Bouncer' => \Silber\Bouncer\Bouncer::class,
         'Mcamara\LaravelLocalization\LaravelLocalization' => \Mcamara\LaravelLocalization\LaravelLocalization::class,
         'App\Services\SmsSender\SmsSenderInterface' => \App\Services\SmsSender\SmsRu::class,
+        'App\Services\ElasticSearch\ElasticSearchService' => \App\Services\ElasticSearch\ElasticSearchService::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -770,6 +775,7 @@ namespace PHPSTORM_META {
         'Silber\Bouncer\Bouncer' => \Silber\Bouncer\Bouncer::class,
         'Mcamara\LaravelLocalization\LaravelLocalization' => \Mcamara\LaravelLocalization\LaravelLocalization::class,
         'App\Services\SmsSender\SmsSenderInterface' => \App\Services\SmsSender\SmsRu::class,
+        'App\Services\ElasticSearch\ElasticSearchService' => \App\Services\ElasticSearch\ElasticSearchService::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
@@ -915,6 +921,7 @@ namespace PHPSTORM_META {
         'Silber\Bouncer\Bouncer' => \Silber\Bouncer\Bouncer::class,
         'Mcamara\LaravelLocalization\LaravelLocalization' => \Mcamara\LaravelLocalization\LaravelLocalization::class,
         'App\Services\SmsSender\SmsSenderInterface' => \App\Services\SmsSender\SmsRu::class,
+        'App\Services\ElasticSearch\ElasticSearchService' => \App\Services\ElasticSearch\ElasticSearchService::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,

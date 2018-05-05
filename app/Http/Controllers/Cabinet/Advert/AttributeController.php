@@ -41,7 +41,7 @@ class AttributeController extends Controller
     public function update(UpdateAttributesRequest $request, Advert $advert)
     {
         $this->deleteAttributes($request, $advert);
-        $this->updateAttributesFromRequest($request);
+        $this->updateAttributesFromRequest($request, $advert);
 
         return back()->with('success', t('home.updateAttributesSuccess'));
     }
@@ -60,19 +60,37 @@ class AttributeController extends Controller
             $advert->attributeValues()
                 ->whereIn('attribute_id', $deletes)
                 ->delete();
+
+            $this->triggerUpdatedAdvert($advert);
         }
     }
 
     /**
      * @param UpdateAttributesRequest $request
+     * @param Advert $advert
      */
-    private function updateAttributesFromRequest(UpdateAttributesRequest $request): void
+    private function updateAttributesFromRequest(UpdateAttributesRequest $request, Advert $advert): void
     {
+        AdvertAttribute::saved(function (AdvertAttribute $model) use ($advert) {
+            $this->triggerUpdatedAdvert($advert);
+        });
+
         foreach ($request->input('attr') ?? [] as $attr_id => $value) {
             AdvertAttribute::updateOrCreate([
                 'advert_id' => $request->advert->id,
                 'attribute_id' => $attr_id
             ], ['value' => $value]);
         }
+    }
+
+    /**
+     * Запускаем вручную событие, чтобы elasticsearch пересохранил данные
+     *
+     * @param Advert $advert
+     * @return void
+     */
+    private function triggerUpdatedAdvert(Advert $advert): void
+    {
+        $advert->updateCurrentTimestamp();
     }
 }

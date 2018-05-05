@@ -80,6 +80,16 @@
             @endif
         </div>
 
+        <div class="form-group">
+            {{ Form::label('content', 'Контент') }}
+            {{ Form::textarea('content', old('content', $category->content), ['class' => 'form-control ' . (!$errors->has('content') ?: 'is-invalid')]) }}
+            @if ($errors->has('content'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('content') }}</strong>
+                </span>
+            @endif
+        </div>
+
         {{ Form::submit('Обновить', ['class' => 'btn btn-primary']) }}
 
         {{ Form::close() }}

@@ -45,7 +45,7 @@
         </div>
 
         <div class="form-group">
-            {{ Form::label('title', 'Тайтл') }}
+            {{ Form::label('title', 'Тайтл SEO') }}
             {{ Form::text('title', old('title'), ['class' => 'form-control ' . (!$errors->has('title') ?: 'is-invalid')]) }}
             @if ($errors->has('title'))
                 <span class="invalid-feedback">
@@ -55,11 +55,21 @@
         </div>
 
         <div class="form-group">
-            {{ Form::label('description', 'Описание') }}
+            {{ Form::label('description', 'Описание SEO') }}
             {{ Form::textarea('description', old('description'), ['class' => 'form-control ' . (!$errors->has('description') ?: 'is-invalid')]) }}
             @if ($errors->has('description'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('description') }}</strong>
+                </span>
+            @endif
+        </div>
+
+        <div class="form-group">
+            {{ Form::label('content', 'Контент') }}
+            {{ Form::textarea('content', old('content'), ['class' => 'form-control ' . (!$errors->has('content') ?: 'is-invalid')]) }}
+            @if ($errors->has('content'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('content') }}</strong>
                 </span>
             @endif
         </div>

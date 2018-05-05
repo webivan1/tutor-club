@@ -45,7 +45,7 @@ class CategoryController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $category = Category::create($request->only('name', 'slug', 'title', 'description', 'parent_id'));
+        $category = Category::create($request->only('name', 'slug', 'title', 'description', 'parent_id', 'content'));
         return redirect()->route('cabinet.admin.category.show', $category)
             ->with('success', 'Успешно добавлено!');
     }
@@ -83,7 +83,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateRequest $request, Category $category)
     {
-        $category->update($request->only(['name', 'slug', 'title', 'description']));
+        $category->update($request->only(['name', 'slug', 'title', 'description', 'content']));
 
         if ($request->input('parent_id')) {
             $parent = Category::findOrFail($request->input('parent_id'));

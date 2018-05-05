@@ -8,6 +8,8 @@ use App\Entity\Files;
 use App\Entity\TutorProfile;
 use App\Entity\User;
 use App\Services\ElasticSearch\ModelSearch;
+use Chelout\RelationshipEvents\Concerns\HasManyEvents;
+use Chelout\RelationshipEvents\Concerns\HasOneEvents;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\JoinClause;
@@ -130,6 +132,9 @@ class Advert extends Model implements ModelSearch
         return $this->isDraft() || $this->isWait() || $this->isDisabled();
     }
 
+    /**
+     *
+     */
     public function toStatusDraft(): void
     {
         if ($this->isActive()) {
@@ -189,16 +194,28 @@ class Advert extends Model implements ModelSearch
     }
 
     /**
+     * @var array
+     */
+    private static $allAttributes = [];
+
+    /**
+     * @return Advert
+     */
+    public function clearAllAttributes(): self
+    {
+        self::$allAttributes = [];
+        return $this;
+    }
+
+    /**
      * All attributes with value
      *
      * @return array
      */
     public function getAllAttributes(): array
     {
-        static $result = [];
-
-        if (!empty($result)) {
-            return $result;
+        if (!empty(self::$allAttributes)) {
+            return self::$allAttributes;
         }
 
         /** @var Category $category */
@@ -216,13 +233,13 @@ class Advert extends Model implements ModelSearch
             });
 
             foreach ($attributes as $attribute) {
-                if (!array_key_exists($attribute->id, $result)) {
-                    $result[$attribute->id] = $attribute;
+                if (!array_key_exists($attribute->id, self::$allAttributes)) {
+                    self::$allAttributes[$attribute->id] = $attribute;
                 }
             }
         }
 
-        return $result;
+        return self::$allAttributes;
     }
 
     /**
@@ -241,5 +258,16 @@ class Advert extends Model implements ModelSearch
             ->firstOrFail();
 
         return $rootCategory;
+    }
+
+    /**
+     * Update updated_at
+     *
+     * @return void
+     */
+    public function updateCurrentTimestamp(): void
+    {
+        $this->setUpdatedAt($this->freshTimestamp());
+        $this->save();
     }
 }

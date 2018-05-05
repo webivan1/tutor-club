@@ -156,11 +156,13 @@ class ElasticSearchService
      */
     public function delete(ModelSearch $model): void
     {
-        $this->search()->delete([
-            'index' => $model->getIndexName(),
-            'type' => $model->getSourceName(),
-            'id' => $model->id,
-        ]);
+        try {
+            $this->search()->delete([
+                'index' => $model->getIndexName(),
+                'type' => $model->getSourceName(),
+                'id' => $model->id,
+            ]);
+        } catch (Missing404Exception $e) {}
     }
 
     /**
@@ -175,6 +177,10 @@ class ElasticSearchService
         $this->add($model, $item);
     }
 
+    /**
+     * @param ModelSearch $model
+     * @return ElasticSearchModel
+     */
     public function find(ModelSearch $model)
     {
         return new ElasticSearchModel($this->search(), [

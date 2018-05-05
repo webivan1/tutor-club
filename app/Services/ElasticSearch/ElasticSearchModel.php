@@ -107,7 +107,7 @@ class ElasticSearchModel
      */
     public function setCustomQuery(array $query): self
     {
-        $this->andQuery = $query;
+        $this->andQuery = array_merge_recursive($this->andQuery, $query);
         return $this;
     }
 
@@ -174,5 +174,15 @@ class ElasticSearchModel
         return array_map(function ($item) {
             return $item['_source'];
         }, $this->response['hits']['hits'] ?? []);
+    }
+
+    /**
+     * @return int
+     */
+    public function queryTotal(): int
+    {
+        $this->fetchResponse();
+
+        return $this->response['hits']['total'];
     }
 }

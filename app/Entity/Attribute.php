@@ -157,7 +157,7 @@ class Attribute extends Model
                 return call_user_func([new $model, $method]);
             } else {
                 list($key, $value) = explode('=', $variants);
-                return [trim($key) => trim($value)];
+                return [trim($key) => t(trim($value))];
             }
         }
 
@@ -165,7 +165,7 @@ class Attribute extends Model
 
         foreach ($variants as $variant) {
             list($key, $value) = explode('=', $variant);
-            $result[trim($key)] = trim($value);
+            $result[trim($key)] = t(trim($value));
         }
 
         return $result;

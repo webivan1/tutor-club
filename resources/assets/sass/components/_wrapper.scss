@@ -22,7 +22,7 @@ footer {
   //display: flex;
   //flex-direction: column;
   //align-items: center !important;
-  min-height: 13rem;
+  min-height: 16rem;
   @extend .pt-2;
   padding-bottom: $header-line-bottom + 1rem;
 
@@ -37,4 +37,67 @@ footer {
 
 .py-3-no-empty:not(:empty) {
   @extend .py-3;
+}
+
+.img-max-width {
+  width: 100%;
+  height: auto;
+}
+
+.crop-image {
+  position: relative;
+  overflow-y: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center !important;
+
+  img {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+  }
+
+  &-150 {
+    height: 150px;
+  }
+
+  &-200 {
+    height: 200px;
+  }
+}
+
+.text-crop {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.info-list {
+  .info-list-item {
+    &:after {
+      content: ' ';
+      border-bottom: 1px dotted #e0e0e0;
+      overflow: hidden;
+      display: block;
+      height: 1rem;
+    }
+  }
+}
+
+.card-columns.card-offers {
+  @include media-breakpoint-only(xs) {
+    column-count: 1;
+  }
+  @include media-breakpoint-only(sm) {
+    column-count: 1;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 1;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 2;
+  }
 }

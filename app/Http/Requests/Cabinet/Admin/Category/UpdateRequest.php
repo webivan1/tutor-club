@@ -27,6 +27,7 @@ class UpdateRequest extends FormRequest
         return [
             'title' => 'required|string|max:120',
             'description' => 'required|string|max:200',
+            'content' => 'nullable|string',
             'name' => 'required|string|max:200',
             'slug' => 'required|string|max:200|unique:category,id,' . $this->category->id,
             'parent_id' => [

@@ -8,6 +8,7 @@
 require('./bootstrap');
 
 import Vue from 'vue'
+import BootstrapVue from 'bootstrap-vue'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -20,9 +21,12 @@ try {
     throw new Error('Undefined #app');
   }
 
+  Vue.use(BootstrapVue);
+
   Vue.component('example-component', require('./components/ExampleComponent.vue'));
   Vue.component('advert-form-component', require('./components/advert/FormWrapper.vue'));
   Vue.component('search-category-component', require('./components/category/SearchComponent.vue'));
+  Vue.component('advert-list-component', require('./components/advert/list/ListWrapperComponent.vue'));
 
   const app = new Vue({
     el: '#app'

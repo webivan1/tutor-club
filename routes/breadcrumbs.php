@@ -10,7 +10,22 @@ use DaveJamesMiller\Breadcrumbs\BreadcrumbsGenerator as Crumbs;
 use App\Entity\Admin\Keywords;
 
 Breadcrumbs::register('home', function (Crumbs $breadcrumbs) {
-    $breadcrumbs->push(__('home.Home'), route('home'));
+    $breadcrumbs->push(t('Home'), route('home'));
+});
+
+Breadcrumbs::register('category.list', function (Crumbs $breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(t('All categories'), route('category.list'));
+});
+
+Breadcrumbs::register('category.show', function (Crumbs $breadcrumbs, \App\Entity\Category $category) {
+    if ($category->parent) {
+        $breadcrumbs->parent('category.show', $category->parent);
+    } else {
+        $breadcrumbs->parent('category.list');
+    }
+
+    $breadcrumbs->push(t($category->name), route('category.show', $category->slug));
 });
 
 /** Cabinet */

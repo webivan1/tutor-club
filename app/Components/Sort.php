@@ -407,7 +407,7 @@ class Sort
     public function link($attribute, $options = [])
     {
         if (($direction = $this->getAttributeOrder($attribute)) !== null) {
-            $class = $direction === SORT_DESC ? 'desc' : 'asc';
+            $class = $direction === self::SORT_DESC ? 'desc' : 'asc';
             if (isset($options['class'])) {
                 $options['class'] .= ' ' . $class;
             } else {
@@ -501,5 +501,25 @@ class Sort
     public function hasAttribute($name)
     {
         return isset($this->attributes[$name]);
+    }
+
+    /**
+     * @return array
+     */
+    public function urlAttributes(): array
+    {
+        $params = [];
+
+        foreach ($this->getAttributes() as $attribute => $data) {
+            $params[] = [
+                'attribute' => $attribute,
+                'label' => $data['label'],
+                'url' => $this->createUrl($attribute),
+                'order' => $this->getAttributeOrder($attribute),
+                'active' => !is_null($this->getAttributeOrder($attribute))
+            ];
+        }
+
+        return $params;
     }
 }

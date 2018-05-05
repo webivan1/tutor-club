@@ -4,6 +4,7 @@ namespace App\Entity\Advert;
 
 use App\Entity\Category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Expression;
 
 /**
  * @property integer $id
@@ -59,5 +60,27 @@ class AdvertPrice extends Model
     public function category()
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
+    }
+
+    /**
+     * @param int $categoryId
+     * @return array
+     */
+    public static function getMinMaxPriceByCategory(int $categoryId): array
+    {
+        return \Cache::tags([
+            (new self)->getTable(),
+            (new Advert)->getTable()
+        ])->remember('prices-' . $categoryId, 360, function () use ($categoryId) {
+            return self::select([
+                new Expression('MIN(price_from) AS min'),
+                new Expression('MAX(price_from) AS max'),
+                'price_type'
+            ])
+                ->where('category_id', $categoryId)
+                ->groupBy('price_type')
+                ->get()
+                ->toArray();
+        });
     }
 }

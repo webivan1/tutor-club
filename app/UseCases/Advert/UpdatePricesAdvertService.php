@@ -34,7 +34,7 @@ class UpdatePricesAdvertService
         foreach ($pricesRequest as $item) {
             extract($item);
 
-            $model = AdvertPrice::updateOrCreate(
+            $model = $advert->prices()->updateOrCreate(
                 compact('advert_id', 'category_id', 'minutes', 'price_type'),
                 compact('price_from')
             );
@@ -63,11 +63,27 @@ class UpdatePricesAdvertService
             !empty($existCategory) ?: $advert->toStatusDraft();
         });
 
+        Advert::saved(function (AdvertPrice $model) use ($advert) {
+            $this->triggerUpdatedAdvert($advert);
+        });
+
         // После удаления категории
         // синхронизируем атрибуты объявления
         AdvertPrice::deleted(function (AdvertPrice $model) use ($advert) {
             $this->syncAdvertAttributes($advert);
         });
+    }
+
+    /**
+     * Запускаем вручную событие, чтобы elasticsearch пересохранил данные
+     *
+     * @param Advert $advert
+     * @return void
+     */
+    private function triggerUpdatedAdvert(Advert $advert): void
+    {
+        $advert->updateCurrentTimestamp();
+//        \Event::fire('eloquent.updated: ' . get_class($advert), [$advert]);
     }
 
     /**

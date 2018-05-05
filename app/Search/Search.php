@@ -55,6 +55,14 @@ abstract class Search implements SearchInterface
     }
 
     /**
+     * @return  array
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    /**
      * @return array
      */
     public function messages(): array

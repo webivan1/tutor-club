@@ -8,12 +8,21 @@
 
 namespace App\Http\Controllers\Category;
 
+use App\Entity\Category;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class ListController extends Controller
 {
-    public function index()
+    /**
+     * Root categories /category
+     *
+     * @param Category $category
+     * @return Response
+     */
+    public function index(Category $category)
     {
-
+        $categories = $category->listCategories();
+        return view('category.list', compact('categories'));
     }
 }

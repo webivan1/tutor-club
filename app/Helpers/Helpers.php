@@ -25,7 +25,18 @@ if (!function_exists('t')) {
             return $fails;
         }
 
-        $message = __($key, $replace, $locale);
+        if (!preg_match('/^[a-z]+\./', $key)) {
+            $key = 'home.' . $key;
+        }
+
+        $message = $messageOriginal = __($key, $replace, $locale);
+
+
+        if (!empty($replace)) {
+            foreach ($replace as $k => $v) {
+                $message = str_replace($v, ':' . $k, $message);
+            }
+        }
 
         // not translated
         if ($message === $key) {
@@ -34,6 +45,20 @@ if (!function_exists('t')) {
             }
         }
 
-        return $message;
+        return $messageOriginal;
+    }
+}
+
+if (!function_exists('chunk_column')) {
+    /**
+     * Разбиваем массив данных на колонки
+     *
+     * @param array $data
+     * @param int $columns
+     * @return string|array|null
+     */
+    function chunk_column(array $data, int $columns): array
+    {
+        return array_chunk($data, ceil(count($data) / $columns));
     }
 }

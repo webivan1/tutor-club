@@ -223,11 +223,11 @@ class TutorProfile extends Model
     /**
      * @return array
      */
-    public function genders(): array
+    public static function genders(): array
     {
         return [
-            self::MAN => 'Мужчина',
-            self::WOMAN => 'Женщина'
+            self::MAN => t('Man'),
+            self::WOMAN => t('Woman')
         ];
     }
 
