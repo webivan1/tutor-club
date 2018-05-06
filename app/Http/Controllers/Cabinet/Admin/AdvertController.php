@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cabinet\Admin;
 
 use App\Entity\Admin\Advert;
 use App\Entity\Admin\Category;
+use App\Events\Advert\ChangeAdvert;
 use App\Http\Requests\Cabinet\Admin\Advert\UpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,9 +45,12 @@ class AdvertController extends Controller
      */
     public function update(UpdateRequest $request, Advert $advert)
     {
-        // @ToDo отправка на мыло
+        Advert::updated(function ($advert) {
+            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_UPDATE));
+        });
 
         $advert->update($request->only('status'));
+
         return redirect()->route('cabinet.admin.advert.index')
             ->with('success', 'Успешно обновлено!');
     }
@@ -59,7 +63,12 @@ class AdvertController extends Controller
      */
     public function destroy(Advert $advert)
     {
+        Advert::deleted(function ($advert) {
+            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_DELETE));
+        });
+
         $advert->delete();
+
         return back()->with('success', 'Успешно удалено!');
     }
 }

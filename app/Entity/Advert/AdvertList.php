@@ -8,7 +8,6 @@
 
 namespace App\Entity\Advert;
 
-
 use App\Components\Sort;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class AdvertList extends Advert
      * @param array $defaultOrder
      * @return array
      */
-    public function listData(Request $request, int $paginationSize = 9, array $defaultOrder = [])
+    public function listData(Request $request, int $paginationSize = 10, array $defaultOrder = [])
     {
         $query = self::where('user_id', \Auth::id());
 

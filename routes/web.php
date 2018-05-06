@@ -150,6 +150,9 @@ Route::group(
                             Route::get('/', 'EditController@edit')->name('update');
                             Route::put('/', 'EditController@update');
 
+                            // Closed advert
+                            Route::get('/close', 'CloseController@index')->name('close');
+
                             // update prices
                             Route::get('/prices', 'PricesController@edit')->name('update.prices');
                             Route::put('/prices', 'PricesController@update');

@@ -23,14 +23,17 @@ class SearchServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Event::listen(
+        /*
+         * Не кашерно навешивать глобальные евенты
+         *
+         *\Event::listen(
             ['eloquent.updated*', 'eloquent.created*', 'eloquent.deleted*'],
             function ($event, $params) {
                 list($model) = $params;
 
                 if ($model instanceof ModelSearch) {
                     try {
-                        /** @var ElasticSearchService $service */
+                        /** @var ElasticSearchService $service *
                         $service = app()->make(ElasticSearchService::class);
 
                         if (strpos($event, 'eloquent.updated') === 0) {
@@ -49,7 +52,7 @@ class SearchServiceProvider extends ServiceProvider
                     }
                 }
             }
-        );
+        );*/
     }
 
     /**

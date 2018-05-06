@@ -61,7 +61,7 @@ class PhoneController extends Controller
     private function successResponseVerify(VerifyRequest $request)
     {
         return redirect()->route('profile.tutor.home')
-            ->with('success', 'Вы успешно подтвердили телефон!');
+            ->with('success', t('You have successfully verified the phone'));
     }
 
     /**
@@ -71,7 +71,7 @@ class PhoneController extends Controller
     private function failResponseVerify(VerifyRequest $request)
     {
         return redirect()->route('profile.tutor.verify.form')
-            ->with('error', 'Не верный код проверки!');
+            ->with('error', t('Invalid verification code'));
     }
 
     /**
@@ -85,7 +85,7 @@ class PhoneController extends Controller
 
         if (!$profile->isTokenExpired()) {
             return redirect()->route('profile.tutor.verify.form')
-                ->with('warning', 'На Ваш номер уже был отправлен код проверки');
+                ->with('warning', t('Your verification code has already been sent'));
         }
 
         $profile->generateTokenVerified();
@@ -94,6 +94,8 @@ class PhoneController extends Controller
         $this->smsSender->send($profile->getFullPhone(), $profile->phone_token);
 
         return redirect()->route('profile.tutor.verify.form')
-            ->with('success', "На Ваш номер {$profile->getFullPhone()} отправлен код проверки");
+            ->with('success', t('Your verification code was sent to your number :phone', [
+                'phone' => $profile->getFullPhone()
+            ]));
     }
 }

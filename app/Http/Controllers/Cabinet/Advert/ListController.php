@@ -33,7 +33,7 @@ class ListController extends Controller
      */
     public function index(Request $request, AdvertList $model)
     {
-        list($models, $sort) = $model->listData($request);
+        list($models, $sort) = $model->listData($request, 5);
         return view('advert.list', compact('models', 'sort'));
     }
 

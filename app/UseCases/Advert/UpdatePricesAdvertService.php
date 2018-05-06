@@ -12,6 +12,7 @@ use App\Entity\Advert\Advert;
 use App\Entity\Advert\AdvertAttribute;
 use App\Entity\Advert\AdvertPrice;
 use App\Entity\Attribute;
+use App\Events\Advert\ChangeAdvert;
 use App\Helpers\ArrayHelper;
 
 class UpdatePricesAdvertService
@@ -82,8 +83,11 @@ class UpdatePricesAdvertService
      */
     private function triggerUpdatedAdvert(Advert $advert): void
     {
+        Advert::updated(function (Advert $advert) {
+            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_UPDATE));
+        });
+
         $advert->updateCurrentTimestamp();
-//        \Event::fire('eloquent.updated: ' . get_class($advert), [$advert]);
     }
 
     /**

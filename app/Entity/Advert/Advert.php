@@ -67,12 +67,27 @@ class Advert extends Model implements ModelSearch
     public static function statuses(): array
     {
         return [
-            self::STATUS_DRAFT => 'черновик',
-            self::STATUS_DISABLED => 'закрыто',
-            self::STATUS_MODERATION => 'на модерации',
-            self::STATUS_ACTIVE => 'активно',
-            self::STATUS_WAIT => 'на редактировании',
-            self::STATUS_REJECT => 'заблокировано'
+            self::STATUS_DRAFT => t('Draft'),
+            self::STATUS_DISABLED => t('Closed'),
+            self::STATUS_MODERATION => t('Moderation'),
+            self::STATUS_ACTIVE => t('Active'),
+            self::STATUS_WAIT => t('Waiting'),
+            self::STATUS_REJECT => t('Blocked')
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function statusStyles(): array
+    {
+        return [
+            self::STATUS_DRAFT => 'secondary',
+            self::STATUS_DISABLED => 'dark',
+            self::STATUS_MODERATION => 'warning',
+            self::STATUS_ACTIVE => 'success',
+            self::STATUS_WAIT => 'dark',
+            self::STATUS_REJECT => 'danger'
         ];
     }
 
@@ -127,18 +142,44 @@ class Advert extends Model implements ModelSearch
     /**
      * @return bool
      */
+    public function isEdit(): bool
+    {
+        return $this->isActive() ||
+            $this->isDisabled() ||
+            $this->isDraft() ||
+            $this->isWait();
+    }
+
+    /**
+     * @return bool
+     */
     public function accessSendToModeration(): bool
     {
         return $this->isDraft() || $this->isWait() || $this->isDisabled();
     }
 
     /**
+     * To status draft
      *
+     * @return void
      */
     public function toStatusDraft(): void
     {
         if ($this->isActive()) {
             $this->status = self::STATUS_DRAFT;
+            $this->save();
+        }
+    }
+
+    /**
+     * To status draft
+     *
+     * @return void
+     */
+    public function toStatusDisabled(): void
+    {
+        if ($this->isActive()) {
+            $this->status = self::STATUS_DISABLED;
             $this->save();
         }
     }

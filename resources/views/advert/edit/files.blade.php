@@ -2,7 +2,7 @@
 
 @section('content')
     <h1 class="page-header">
-        #{{ $advert->id }} {{ $advert->title }} - {{ t('home.editAdvertPhotoHeading') }}
+        #{{ $advert->id }} {{ t($advert->title) }} - {{ t('home.editAdvertPhotoHeading') }}
     </h1>
 
     <hr />
@@ -23,7 +23,7 @@
                                 'url' => route('cabinet.advert.delete.file', [$advert, $file]),
                                 'onsubmit' => 'return confirm("' . t('home.AreYouSure') . '");'
                             ]) }}
-                                {{ Form::submit('Delete', ['class' => 'btn btn-dander']) }}
+                                {{ Form::submit(t('Delete'), ['class' => 'btn btn-dander']) }}
                             {{ Form::close() }}
                         </td>
                     </tr>

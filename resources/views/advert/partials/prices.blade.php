@@ -1,5 +1,5 @@
 <div class="alert alert-secondary">
-    Выберите категории и заполните цены
+    {{ t('Select categories and fill prices') }}
 </div>
 
 <div class="clone-prices">
@@ -9,13 +9,13 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Выберите подкатегорию</label>
+                            <label>{{ t('Select a subcategory') }}</label>
                             <select name="prices[category_id][]" class="form-control {{ !$errors->has('prices.category_id.' . $key) ? '' : 'is-invalid' }}">
-                                <option value="">Выбрать</option>
+                                <option value="">{{ t('Choose') }}</option>
                                 @foreach ($listCategory as $item)
                                     <option value="{{ $item->id }}" {{ isset($value['category_id']) && $value['category_id'] == $item->id ? 'selected' : '' }}>
                                         {!! $item->depth > 1 ? str_repeat('&nbsp;&nbsp;', $item->depth) : '' !!}
-                                        {{ $item->name }}
+                                        {{ t($item->name) }}
                                     </option>
                                 @endforeach
                             </select>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{ Form::label('price_type', 'Валюта') }}
+                            {{ Form::label('price_type', t('Enter currency')) }}
                             {{ Form::select('prices[price_type][]', $types, $value['price_type'] ?? null, [
                                 'class' => 'form-control ' . (!$errors->has('prices.price_type.' . $key) ? '' : 'is-invalid')
                             ]) }}
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{ Form::label('price_from', 'Цена') }}
+                            {{ Form::label('price_from', t('Price')) }}
                             {{ Form::input('float', 'prices[price_from][]', $value['price_from'] ?? null, [
                                 'class' => 'form-control ' . (!$errors->has('prices.price_from.' . $key) ? '' : 'is-invalid')
                             ]) }}
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            {{ Form::label('price_from', 'Длительность 1 занятия (минут)') }}
+                            {{ Form::label('price_from', t('Duration of 1 lesson (minutes)')) }}
                             {{ Form::input('float', 'prices[minutes][]', $value['minutes'] ?? null, [
                                 'class' => 'form-control ' . (!$errors->has('prices.minutes.' . $key) ? '' : 'is-invalid')
                             ]) }}
@@ -82,6 +82,6 @@
 
 <div class="text-right">
     <button type="button" class="btn btn-raised btn-info" data-clone-container=".clone-prices">
-        Добавить ещё подкатегорию +
+        {{ t('Add another subcategory') }} +
     </button>
 </div>

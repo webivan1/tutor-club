@@ -38,6 +38,7 @@
         messages-json="{{ json_encode([
             'SelectGender' => t('Choose a sex tutor'),
             'SearchTutor' => t('Find a Teacher'),
+            'Search' => t('Search'),
             'PlaceholderFindTeacher' => t('Name, email or phone')
         ]) }}"
     ></advert-list-component>

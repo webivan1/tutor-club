@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="form-group">
-                    {{ Form::label('lang', 'Укажите языковую пренадлежность объялению') }}
+                    {{ Form::label('lang', t('Specify the language of your property')) }}
                     {{ Form::select('lang', \App\Helpers\LangHelper::langList(), old('lang', $advert->lang ?? app()->getLocale()), [
                         'class' => 'form-control ' . (!$errors->has('lang') ? '' : 'is-invalid')
                     ]) }}
@@ -14,7 +14,7 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    {{ Form::label('experience', 'Опыт преподавания в данной области (лет)') }}
+                    {{ Form::label('experience', t('The experience of teaching in this field (years)')) }}
                     {{ Form::input('number', 'experience', old('experience', $advert->experience ?? 0), [
                         'class' => 'form-control ' . (!$errors->has('experience') ? '' : 'is-invalid')
                     ]) }}
@@ -25,7 +25,7 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    {{ Form::label('presentation', 'Видео презентация (youtube url)') }}
+                    {{ Form::label('presentation', t('Video presentation (youtube url)')) }}
                     {{ Form::text('presentation', old('presentation', $advert->presentation ?? ''), [
                         'class' => 'form-control ' . (!$errors->has('presentation') ? '' : 'is-invalid')
                     ]) }}
@@ -36,7 +36,7 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    {{ Form::label('description-cke', 'Опишите свой опыт и достижения') }}
+                    {{ Form::label('description-cke', t('Write briefly about your experience in this field')) }}
                     {{ Form::textarea('description', old('description', $advert->description ?? ''), [
                         'class' => 'form-control',
                         'id' => 'description-cke'

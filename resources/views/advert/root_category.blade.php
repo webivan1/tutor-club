@@ -1,6 +1,6 @@
 @extends('layouts.cabinet')
 
-@section('title', 'Добавить объявление')
+@section('title', t('Create new ad'))
 @section('not-drawers', true)
 
 @section('nav-left')
@@ -9,7 +9,7 @@
 
 @section('content')
     <h1 class="page-header">
-        Выберите категорию
+        {{ t('Choose a category') }}
     </h1>
 
     <hr />
@@ -17,7 +17,7 @@
     <div class="list-group">
         @foreach ($category as $item)
             <a class="list-group-item" href="{{ route('cabinet.advert.create.end', $item) }}">
-                {{ $item->name }}
+                {{ t($item->name) }}
             </a>
         @endforeach
     </div>

@@ -72,6 +72,6 @@ class EmailResetController extends Controller
         $request->user()->changeEmail($request['email']);
 
         return redirect()->route('profile.home')
-            ->with('success', 'Вы успешно поменяли email');
+            ->with('success', t('You have successfully changed email'));
     }
 }

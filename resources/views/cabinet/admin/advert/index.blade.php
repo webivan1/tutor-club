@@ -35,7 +35,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     {{ Form::label('lang', 'Язык') }}
-                    {{ Form::select('lang', \App\Helpers\LangHelper::langList(), request('lang'), ['class' => 'form-control']) }}
+                    {{ Form::select('lang', ['' => 'Выбрать'] + \App\Helpers\LangHelper::langList(), request('lang'), ['class' => 'form-control']) }}
                 </div>
             </div>
         </div>
@@ -51,6 +51,12 @@
                 <div class="form-group">
                     {{ Form::label('price_type', 'Валюта') }}
                     {{ Form::select('price_type', ['' => 'Выбрать'] + \App\Entity\Advert\AdvertPrice::types(), request('price_type'), ['class' => 'form-control']) }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    {{ Form::label('status', 'Статус') }}
+                    {{ Form::select('status', ['' => 'Выбрать'] + \App\Entity\Admin\Advert::statuses(), request('status'), ['class' => 'form-control']) }}
                 </div>
             </div>
         </div>

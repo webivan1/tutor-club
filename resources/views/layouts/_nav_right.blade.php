@@ -26,9 +26,6 @@
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                 <span class="dropdown-header">{{ Auth::user()->name }}</span>
-                <a class="dropdown-item" href="{{ route('cabinet.home') }}">
-                    {{ t('home.Cabinet') }}
-                </a>
                 <a class="dropdown-item" href="{{ route('profile.home') }}">
                     {{ t('home.Profile') }}
                 </a>

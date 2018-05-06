@@ -12,7 +12,7 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
 
 ?>
 
-<div class="container">
+<div>
 
     @if($profile->isActive())
         <div class="text-right">

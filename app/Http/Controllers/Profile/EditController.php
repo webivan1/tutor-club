@@ -34,6 +34,6 @@ class EditController extends Controller
         \Auth::user()->save();
 
         return redirect()->route('profile.home')
-            ->with('success', 'Вы успешно изменили данные!');
+            ->with('success', t('You have successfully changed the data'));
     }
 }

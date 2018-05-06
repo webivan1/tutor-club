@@ -107,10 +107,12 @@ class Category extends Model implements ModelSearch
      */
     public function allAttributesCached(): array
     {
+        $locale = app()->getLocale();
+
         return \Cache::tags([
             $this->getTable(),
             (new Advert)->getTable()
-        ])->remember('all-attributes-by-' . $this->id, 360, function () {
+        ])->remember("all-{$locale}-attributes-by-{$this->id}", 360, function () {
             return array_map(function (Attribute $item) {
                 if (!empty($item->variants)) {
                     $item->variants = $item->variantsToArray();

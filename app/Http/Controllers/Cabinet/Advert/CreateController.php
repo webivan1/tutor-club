@@ -72,7 +72,7 @@ class CreateController extends Controller
     {
         try {
             $advert = $this->service->create(
-                t($category->name, [], $request->input('lang')),
+                $category->name,
                 $request->input('lang'),
                 $request->input('description'),
                 $request->input('presentation'),

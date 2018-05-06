@@ -3,7 +3,7 @@
 @section('content')
     @parent
 
-    <div class="container" data-expire-token="{{ strtotime($profile->phone_token_expire) }}">
+    <div data-expire-token="{{ strtotime($profile->phone_token_expire) }}">
         <div class="row mb-2">
             <div class="col-md-7">
                 {{ Form::open(['method' => 'POST', 'url' => route('profile.tutor.verify.form')]) }}

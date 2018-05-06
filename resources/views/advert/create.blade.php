@@ -18,7 +18,7 @@ $advertPrice = empty($advertPrice) ? [new AdvertPrice()] : $advertPrice;
 
 @section('content')
     <h1 class="page-header">
-        {{ $category->name }}
+        {{ t($category->name) }}
     </h1>
 
     <hr />
@@ -31,7 +31,7 @@ $advertPrice = empty($advertPrice) ? [new AdvertPrice()] : $advertPrice;
 
             <hr />
 
-            {{ Form::submit('Сохранить и продолжить', ['class' => 'btn btn-raised btn-success']) }}
+            {{ Form::submit(t('Save and continue'), ['class' => 'btn btn-raised btn-success']) }}
         {{ Form::close() }}
     </div>
 @endsection

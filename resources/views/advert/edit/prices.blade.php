@@ -2,7 +2,7 @@
 
 @section('content')
     <h1 class="page-header">
-        #{{ $advert->id }} {{ $advert->title }} - {{ t('home.advertPricesHeading') }}
+        #{{ $advert->id }} {{ t($advert->title) }} - {{ t('home.advertPricesHeading') }}
     </h1>
 
     <hr />
@@ -20,7 +20,7 @@
 
             <hr />
 
-            {{ Form::submit('Сохранить', ['class' => 'btn btn-raised btn-success']) }}
+            {{ Form::submit(t('Save'), ['class' => 'btn btn-raised btn-success']) }}
         {{ Form::close() }}
     </div>
 @endsection

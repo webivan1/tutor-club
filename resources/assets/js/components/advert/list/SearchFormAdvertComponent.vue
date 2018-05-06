@@ -1,88 +1,97 @@
 <template>
     <div :class="{ 'loader': loaderList === true, 'js-form': true }">
-        <div v-if="loader" class="ld ld-ring ld-spin-fast text-center text-info"></div>
+        <div v-if="loader">
+            <div class="card-body">
+                <div class="ld ld-ring ld-spin-fast text-center text-info"></div>
+            </div>
+        </div>
         <div v-else>
             <form @submit="submit" class="my-0 py-0">
-                <div class="form-group">
-                    <div class="row mx-0">
-                        <div class="col-2 px-0">
-                            <select @change="changeCurrency" class="form-control" v-model="form.priceType">
-                                <option
-                                    v-for="(value, key) in data.types"
-                                    v-bind:value="key"
-                                >
-                                    {{ value }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col px-0">
-                            <input
-                                type="text"
-                                v-model="form.priceFrom"
-                                class="form-control"
-                                :placeholder="prices ? prices.min + ' - ' + prices.max : ''"
-                            />
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="row mx-0">
+                            <div class="col-2 px-0">
+                                <select @change="changeCurrency" class="form-control" v-model="form.priceType">
+                                    <option
+                                        v-for="(value, key) in data.types"
+                                        v-bind:value="key"
+                                    >
+                                        {{ value }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col px-0">
+                                <input
+                                    type="text"
+                                    v-model="form.priceFrom"
+                                    class="form-control"
+                                    :placeholder="prices ? prices.min + ' - ' + prices.max : ''"
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="select-gender" class="bmd-label-static">
-                        {{ messages.SelectGender }}
-                    </label>
-                    <select v-model="form.gender" class="form-control" id="select-gender">
-                        <option value=""></option>
-                        <option v-for="(value, key) in data.genders" :value="key">
-                            {{ value }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="select-gender" class="bmd-label-static">
-                        {{ messages.SearchTutor }}
-                    </label>
-                    <input
-                        type="text"
-                        v-model="form.search"
-                        class="form-control"
-                    />
-                </div>
-
-                <div v-for="attr in data.attributes">
-                    <div v-if="attr.type === 'select'" class="form-group">
-                        <label class="bmd-label-static">
-                            {{ attr.label }}
+                    <div class="form-group">
+                        <label for="select-gender" class="bmd-label-static">
+                            {{ messages.SelectGender }}
                         </label>
-                        <select v-model="form.attributes[attr.id]" class="form-control">
+                        <select v-model="form.gender" class="form-control" id="select-gender">
                             <option value=""></option>
-                            <option v-for="(value, key) in attr.variants" :value="key">
+                            <option v-for="(value, key) in data.genders" :value="key">
                                 {{ value }}
                             </option>
                         </select>
                     </div>
-                    <div v-if="attr.type === 'checkbox'" class="checkbox">
-                        <label>
-                            <input
-                                type="checkbox"
-                                v-model="form.attributes[attr.id]"
-                                value="1"
-                            /> <small>{{ attr.label }}</small>
-                        </label>
-                    </div>
-                    <div v-if="attr.type === 'number' || attr.type === 'float'" class="form-group">
-                        <label class="bmd-label-static">
-                            {{ attr.label }}
+
+                    <div class="form-group">
+                        <label for="select-gender" class="bmd-label-static">
+                            {{ messages.SearchTutor }}
                         </label>
                         <input
-                            type="number"
+                            type="text"
+                            v-model="form.search"
                             class="form-control"
-                            v-model="form.attributes[attr.id]"
                         />
                     </div>
-                </div>
 
-                <button class="btn btn-raised btn-info">Search</button>
+                    <div v-for="attr in data.attributes">
+                        <div v-if="attr.type === 'select'" class="form-group">
+                            <label class="bmd-label-static">
+                                {{ attr.label }}
+                            </label>
+                            <select v-model="form.attributes[attr.id]" class="form-control">
+                                <option value=""></option>
+                                <option v-for="(value, key) in attr.variants" :value="key">
+                                    {{ value }}
+                                </option>
+                            </select>
+                        </div>
+                        <div v-if="attr.type === 'checkbox'" class="checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    v-model="form.attributes[attr.id]"
+                                    value="1"
+                                /> <small>{{ attr.label }}</small>
+                            </label>
+                        </div>
+                        <div v-if="attr.type === 'number' || attr.type === 'float'" class="form-group">
+                            <label class="bmd-label-static">
+                                {{ attr.label }}
+                            </label>
+                            <input
+                                type="number"
+                                class="form-control"
+                                v-model="form.attributes[attr.id]"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-raised btn-warning btn-block">
+                        {{ messages.Search }}
+                    </button>
+                </div>
             </form>
         </div>
     </div>

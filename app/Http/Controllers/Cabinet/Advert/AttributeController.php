@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Cabinet\Advert;
 
 use App\Entity\Advert\Advert;
 use App\Entity\Advert\AdvertAttribute;
+use App\Events\Advert\ChangeAdvert;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cabinet\Advert\UpdateAttributesRequest;
 
@@ -91,6 +92,10 @@ class AttributeController extends Controller
      */
     private function triggerUpdatedAdvert(Advert $advert): void
     {
+        Advert::updated(function (Advert $advert) {
+            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_UPDATE));
+        });
+
         $advert->updateCurrentTimestamp();
     }
 }

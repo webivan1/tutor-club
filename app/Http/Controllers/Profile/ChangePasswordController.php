@@ -30,6 +30,6 @@ class ChangePasswordController extends Controller
     {
         \Auth::user()->changePassword($request['password']);
         return redirect()->route('profile.home')
-            ->with('success', 'Вы успешно изменили пароль!');
+            ->with('success', t('You have successfully changed your password'));
     }
 }

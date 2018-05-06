@@ -1,4 +1,4 @@
-<div class="container text-center pt-5">
+<div class="text-center pt-5">
     <p>Ваш профиль заблокирован администрацией!</p>
 
     <div class="row justify-content-md-center">

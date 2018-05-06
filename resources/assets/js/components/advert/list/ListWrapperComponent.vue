@@ -31,14 +31,12 @@
             </div>
 
             <div class="card">
-                <div class="card-body">
-                    <search-form-advert
-                        :lang="lang"
-                        :messages="messages"
-                        :loader-list="loader"
-                        v-on:fetch-list="setData"
-                    ></search-form-advert>
-                </div>
+                <search-form-advert
+                    :lang="lang"
+                    :messages="messages"
+                    :loader-list="loader"
+                    v-on:fetch-list="setData"
+                ></search-form-advert>
             </div>
         </div>
     </div>

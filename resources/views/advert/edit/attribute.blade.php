@@ -2,7 +2,7 @@
 
 @section('content')
     <h1 class="page-header">
-        #{{ $advert->id }} {{ $advert->title }} - {{ t('home.editAdvertAttributesHeading') }}
+        #{{ $advert->id }} {{ t($advert->title) }} - {{ t('home.editAdvertAttributesHeading') }}
     </h1>
 
     <hr />
@@ -17,28 +17,29 @@
                     <div class="card">
                         <div class="card-body">
                             @foreach ($attributes as $attribute)
-                                <div class="form-group">
-                                    @switch ($attribute->type)
-                                        @case ($attribute->isStyleInlineField())
-                                        {{ Form::label("attr-" . $attribute->id, t($attribute->label)) }}
-                                        @if ($attribute->isNumber() || $attribute->isFloat())
-                                            {{ Form::input('number', "attr[{$attribute->id}]", old("attr[{$attribute->id}]", $attribute->value), [
-                                                'class' => 'form-control',
-                                                'required' => $attribute->required
-                                            ]) }}
-                                        @elseif ($attribute->isText())
-                                            {{ Form::text("attr[{$attribute->id}]", old("attr[{$attribute->id}]", $attribute->value), [
-                                                'class' => 'form-control',
-                                                'required' => $attribute->required
-                                            ]) }}
-                                        @elseif ($attribute->isSelect())
-                                            {{ Form::select("attr[{$attribute->id}]", $attribute->variantsToArray(), old("attr[{$attribute->id}]", $attribute->value), [
-                                                'class' => 'form-control',
-                                                'required' => $attribute->required
-                                            ]) }}
-                                        @endif
-                                        @break
-                                        @case ($attribute->isStyleCheckField())
+                                @switch ($attribute->type)
+                                    @case ($attribute->isStyleInlineField())
+                                        <div class="form-group">
+                                            {{ Form::label("attr-" . $attribute->id, t($attribute->label)) }}
+                                            @if ($attribute->isNumber() || $attribute->isFloat())
+                                                {{ Form::input('number', "attr[{$attribute->id}]", old("attr[{$attribute->id}]", $attribute->value), [
+                                                    'class' => 'form-control',
+                                                    'required' => $attribute->required
+                                                ]) }}
+                                            @elseif ($attribute->isText())
+                                                {{ Form::text("attr[{$attribute->id}]", old("attr[{$attribute->id}]", $attribute->value), [
+                                                    'class' => 'form-control',
+                                                    'required' => $attribute->required
+                                                ]) }}
+                                            @elseif ($attribute->isSelect())
+                                                {{ Form::select("attr[{$attribute->id}]", $attribute->variantsToArray(), old("attr[{$attribute->id}]", $attribute->value), [
+                                                    'class' => 'form-control',
+                                                    'required' => $attribute->required
+                                                ]) }}
+                                            @endif
+                                        </div>
+                                    @break
+                                    @case ($attribute->isStyleCheckField())
                                         @if ($attribute->isCheckbox())
                                             <div class="checkbox">
                                                 <label>
@@ -56,16 +57,15 @@
                                                 </div>
                                             @endforeach
                                         @endif
-                                        @break
-                                    @endswitch
-                                </div>
+                                    @break
+                                @endswitch
                             @endforeach
                         </div>
                     </div>
 
                     <hr />
 
-                    {{ Form::submit(t('home.Save'), ['class' => 'btn btn-raised btn-success']) }}
+                    {{ Form::submit(t('Save'), ['class' => 'btn btn-raised btn-success']) }}
                 {{ Form::close() }}
             </div>
         </div>

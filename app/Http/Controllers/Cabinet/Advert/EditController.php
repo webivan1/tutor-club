@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Cabinet\Advert;
 
 use App\Entity\Advert\Advert;
+use App\Events\Advert\ChangeAdvert;
 use App\Events\Advert\UpdateInfoAdvert;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cabinet\Advert\UpdateInfoRequest;
@@ -60,5 +61,9 @@ class EditController extends Controller
     private function registerEventChanges(): void
     {
         Advert::observe(new UpdateInfoAdvert());
+        Advert::updated(function (Advert $advert) {
+            // delete index from elastic
+            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_UPDATE));
+        });
     }
 }

@@ -11,6 +11,7 @@ namespace App\UseCases\Advert;
 use App\Entity\Advert\Advert;
 use App\Entity\Advert\AdvertGallery;
 use App\Entity\Files;
+use App\Events\Advert\ChangeAdvert;
 use Illuminate\Http\UploadedFile;
 
 class ChangeFilesService
@@ -50,6 +51,11 @@ class ChangeFilesService
             'source' => 'advert',
             'source_id' => $advert->id
         ]));
+
+        Advert::updated(function (Advert $advert) {
+            // delete index from elastic
+            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_UPDATE));
+        });
 
         // При добавлении нового фото
         // сбрасываем статус активного объявления на черновик

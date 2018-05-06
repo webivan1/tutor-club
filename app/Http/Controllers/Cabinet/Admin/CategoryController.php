@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cabinet\Admin;
 
 use App\Entity\Admin\Category;
 use App\Entity\Attribute;
+use App\Events\Category\ChangeCategory;
 use App\Http\Requests\Cabinet\Admin\Category\CreateRequest;
 use App\Http\Requests\Cabinet\Admin\Category\UpdateRequest;
 use Illuminate\Http\Request;
@@ -45,7 +46,14 @@ class CategoryController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $category = Category::create($request->only('name', 'slug', 'title', 'description', 'parent_id', 'content'));
+        Category::created(function (Category $category) {
+            event(new ChangeCategory($category, ChangeCategory::EVENT_CREATE));
+        });
+
+        $category = Category::create($request->only(
+            'name', 'slug', 'title', 'description', 'parent_id', 'content'
+        ));
+
         return redirect()->route('cabinet.admin.category.show', $category)
             ->with('success', 'Успешно добавлено!');
     }
@@ -83,6 +91,10 @@ class CategoryController extends Controller
      */
     public function update(UpdateRequest $request, Category $category)
     {
+        Category::updated(function (Category $category) {
+            event(new ChangeCategory($category, ChangeCategory::EVENT_UPDATE));
+        });
+
         $category->update($request->only(['name', 'slug', 'title', 'description', 'content']));
 
         if ($request->input('parent_id')) {
@@ -105,7 +117,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        Category::deleted(function (Category $category) {
+            event(new ChangeCategory($category, ChangeCategory::EVENT_DELETE));
+        });
+
         $category->delete();
+
         return back()->with('success', 'Успешно удалено!');
     }
 
