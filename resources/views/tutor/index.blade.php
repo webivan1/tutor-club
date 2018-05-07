@@ -1,13 +1,3 @@
-<?php
-
-use App\Entity\TutorProfile;
-
-/**
- * @var TutorProfile $profile
- */
-
-?>
-
 @extends('layouts.profile')
 
 @section('content')

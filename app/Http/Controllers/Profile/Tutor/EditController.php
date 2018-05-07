@@ -90,6 +90,6 @@ class EditController extends Controller
         $profile->moderate()->save();
 
         return redirect()->route('profile.tutor.home')
-            ->with('success', 'Профиль отправлен на модерацию');
+            ->with('success', t('Profile sent to moderation'));
     }
 }

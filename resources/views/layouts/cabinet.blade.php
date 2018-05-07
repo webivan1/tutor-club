@@ -32,7 +32,7 @@
 
                         @else
                             <!-- Left Side Of Navbar -->
-                            <ul class="navbar-nav mr-auto">
+                            <ul class="navbar-nav">
                                 <li class="nav-item">
                                     <a class="nav-link" href="#" role="button"  data-toggle="drawer" data-target="#dw-s1">
                                         <i class="material-icons">menu</i>
@@ -41,6 +41,19 @@
                             </ul>
                         @endif
 
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('home') }}">
+                                    {{ t('Home') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('cabinet.home') }}">
+                                    {{ t('Cabinet') }}
+                                </a>
+                            </li>
+                        </ul>
+
                         @include('layouts._nav_right')
                     </div>
                 </div>
@@ -48,7 +61,7 @@
         </header>
         <div id="dw-s1" class="bmd-layout-drawer bg-faded">
             <header>
-                <a class="navbar-brand">
+                <a href="{{ route('home') }}" class="navbar-brand">
                     {{ config('app.name', 'SiteName') }}
                 </a>
             </header>

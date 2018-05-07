@@ -16,8 +16,8 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
 
     @if($profile->isActive())
         <div class="text-right">
-            {{ Html::link(route('profile.tutor.form'), 'Редактировать профиль', [
-                'class' => 'btn btn-primary mb-2'
+            {{ Html::link(route('profile.tutor.form'), t('Edit profile'), [
+                'class' => 'btn btn-raised btn-info mb-2'
             ]) }}
         </div>
 
@@ -25,11 +25,11 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
             <div class="card-body">
                 <div class="alert alert-success mb-0">
                     <div>
-                        Ваш профиль активен!
-                        Вы можете создавать объявления на сайте
+                        {{ t('Your profile is active') }}! <br />
+                        {{ t('You can create ads on the site') }}
                     </div>
 
-                    {{ Html::link(route('cabinet.advert.index'), 'Создать объявление', [
+                    {{ Html::link(route('cabinet.advert.index'), t('Create an ad'), [
                         'class' => 'btn btn-success btn-raised mt-1'
                     ]) }}
                 </div>
@@ -40,20 +40,20 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
     @if($profile->isDisabled())
         @if ($profile->isVerified())
             <div class="text-center mb-3">
-                {{ Html::link(route('profile.tutor.moderation'), 'Отправить на модерацию', [
+                {{ Html::link(route('profile.tutor.moderation'), t('Submit to moderation'), [
                     'class' => 'btn btn-lg btn-success'
                 ]) }}
             </div>
         @else
             <div class="text-center mb-3">
-                {{ Html::link(route('profile.tutor.verify.send'), 'Подтвердить телефон', [
+                {{ Html::link(route('profile.tutor.verify.send'), t('Confirm phone'), [
                     'class' => 'btn btn-lg btn-success ml-3'
                 ]) }}
             </div>
         @endif
 
         <div class="text-right">
-            {{ Html::link(route('profile.tutor.form'), 'Редактировать профиль', [
+            {{ Html::link(route('profile.tutor.form'), t('Edit profile'), [
                 'class' => 'btn btn-primary mb-2'
             ]) }}
         </div>
@@ -61,7 +61,7 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
         <div class="card mb-4">
             <div class="card-body">
                 <div class="alert alert-warning mb-0">
-                    Ваш профиль пока не активен
+                    {{ t('Your profile is not active') }}
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
         <div class="card mb-4">
             <div class="card-body">
                 <div class="alert alert-warning mb-0">
-                    Ваш профиль находится на модерации, его изменять пока нельзя
+                    {{ t('Your profile is on moderation, you can not change it yet') }}
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
 
     @if($profile->isPending())
         <div class="text-right">
-            {{ Html::link(route('profile.tutor.form'), 'Редактировать профиль', [
+            {{ Html::link(route('profile.tutor.form'), t('Edit profile'), [
                 'class' => 'btn btn-primary mb-2'
             ]) }}
         </div>
@@ -87,7 +87,7 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
         <div class="card mb-4">
             <div class="card-body">
                 <div class="alert alert-warning mb-0">
-                    Нада исправить следующие ошибки:
+                    {{ t('It is necessary to correct the following errors') }}: <br />
                     {{ $profile->comment }}
                 </div>
             </div>
@@ -96,7 +96,7 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
 
     <div class="row">
         <div class="col-md-auto">
-            {{ Html::image($profile->image->file_path . '?t=' . time(), 'Аватар', [
+            {{ Html::image($profile->image->file_path . '?t=' . time(), t('Avatar'), [
                 'class' => 'img-thumbnail'
             ]) }}
         </div>
@@ -104,13 +104,13 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
             <div class="card">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <b>Имя:</b> {{ Auth::user()->name }}
+                        <b>{{ t('Name') }}:</b> {{ Auth::user()->name }}
                     </li>
                     <li class="list-group-item">
                         <b>Email:</b> {{ Auth::user()->email }}
                     </li>
                     <li class="list-group-item">
-                        <b>Телефон:</b> {{ $profile->country_code }} {{ $profile->phone }}
+                        <b>{{ t('Phone') }}:</b> {{ $profile->country_code }} {{ $profile->phone }}
                         @if (!$profile->isVerified())
                             {{ Html::link(route('profile.tutor.verify.send'), 'Подтвердить телефон', [
                                 'class' => 'btn btn-success ml-3'
@@ -118,15 +118,15 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
                         @endif
                     </li>
                     <li class="list-group-item">
-                        <b>Пол:</b> {{ $profile->genders()[$profile->gender] }}
+                        <b>{{ t('Gender') }}:</b> {{ $profile->genders()[$profile->gender] }}
                     </li>
                 </ul>
                 @if ($content)
                     <div class="card-body">
-                        <h5 class="text-muted">Краткое описание:</h5>
+                        <h5 class="text-muted">{{ t('smallDescription') }}:</h5>
                         <p>{{ $content->description }}</p>
 
-                        <h5 class="text-muted mt-3">Полное описание:</h5>
+                        <h5 class="text-muted mt-3">{{ t('largeDescription') }}:</h5>
                         {!! $content->content !!}
                     </div>
                 @endif

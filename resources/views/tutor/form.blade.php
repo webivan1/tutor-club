@@ -28,7 +28,7 @@ use App\Entity\TutorProfile;
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">
-                        {{ Form::label('phone', 'Телефон', ['class' => 'bmd-label-floating']) }}
+                        {{ Form::label('phone', t('Phone'), ['class' => 'bmd-label-floating']) }}
 
                         <div class="row">
                             <div class="col-sm-4">
@@ -36,14 +36,14 @@ use App\Entity\TutorProfile;
                                     'class' => 'form-control ' . (!$errors->has('country_code') ?: ' is-invalid'),
                                     'placeholder' => ''
                                 ]) }}
-                                <small class="text-muted">Код страны (+7)</small>
+                                <small class="text-muted">{{ t('Country Code (Example: +382)') }}</small>
                             </div>
                             <div class="col-sm-8">
                                 {{ Form::input('number', 'phone', old('phone', $model->phone), [
                                     'class' => 'form-control ' . (!$errors->has('phone') ?: ' is-invalid'),
                                     'placeholder' => ''
                                 ]) }}
-                                <small class="text-muted">Номер телефона (9159998877)</small>
+                                <small class="text-muted">{{ t('Number phone (Example: 91199988)') }}</small>
                             </div>
                         </div>
 
@@ -56,7 +56,7 @@ use App\Entity\TutorProfile;
                     </div>
 
                     <div class="form-group">
-                        {{ Form::label('gender', 'Выберите пол', ['class' => 'bmd-label-floating']) }}
+                        {{ Form::label('gender', t('Select a gender'), ['class' => 'bmd-label-floating']) }}
                         {{ Form::select('gender', ['' => 'Выбрать'] + $model->genders(), old('gender', $model->gender), [
                             'class' => 'form-control ' . (!$errors->has('gender') ?: ' is-invalid')
                         ]) }}
@@ -76,7 +76,7 @@ use App\Entity\TutorProfile;
                             </div>
                         @endif
 
-                        {{ Form::label('photo', 'Аватар', ['class' => 'bmd-label-floating']) }}
+                        {{ Form::label('photo', t('Avatar'), ['class' => 'bmd-label-floating']) }}
                         {{ Form::file('photo', [
                             'class' => 'form-control ' . (!$errors->has('photo') ?: ' is-invalid'),
                             'value' => !$model->image ?: $model->image->file_path
@@ -135,7 +135,7 @@ use App\Entity\TutorProfile;
             @endforeach
 
             <button type="submit" class="btn btn-raised btn-primary">
-                {{ t('home.Save') }}
+                {{ t('Save') }}
             </button>
 
         {{ Form::close() }}

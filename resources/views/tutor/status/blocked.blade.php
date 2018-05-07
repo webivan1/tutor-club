@@ -1,5 +1,5 @@
 <div class="text-center pt-5">
-    <p>Ваш профиль заблокирован администрацией!</p>
+    <p>{{ t('Your profile has been blocked by the administration') }}</p>
 
     <div class="row justify-content-md-center">
         <div class="col-md-4 text-left alert alert-danger">

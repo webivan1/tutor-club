@@ -8,13 +8,13 @@
             <div class="col-md-7">
                 {{ Form::open(['method' => 'POST', 'url' => route('profile.tutor.verify.form')]) }}
                     <div class="form-group">
-                        {{ Form::label('code', 'Введите код') }}
+                        {{ Form::label('code', t('Enter a code')) }}
                         {{ Form::text('code', '', [
                             'class' => 'form-control ' . (!$errors->has('code') ?: ' is-invalid')
                         ]) }}
                     </div>
 
-                    {{ Form::submit('Проверить', ['class' => 'btn btn-primary']) }}
+                    {{ Form::submit(t('Check'), ['class' => 'btn btn-primary']) }}
                 {{ Form::close() }}
             </div>
         </div>
@@ -34,9 +34,9 @@
           timeToSendSms -= 1000;
           if (timeToSendSms <= 0) {
             clearInterval(interval);
-            timeBlock.innerHTML = '<a href="{{ route('profile.tutor.verify.send') }}">Отправить повторно</a>';
+            timeBlock.innerHTML = '<a href="{{ route('profile.tutor.verify.send') }}">{{ t('Resend') }}</a>';
           } else {
-            timeBlock.innerText = 'Повторно можно отправить через ' + Math.round(timeToSendSms / 1000) + ' сек';
+            timeBlock.innerText = '{{ t('You can send again after') }} ' + Math.round(timeToSendSms / 1000) + ' {{ t('sec') }}';
           }
         }, 1000);
     </script>
