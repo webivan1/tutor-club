@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TutorProfileMail extends Mailable
+class TutorProfileMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

@@ -39,7 +39,10 @@
             'SelectGender' => t('Choose a sex tutor'),
             'SearchTutor' => t('Find a Teacher'),
             'Search' => t('Search'),
-            'PlaceholderFindTeacher' => t('Name, email or phone')
+            'PlaceholderFindTeacher' => t('Name, email or phone'),
+            'ReadDescription' => t('Read the description'),
+            'ReadMore' => t('Read more'),
+            'DescriptionOffer' => t('Offer Description')
         ]) }}"
     ></advert-list-component>
 @endsection

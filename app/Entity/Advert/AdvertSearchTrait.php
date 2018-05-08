@@ -8,182 +8,10 @@
 
 namespace App\Entity\Advert;
 
-use App\Components\Sort;
 use App\Entity\Attribute;
-use App\Entity\Category;
-use App\Search\Advert\AdvertSearch;
-use App\Search\SearchInterface;
-use App\Services\ElasticSearch\ElasticSearchModel;
-use App\Services\ElasticSearch\ElasticSearchService;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Query\Expression;
 
 trait AdvertSearchTrait
 {
-    /**
-     * @param array $params
-     */
-    private static function filterAttributes(array &$params): void
-    {
-        if (!empty($params['attributes'])) {
-            $params['attributes'] = array_diff($params['attributes'], ['', false]);
-        }
-    }
-
-    /**
-     * @param array $searchParams
-     * @param Category $category
-     * @param int $pageSize
-     * @param int $page
-     * @return array
-     */
-    public static function listAdverts(array $searchParams = [], Category $category, int $pageSize = 12, int $page = 1)
-    {
-        self::filterAttributes($searchParams);
-
-        $service = app()->make(ElasticSearchService::class);
-
-        /** @var ElasticSearchModel $model */
-        $model = $service->find(new Advert());
-        $model->setPagination($pageSize, $page);
-
-        // default params
-        $model->setCustomQuery([
-            'bool' => [
-                'must' => [
-                    ['term' => ['status' => self::STATUS_ACTIVE]],
-                    ['term' => ['categories' => $category->id]],
-                    ['term' => ['lang' => app()->getLocale()]]
-                ]
-            ]
-        ]);
-
-        $search = new AdvertSearch($model);
-        $search->setAttributeParams($category->allAttributesCached());
-        $search->search($searchParams);
-
-        $sort = self::sortAdvertModels($model);
-
-        $keyCache = md5('ListAdverts-' . serialize($model->buildQuery()));
-
-        return \Cache::remember($keyCache, 30, function () use ($model, $pageSize, $page, $search, $sort) {
-            return self::getListModelsByIds(
-                $model->queryIds(),
-                $model->queryTotal(),
-                $pageSize,
-                $page,
-                $search,
-                $sort
-            );
-        });
-    }
-
-    /**
-     * @param array $ids
-     * @param int $total
-     * @param int $perPage
-     * @param int $currentPage
-     * @param SearchInterface $search
-     * @param Sort $sort
-     * @return array
-     */
-    public static function getListModelsByIds(array $ids, int $total, int $perPage, int $currentPage, SearchInterface $search, Sort $sort): array
-    {
-        $result = [];
-
-        if ($total > 0) {
-            $result = self::whereIn('id', $ids)
-                ->select(['id', 'user_id', 'profile_id', 'title', 'description'])
-                ->with([
-                    'prices' => function (HasMany $builder) use ($search) {
-                        $priceType = $search->getAttributes()['priceType'] ?? null;
-
-                        $builder->select([
-                            'id', 'advert_id', 'category_id', 'price_from', 'price_type', 'minutes'
-                        ]);
-
-                        $builder->with(['category' => function ($builder) {
-                            $builder->select(['id', 'name']);
-                        }]);
-
-                        if ($priceType) {
-                            $builder->orderBy(new Expression("FIELD(price_type,'{$priceType}')"), 'desc');
-                        }
-
-                        $builder->orderBy('price_from', 'asc');
-                    },
-                    'profile' => function ($builder) {
-                        $builder->select(['id', 'gender', 'file_id'])
-                            ->with(['image' => function ($builder) {
-                                $builder->select(['id', 'file_path']);
-                            }]);
-                    },
-                    'user' => function ($builder) {
-                        $builder->select(['id', 'name']);
-                    },
-                    'files'
-                ])
-                ->orderBy(new Expression('FIELD(id,' . implode(',', $ids) . ')'))
-                ->get()
-                ->map(function ($item) {
-                    foreach ($item->prices as $price) {
-                        $price->category->name = t($price->category->name);
-                        $price->price_type = AdvertPrice::types()[$price->price_type];
-                    }
-
-                    return $item;
-                })
-                ->toArray();
-        }
-
-        return [
-            'models' => $result,
-            'total' => $total,
-            'perPage' => $perPage,
-            'currentPage' => $currentPage,
-            'sort' => $sort->urlAttributes()
-        ];
-    }
-
-    /**
-     * @param ElasticSearchModel $model
-     * @return Sort
-     */
-    public static function sortAdvertModels(ElasticSearchModel $model): Sort
-    {
-        $sortParams = [
-            'default' => [
-                'asc' => ['updated_at' => Sort::SORT_ASC],
-                'desc' => ['updated_at' => Sort::SORT_DESC],
-                'label' => t('Last updated')
-            ],
-            'price' => [
-                'asc' => ['prices.price_from' => Sort::SORT_ASC],
-                'desc' => ['prices.price_from' => Sort::SORT_DESC],
-                'label' => t('Price')
-            ],
-        ];
-
-        $sort = new Sort();
-        $sort->setAttributes($sortParams);
-        $sort->setDefaultOrder(['default' => Sort::SORT_DESC]);
-        $sort->init();
-
-        $orders = $sort->getOrders();
-
-        if (!empty($orders)) {
-            $ordersGroup = [];
-
-            foreach ($orders as $column => $order) {
-                $ordersGroup[] = [$column => ['order' => $order]];
-            }
-
-            $model->setOrderBy($ordersGroup);
-        }
-
-        return $sort;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -264,7 +92,6 @@ trait AdvertSearchTrait
                     ],
                     'value_string' => [
                         'type' => 'keyword',
-                        //'index' => 'not_analyzed',
                     ],
                     'value_integer' => [
                         'type' => 'integer'
@@ -285,7 +112,17 @@ trait AdvertSearchTrait
                     ],
                     'price_type' => [
                         'type' => 'keyword',
-                        //'index' => 'not_analyzed',
+                    ],
+                    'category' => [
+                        'type' => 'nested',
+                        'properties' => [
+                            'id' => [
+                                'type' => 'integer'
+                            ],
+                            'name' => [
+                                'type' => 'keyword'
+                            ]
+                        ]
                     ],
                     'categories' => [
                         'type' => 'integer',
@@ -351,6 +188,11 @@ trait AdvertSearchTrait
             $category = $price->category;
 
             if ($category) {
+                $priceItem['category'] = [
+                    'id' => $category->id,
+                    'name' => $category->name
+                ];
+
                 while ($category = $category->parent) {
                     $priceItem['categories'][] = $category->id;
                 }

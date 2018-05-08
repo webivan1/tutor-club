@@ -8,8 +8,8 @@
 
 namespace App\Http\Controllers\Advert;
 
-use App\Entity\Advert\Advert;
 use App\Entity\Advert\AdvertPrice;
+use App\Entity\Advert\AdvertPublicList;
 use App\Entity\Category;
 use App\Entity\TutorProfile;
 use App\Http\Controllers\Controller;
@@ -34,6 +34,12 @@ class ListController extends Controller
         return view('advert-public.list', compact('category', 'childCategories'));
     }
 
+    /**
+     * Generate form data
+     *
+     * @param Category $category
+     * @return array
+     */
     public function form(Category $category): array
     {
         return [
@@ -44,12 +50,19 @@ class ListController extends Controller
         ];
     }
 
+    /**
+     * List adverts
+     *
+     * @param Request $request
+     * @param Category $category
+     * @return array
+     */
     public function list(Request $request, Category $category): array
     {
-        return Advert::listAdverts(
+        return AdvertPublicList::listAdverts(
             $request->all(),
             $category,
-            2, // per page
+            8, // per page
             (int) $request->input('page', 1) // current page
         );
     }

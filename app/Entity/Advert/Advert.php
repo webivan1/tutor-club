@@ -213,9 +213,7 @@ class Advert extends Model implements ModelSearch
      */
     public function files()
     {
-        return $this->belongsToMany(Files::class, 'advert_gallery', null, 'file_id');
-
-        //return $this->hasManyThrough(Files::class, AdvertGallery::class, 'advert_id', 'id', null, 'file_id');
+        return $this->belongsToMany(Files::class, 'advert_gallery', 'advert_id', 'file_id');
     }
 
     /**

@@ -140,9 +140,11 @@ class ElasticSearchModel
     {
         $this->buildQuery();
 
-        return $this->response = empty($this->response)
-            ? $this->client->search($this->build)
-            : $this->response;
+        if (!empty($this->response)) {
+            return $this->response;
+        }
+
+        return $this->response = $this->client->search($this->build);
     }
 
     /**
