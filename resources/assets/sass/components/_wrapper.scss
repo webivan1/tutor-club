@@ -25,6 +25,10 @@ footer {
   min-height: 16rem;
   @extend .pt-2;
   padding-bottom: $header-line-bottom + 1rem;
+  background-image: url("/images/bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 
   //.container {
   //  flex: 0 0 100%;

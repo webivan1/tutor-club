@@ -13,21 +13,20 @@ use App\Search\Advert\AdvertSearch;
 use App\Search\SearchInterface;
 use App\Services\ElasticSearch\ElasticSearchModel;
 use App\Services\ElasticSearch\ElasticSearchService;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Expression;
 use App\Components\Sort;
 
 class AdvertPublicList extends Advert
 {
     /**
-     * @param array $params
+     * @var AdvertSearch
      */
-    private static function filterAttributes(array &$params): void
-    {
-        if (!empty($params['attributes'])) {
-            $params['attributes'] = array_diff($params['attributes'], ['', false]);
-        }
-    }
+    protected $search;
+
+    /**
+     * @var ElasticSearchModel
+     */
+    protected $model;
 
     /**
      * @param array $searchParams
@@ -36,18 +35,17 @@ class AdvertPublicList extends Advert
      * @param int $page
      * @return array
      */
-    public static function listAdverts(array $searchParams = [], Category $category, int $pageSize = 12, int $page = 1)
+    public function listAdverts(array $searchParams = [], Category $category, int $pageSize = 12, int $page = 1)
     {
-        self::filterAttributes($searchParams);
+        $this->filterAttributes($searchParams);
 
         $service = app()->make(ElasticSearchService::class);
 
-        /** @var ElasticSearchModel $model */
-        $model = $service->find(new Advert());
-        $model->setPagination($pageSize, $page);
+        $this->model = $service->find(new Advert());
+        $this->model->setPagination($pageSize, $page);
 
         // default params
-        $model->setCustomQuery([
+        $this->model->setCustomQuery([
             'bool' => [
                 'must' => [
                     ['term' => ['status' => self::STATUS_ACTIVE]],
@@ -57,39 +55,73 @@ class AdvertPublicList extends Advert
             ]
         ]);
 
-        $search = new AdvertSearch($model);
-        $search->setAttributeParams($category->allAttributesCached());
-        $search->search($searchParams);
+        $this->search = new AdvertSearch($this->model);
+        $this->search->setAttributeParams($category->allAttributesCached());
+        $this->search->search($searchParams);
 
-        $sort = self::sortAdvertModels($model);
+        $sort = $this->sortAdvertModels();
 
-        $keyCache = md5('ListAdverts-v2-' . serialize($model->buildQuery()));
+        $keyCache = md5('ListAdverts-v5-' . serialize($this->model->buildQuery()));
 
-        return \Cache::remember($keyCache, 30, function () use ($model, $pageSize, $page, $search, $sort) {
-            return self::getListModelsByIds(
-                $model,
-                $pageSize,
-                $page,
-                $search,
-                $sort
-            );
-        });
+        return $this->sortPrices(
+            \Cache::remember($keyCache, 30, function () use ($pageSize, $page, $sort) {
+                return $this->getListModelsByIds(
+                    $pageSize,
+                    $page,
+                    $sort
+                );
+            })
+        );
     }
 
     /**
-     * @param ElasticSearchModel $model
+     * Sort prices by currency
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function sortPrices(array $data): array
+    {
+        $currency = $this->search->getAttributes()['priceType']
+            ?? AdvertPrice::getCurrencyByLang();
+
+        if ($data['total'] > 0) {
+            foreach ($data['models'] as $key => $model) {
+                uasort($data['models'][$key]['prices'], function ($a, $b) use ($currency) {
+                    return $b['price_type_origin'] === $currency &&
+                        $a['price_type_origin'] !== $currency
+                        ? 1 : 0;
+                });
+
+                $data['models'][$key]['prices'] = array_values($data['models'][$key]['prices']);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array $params
+     */
+    protected function filterAttributes(array &$params): void
+    {
+        if (!empty($params['attributes'])) {
+            $params['attributes'] = array_filter($params['attributes']);
+        }
+    }
+
+    /**
      * @param int $perPage
      * @param int $currentPage
-     * @param SearchInterface $search
      * @param Sort $sort
      * @return array
      */
-    public static function getListModelsByIds(ElasticSearchModel $model, int $perPage, int $currentPage, SearchInterface $search, Sort $sort): array
+    protected function getListModelsByIds(int $perPage, int $currentPage, Sort $sort): array
     {
         $result = [];
 
-        if ($model->queryTotal() > 0) {
-            $ids = $model->queryIds();
+        if ($this->model->queryTotal() > 0) {
+            $ids = $this->model->queryIds();
             $result = self::whereIn('id', $ids)
                 ->select(['id', 'user_id', 'profile_id', 'title', 'description'])
                 ->with([
@@ -103,10 +135,10 @@ class AdvertPublicList extends Advert
                 ])
                 ->orderBy(new Expression('FIELD(id,' . implode(',', $ids) . ')'))
                 ->get()
-                ->map(function (Advert $item) use ($model) {
+                ->map(function (Advert $item) {
                     $item = $item->toArray();
 
-                    foreach ($model->querySource() as $source) {
+                    foreach ($this->model->querySource() as $source) {
                         if ($source['id'] == $item['id']) {
                             $item['prices'] = $source['prices'];
                             $item['user'] = $source['user'];
@@ -116,6 +148,7 @@ class AdvertPublicList extends Advert
 
                     foreach ($item['prices'] ?? [] as $key => $price) {
                         $item['prices'][$key]['category']['name'] = t($item['prices'][$key]['category']['name']);
+                        $item['prices'][$key]['price_type_origin'] = $item['prices'][$key]['price_type'];
                         $item['prices'][$key]['price_type'] = AdvertPrice::types()[$item['prices'][$key]['price_type']];
                     }
 
@@ -126,7 +159,7 @@ class AdvertPublicList extends Advert
 
         return [
             'models' => $result,
-            'total' => $model->queryTotal(),
+            'total' => $this->model->queryTotal(),
             'perPage' => $perPage,
             'currentPage' => $currentPage,
             'sort' => $sort->urlAttributes()
@@ -134,26 +167,12 @@ class AdvertPublicList extends Advert
     }
 
     /**
-     * @param ElasticSearchModel $model
      * @return Sort
      */
-    public static function sortAdvertModels(ElasticSearchModel $model): Sort
+    protected function sortAdvertModels(): Sort
     {
-        $sortParams = [
-            'default' => [
-                'asc' => ['updated_at' => Sort::SORT_ASC],
-                'desc' => ['updated_at' => Sort::SORT_DESC],
-                'label' => t('Last updated')
-            ],
-            'price' => [
-                'asc' => ['prices.price_from' => Sort::SORT_ASC],
-                'desc' => ['prices.price_from' => Sort::SORT_DESC],
-                'label' => t('Price')
-            ],
-        ];
-
         $sort = new Sort();
-        $sort->setAttributes($sortParams);
+        $sort->setAttributes($this->sortConfig());
         $sort->setDefaultOrder(['default' => Sort::SORT_DESC]);
         $sort->init();
 
@@ -166,9 +185,40 @@ class AdvertPublicList extends Advert
                 $ordersGroup[] = [$column => ['order' => $order]];
             }
 
-            $model->setOrderBy($ordersGroup);
+            $this->model->setOrderBy($ordersGroup);
         }
 
         return $sort;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLang(): string
+    {
+        return AdvertPrice::getLangByCurrency(
+            $this->search->getAttributes()['priceType'] ?? AdvertPrice::getCurrencyByLang()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    protected function sortConfig(): array
+    {
+        $lang = $this->getLang();
+
+        return [
+            'default' => [
+                'asc' => ['updated_at' => Sort::SORT_ASC],
+                'desc' => ['updated_at' => Sort::SORT_DESC],
+                'label' => t('Last updated')
+            ],
+            'price' => [
+                'asc' => ["min_prices.$lang" => Sort::SORT_ASC],
+                'desc' => ["min_prices.$lang" => Sort::SORT_DESC],
+                'label' => t('Price')
+            ],
+        ];
     }
 }

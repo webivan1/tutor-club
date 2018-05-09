@@ -60,6 +60,11 @@ let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
   window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.axios.interceptors.response.use(undefined, function (error) {
+    if (error.response.status === 419) {
+      window.location.reload();
+    }
+  });
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }

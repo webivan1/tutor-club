@@ -55,6 +55,38 @@ class AdvertPrice extends Model
     }
 
     /**
+     * Get currency by lang
+     *
+     * @param string|null $lang
+     * @return string
+     */
+    public static function getCurrencyByLang(?string $lang = null): string
+    {
+        switch ($lang ?? app()->getLocale()) {
+            case 'ru' : return self::TYPE_RUB; break;
+            case 'en' : return self::TYPE_USD; break;
+            default : return self::TYPE_EUR; break;
+        }
+    }
+
+    /**
+     * Get lang by currency
+     *
+     * @param string $currency
+     * @return string
+     */
+    public static function getLangByCurrency(string $currency): string
+    {
+        $data = [];
+
+        foreach (\LaravelLocalization::getSupportedLanguagesKeys() as $lang) {
+            $data[self::getCurrencyByLang($lang)] = $lang;
+        }
+
+        return $data[$currency] ?? app()->getLocale();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function category()

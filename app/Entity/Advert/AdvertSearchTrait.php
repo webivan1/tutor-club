@@ -212,6 +212,23 @@ trait AdvertSearchTrait
             ];
         }, $advert->clearAllAttributes()->getAllAttributes());
 
+        $langKeys = \LaravelLocalization::getSupportedLanguagesKeys();
+
+        $minPrices = array_combine(
+            $langKeys,
+            array_fill(0, count($langKeys), false)
+        );
+
+        foreach ($prices as $price) {
+            foreach ($langKeys as $lang) {
+                $defaultCurrency = AdvertPrice::getCurrencyByLang($lang);
+
+                if ($price['price_type'] === $defaultCurrency && ($price['price_from'] < $minPrices[$lang] || !$minPrices[$lang])) {
+                    $minPrices[$lang] = $price['price_from'];
+                }
+            }
+        }
+
         $result = [
             'id' => $advert->id,
             'lang' => $advert->lang,
@@ -219,7 +236,7 @@ trait AdvertSearchTrait
             'status' => $advert->status,
             'test' => $advert->test,
             'gender' => $advert->profile->gender,
-            'min_price' => min(array_column($prices, 'price_from')),
+            'min_prices' => array_filter($minPrices),
             'min_minutes' => min(array_diff(array_column($prices, 'minutes'), [0])),
             'updated_at' => $advert->updated_at->format(DATE_ATOM),
             'user' => [

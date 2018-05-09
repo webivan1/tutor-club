@@ -98,7 +98,9 @@ class Category extends Model implements ModelSearch
             $this->parentAttributes($withQuery),
             is_callable($withQuery)
                 ? call_user_func($withQuery, $this->attributes()->orderByDesc('sort'))
-                : $this->attributes()->orderByDesc('sort')->getModels()
+                : \Cache::tags((new Attribute())->getTable())->remember('attrs-' . $this->id, 30, function () {
+                    return $this->attributes()->orderByDesc('sort')->getModels();
+                })
         );
     }
 

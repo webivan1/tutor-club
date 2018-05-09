@@ -19,7 +19,7 @@
     @yield('script.head')
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 {{ config('app.name') }}

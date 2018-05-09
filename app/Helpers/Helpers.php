@@ -25,6 +25,10 @@ if (!function_exists('t')) {
             return $fails;
         }
 
+        if (empty($key)) {
+            return $key;
+        }
+
         if (!preg_match('/^[a-z]+\./', $key)) {
             $key = 'home.' . $key;
         }

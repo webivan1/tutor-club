@@ -45,4 +45,8 @@
             'DescriptionOffer' => t('Offer Description')
         ]) }}"
     ></advert-list-component>
+
+    <div class="pt-3">
+        <p>{!! nl2br(t($category->content ?? '')) !!}</p>
+    </div>
 @endsection

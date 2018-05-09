@@ -55,11 +55,12 @@ class ListController extends Controller
      *
      * @param Request $request
      * @param Category $category
+     * @param AdvertPublicList $advert
      * @return array
      */
-    public function list(Request $request, Category $category): array
+    public function list(Request $request, Category $category, AdvertPublicList $advert): array
     {
-        return AdvertPublicList::listAdverts(
+        return $advert->listAdverts(
             $request->all(),
             $category,
             8, // per page
