@@ -16,14 +16,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        try {
-            \Mail::to(['rabota080591@yandex.ru'])
-                ->send(new RegisterMail(\Auth::user()));
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-//            \Log::error($e->getMessage());
-        }
-
         return view('home');
     }
 }
