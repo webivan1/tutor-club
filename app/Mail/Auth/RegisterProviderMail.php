@@ -28,7 +28,7 @@ class RegisterProviderMail extends Mailable implements ShouldQueue
     }
 
     /**
-     * Build the message.
+     * Build the message
      *
      * @return $this
      */
@@ -36,7 +36,7 @@ class RegisterProviderMail extends Mailable implements ShouldQueue
     {
         return $this
             ->subject(t('Confirm email'))
-            ->from(env('MAIL_USERNAME'), env('APP_NAME'))
+            ->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))
             ->view('emails.auth.provider');
     }
 }

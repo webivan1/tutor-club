@@ -59,7 +59,8 @@ class LoginProviderController extends Controller
                 return redirect()->intended(route('home'));
             }
         } catch (\DomainException $e) {
-            return redirect('login')->with('error', $e->getMessage());
+            return redirect()->route('login')
+                ->with('error', $e->getMessage());
         }
     }
 

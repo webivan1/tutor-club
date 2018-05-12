@@ -100,6 +100,10 @@ class LoginProviderService
      */
     public function update(UserProvider $user, string $email): void
     {
+        if ($user->isVerify()) {
+            return;
+        }
+
         UserProvider::updated(function (UserProvider $provider) {
             try {
                 \Mail::to($provider->email)->send(new RegisterProviderMail($provider));
@@ -144,7 +148,17 @@ class LoginProviderService
      */
     public function existUser(UserProvider $user): ?User
     {
-        return User::where('email', $user->email)->first();
+        $user = User::where('email', $user->email)->first();
+
+        if ($user->isWait()) {
+            $user->verify();
+        }
+
+        if (!$user->isActive()) {
+            throw new \DomainException(t('The account with this mail was blocked, specify another mail for binding'));
+        }
+
+        return $user;
     }
 
     /**
