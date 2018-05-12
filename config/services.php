@@ -30,9 +30,21 @@ return [
     ],
 
     'stripe' => [
-        'model' => App\User::class,
+        'model' => App\Entity\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
+    ],
+
+    'facebook' => [
+        'client_id' => '1667730199941263',
+        'client_secret' => '93cf93875f7b05e765207cde56a4426f',
+        'redirect' => 'http://my-tutor-local.club/auth/login/facebook',
+    ],
+
+    'google' => [
+        'client_id' => '593005000044-sdc2o9tmft4pbf96c3c0b7qnfqjgk9cu.apps.googleusercontent.com',
+        'client_secret' => 'Ku-0WSefQe8LwZs4gc9J-1Uq',
+        'redirect' => 'http://my-tutor-local.club/auth/login/google',
     ],
 
 ];

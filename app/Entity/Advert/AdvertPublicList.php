@@ -13,6 +13,7 @@ use App\Search\Advert\AdvertSearch;
 use App\Search\SearchInterface;
 use App\Services\ElasticSearch\ElasticSearchModel;
 use App\Services\ElasticSearch\ElasticSearchService;
+use App\Services\File\Preset;
 use Illuminate\Database\Query\Expression;
 use App\Components\Sort;
 
@@ -61,7 +62,7 @@ class AdvertPublicList extends Advert
 
         $sort = $this->sortAdvertModels();
 
-        $keyCache = md5('ListAdverts-v5-' . serialize($this->model->buildQuery()));
+        $keyCache = md5('ListAdverts-v6-' . serialize($this->model->buildQuery()));
 
         return $this->sortPrices(
             \Cache::remember($keyCache, 30, function () use ($pageSize, $page, $sort) {
@@ -137,6 +138,13 @@ class AdvertPublicList extends Advert
                 ->get()
                 ->map(function (Advert $item) {
                     $item = $item->toArray();
+
+                    if (!empty($item['files'])) {
+                        foreach ($item['files'] as &$file) {
+                            $file['file_path'] = (new Preset($file['file_path']))
+                                ->presetFilename('350');
+                        }
+                    }
 
                     foreach ($this->model->querySource() as $source) {
                         if ($source['id'] == $item['id']) {

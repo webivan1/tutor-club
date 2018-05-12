@@ -68411,6 +68411,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['item', 'messages'],
@@ -68434,7 +68435,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("a", { attrs: { href: "/offer/" + _vm.item.id, target: "_blank" } }, [
-      _c("div", { staticClass: "crop-image crop-image-200" }, [
+      _c("div", { staticClass: "crop-image crop-image-250" }, [
         _c("img", {
           staticClass: "card-img-top",
           attrs: {
@@ -68450,41 +68451,51 @@ var render = function() {
       { staticClass: "card-body" },
       [
         _c("h5", { staticClass: "card-title" }, [
-          _vm._v(_vm._s(_vm.item.title) + " - " + _vm._s(_vm.item.user.name))
+          _c("span", { staticClass: "d-block text-crop" }, [
+            _vm._v(_vm._s(_vm.item.title))
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "d-block text-crop" }, [
+            _vm._v("@" + _vm._s(_vm.item.user.name))
+          ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "card-text mb-2" }, [
-          _c(
-            "div",
-            { staticClass: "info-list" },
-            _vm._l(_vm.item.prices.slice(0, 7), function(price) {
-              return _c(
-                "div",
-                { staticClass: "info-list-item text-crop mb-1" },
-                [
-                  _c("div", { staticClass: "float-right" }, [
-                    _c("b", [_vm._v(_vm._s(price.price_type))]),
+        _c(
+          "div",
+          { staticClass: "card-text mb-2" },
+          _vm._l(_vm.item.prices.slice(0, 7), function(price) {
+            return _c(
+              "div",
+              { staticClass: "row no-wrap col-inline mx-0 mb-1" },
+              [
+                _c(
+                  "div",
+                  { staticClass: "col-auto px-0 text-crop text-muted" },
+                  [
                     _vm._v(
-                      " " +
-                        _vm._s(price.price_from) +
-                        " " +
-                        _vm._s(price.minutes ? "/ " + price.minutes : "") +
-                        "\n                    "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "float-left text-muted" }, [
-                    _vm._v(
-                      "\n                        " +
+                      "\n                    " +
                         _vm._s(price.category.name) +
-                        "\n                    "
+                        "\n                "
                     )
-                  ])
-                ]
-              )
-            })
-          )
-        ]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col px-0 border-line-bottom" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-auto px-0" }, [
+                  _c("b", [_vm._v(_vm._s(price.price_type))]),
+                  _vm._v(
+                    " " +
+                      _vm._s(price.price_from) +
+                      " " +
+                      _vm._s(price.minutes ? "/ " + price.minutes : "") +
+                      "\n                "
+                  )
+                ])
+              ]
+            )
+          })
+        ),
         _vm._v(" "),
         _c(
           "a",
@@ -68529,12 +68540,11 @@ var render = function() {
                     _c(
                       "b-carousel",
                       {
-                        staticStyle: { "text-shadow": "1px 1px 2px #333" },
                         attrs: {
                           id: "carousel1",
                           controls: "",
                           indicators: "",
-                          interval: 4000
+                          interval: 0
                         }
                       },
                       _vm._l(_vm.item.files, function(img) {
@@ -68801,7 +68811,7 @@ var render = function() {
   return _c("div", { staticClass: "row" }, [
     _c(
       "div",
-      { staticClass: "col" },
+      { staticClass: "col-md-9" },
       [
         _c("advert-list", {
           attrs: {

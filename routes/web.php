@@ -48,6 +48,14 @@ Route::group(
                 // Login routes
                 Route::get('/login', 'LoginController@showLoginForm')->name('login');
                 Route::post('/login', 'LoginController@login')->name('login');
+
+                // OAuth
+                Route::get('/login/{provider}', 'LoginProviderController@index')
+                    ->name('login.provider');
+                Route::get('/login/{provider}/handle', 'LoginProviderController@index')
+                    ->name('login.provider.handle');
+//                Route::get('/login/{provider}/handle', 'LoginProviderController@index')
+//                    ->name('login.provider.handle');
             });
 
             // Logout routes

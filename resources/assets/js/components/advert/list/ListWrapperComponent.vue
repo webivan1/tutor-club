@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col">
+        <div class="col-md-9">
             <advert-list
                 :lang="lang"
                 :messages="messages"

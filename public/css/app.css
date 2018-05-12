@@ -20801,15 +20801,46 @@ footer {
   height: 200px;
 }
 
+.crop-image-250 {
+  height: 250px;
+}
+
+.crop-image-280 {
+  height: 280px;
+}
+
+.crop-image-300 {
+  height: 300px;
+}
+
 .text-crop {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 
+.text-crop.col-auto {
+  max-width: 65%;
+}
+
 .info-list .info-list-item:after {
   content: ' ';
   border-bottom: 1px dotted #e0e0e0;
+  overflow: hidden;
+  display: block;
+  height: 1rem;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.col-inline [class*="col"] {
+  display: inline !important;
+}
+
+.border-line-bottom {
+  border-bottom: 1px dotted #dee2e6;
   overflow: hidden;
   display: block;
   height: 1rem;
