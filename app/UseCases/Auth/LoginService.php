@@ -18,15 +18,15 @@ class LoginService
     public function login(User $user): void
     {
         if ($user->isWait()) {
-            throw new \DomainException('Подтвердите почту, Вам отправлено письмо на почту!');
+            throw new \DomainException(t('Confirm mail, Email sent to you'));
         }
 
         if ($user->isBanned()) {
-            throw new \DomainException('Ваш аккаунт заблокирован администратором сайта!');
+            throw new \DomainException(t('Your account has been suspended by the site administrator'));
         }
 
         if (!$user->isActive()) {
-            throw new \DomainException('Произошла ошибка в системе, мы уже её исправляем!');
+            throw new \DomainException(t('There was an error in the system, we are already fixing it'));
         }
     }
 }

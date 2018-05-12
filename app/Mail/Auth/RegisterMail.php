@@ -8,7 +8,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RegisterMail extends Mailable implements ShouldQueue
+class RegisterMail extends Mailable
+    //implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -35,8 +36,8 @@ class RegisterMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-            ->subject(trans('auth.mail_ok_registered'))
-            ->from(env('MAIL_USERNAME'), env('APP_NAME'))
+            ->subject(t('You have successfully registered with TutorClub'))
+            ->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))
             ->view('emails.auth.register');
     }
 }

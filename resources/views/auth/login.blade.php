@@ -6,6 +6,9 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">{{ t('home.FormLogin') }}</div>
+
+                    @include('auth._social_links')
+
                     <div class="card-body">
                         {{ Form::open(['method' => 'POST', 'url' => route('login'), 'novalidate' => true]) }}
                             <div class="form-group">

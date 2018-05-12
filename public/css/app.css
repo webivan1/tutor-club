@@ -29665,6 +29665,22 @@ footer {
   animation: ld-slot-px 6s infinite linear;
 }
 
+.item-icon-soc {
+  font-size: 2.2rem;
+}
+
+.item-icon-soc .fa-google {
+  color: #f44336;
+}
+
+.item-icon-soc .fa-facebook {
+  color: #3f51b5;
+}
+
+.item-icon-soc .fa-github {
+  color: #000;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

@@ -15,14 +15,17 @@ class RegisterService
      * Registration user
      *
      * @param array $data
+     * @return User
      */
-    public function register(array $data)
+    public function register(array $data): User
     {
         User::observe(new RegisterEvent);
-        User::register(
+
+        return User::register(
             $data['name'],
             $data['email'],
-            $data['password']
+            $data['password'],
+            $data['status'] ?? null
         );
     }
 

@@ -115,6 +115,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script defer src="/fontawesome-free-5.0.13/svg-with-js/js/fontawesome-all.js"></script>
     @yield('script.body')
 </body>
 </html>

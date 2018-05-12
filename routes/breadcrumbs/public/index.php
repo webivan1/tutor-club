@@ -17,6 +17,11 @@ Breadcrumbs::register('login', function (Crumbs $breadcrumbs) {
     $breadcrumbs->push(t('Login'), route('login'));
 });
 
+Breadcrumbs::register('login.provider.email', function (Crumbs $breadcrumbs, \App\Entity\UserProvider $user) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(t('Confirm email'), route('login.provider.email', $user));
+});
+
 Breadcrumbs::register('register', function (Crumbs $breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(t('Register'), route('register'));

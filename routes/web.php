@@ -51,9 +51,20 @@ Route::group(
 
                 // OAuth
                 Route::get('/login/{provider}', 'LoginProviderController@index')
+                    ->where('provider', '[a-z0-9]+')
                     ->name('login.provider');
-                Route::get('/login/{provider}/handle', 'LoginProviderController@index')
+                Route::any('/login/{provider}/handle', 'LoginProviderController@handle')
+                    ->where('provider', '[a-z0-9]+')
                     ->name('login.provider.handle');
+                Route::get('/login/{user}/email', 'LoginProviderController@email')
+                    ->where('user', '\d+')
+                    ->name('login.provider.email');
+                Route::put('/login/{user}/email', 'LoginProviderController@update')
+                    ->where('user', '\d+')
+                    ->name('login.provider.email.update');
+                Route::get('/login/{user}/verify/{code}', 'LoginProviderController@verify')
+                    ->where('user', '\d+')
+                    ->name('login.provider.email.verify');
 //                Route::get('/login/{provider}/handle', 'LoginProviderController@index')
 //                    ->name('login.provider.handle');
             });

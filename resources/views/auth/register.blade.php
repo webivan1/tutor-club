@@ -7,6 +7,9 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">{{ t('home.Register') }}</div>
+
+                    @include('auth._social_links')
+
                     <div class="card-body">
                         {{ Form::open(['method' => 'POST', 'url' => route('register'), 'novalidate' => true]) }}
                             <div class="form-group">

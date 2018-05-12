@@ -116,16 +116,17 @@ class User extends Authenticatable
      * @param string $name
      * @param string $email
      * @param string $password
+     * @param string|null $status
      * @return User
      */
-    public static function register(string $name, string $email, string $password): self
+    public static function register(string $name, string $email, string $password, string $status = null): self
     {
         return static::create([
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'status' => self::STATUS_WAIT,
-            'verify_token' => Str::random(23)
+            'status' => !$status ? self::STATUS_WAIT : $status,
+            'verify_token' => $status ? Str::random(23) : null
         ]);
     }
 

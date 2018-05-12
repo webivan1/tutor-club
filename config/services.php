@@ -36,15 +36,21 @@ return [
     ],
 
     'facebook' => [
-        'client_id' => '1667730199941263',
-        'client_secret' => '93cf93875f7b05e765207cde56a4426f',
-        'redirect' => 'http://my-tutor-local.club/auth/login/facebook',
+        'client_id' => env('SOCIALITE_FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('SOCIALITE_FACEBOOK_SECRET'),
+        'redirect' => env('SOCIALITE_FACEBOOK_REDIRECT_URL'),
     ],
 
     'google' => [
-        'client_id' => '593005000044-sdc2o9tmft4pbf96c3c0b7qnfqjgk9cu.apps.googleusercontent.com',
-        'client_secret' => 'Ku-0WSefQe8LwZs4gc9J-1Uq',
-        'redirect' => 'http://my-tutor-local.club/auth/login/google',
+        'client_id' => env('SOCIALITE_GOOGLE_CLIENT_ID'),
+        'client_secret' => env('SOCIALITE_GOOGLE_SECRET'),
+        'redirect' => env('SOCIALITE_GOOGLE_REDIRECT_URL'),
     ],
+
+    'github' => [
+        'client_id' => env('SOCIALITE_GITHUB_CLIENT_ID'),
+        'client_secret' => env('SOCIALITE_GITHUB_SECRET'),
+        'redirect' => env('SOCIALITE_GITHUB_REDIRECT_URL'),
+    ]
 
 ];
