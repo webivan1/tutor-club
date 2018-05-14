@@ -62,7 +62,7 @@ class AdvertPublicList extends Advert
 
         $sort = $this->sortAdvertModels();
 
-        $keyCache = md5('ListAdverts-v6-' . serialize($this->model->buildQuery()));
+        $keyCache = md5('ListAdverts-v7-' . serialize($this->model->buildQuery()));
 
         return $this->sortPrices(
             \Cache::remember($keyCache, 30, function () use ($pageSize, $page, $sort) {
@@ -159,6 +159,9 @@ class AdvertPublicList extends Advert
                         $item['prices'][$key]['price_type_origin'] = $item['prices'][$key]['price_type'];
                         $item['prices'][$key]['price_type'] = AdvertPrice::types()[$item['prices'][$key]['price_type']];
                     }
+
+                    // Filter HTML
+                    $item['description'] = clean($item['description']);
 
                     return $item;
                 })

@@ -29681,6 +29681,17 @@ footer {
   color: #000;
 }
 
+.indecator-user-min {
+  font-size: 12px;
+  color: #dee2e6;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.indecator-user-min.active {
+  color: #4caf50;
+}
+
 .navbar-laravel {
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

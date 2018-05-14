@@ -19,6 +19,7 @@ class LoginProviderService
      * @var LoginService
      */
     private $service;
+
     /**
      * @var RegisterService
      */

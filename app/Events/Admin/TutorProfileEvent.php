@@ -4,6 +4,7 @@ namespace App\Events\Admin;
 
 use App\Entity\Admin\TutorProfile;
 use App\Mail\Admin\TutorProfileMail;
+use App\Notifications\TutorProfile\ProfileIsActive;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,8 +12,6 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class TutorProfileEvent
 {
@@ -42,11 +41,9 @@ class TutorProfileEvent
             $model->user->assign('client');
         }
 
-        try {
-            Mail::to($model->user->email)
-                ->send(new TutorProfileMail($model));
-        } catch (\Swift_SwiftException $e) {
-            Log::error($e->getMessage());
+        if ($model->isActive()) {
+            $user = $model->user;
+            $user->notify(new ProfileIsActive($model, $user));
         }
     }
 }

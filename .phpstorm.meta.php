@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2018-05-11 20:16:10.
+    * Generated on 2018-05-13 19:56:41.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -154,6 +154,7 @@ namespace PHPSTORM_META {
         'form' => \Collective\Html\FormBuilder::class,
         'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'Laravel\Socialite\Contracts\Factory' => \Laravel\Socialite\SocialiteManager::class,
+        'purifier' => \Mews\Purifier\Purifier::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
@@ -301,6 +302,7 @@ namespace PHPSTORM_META {
         'form' => \Collective\Html\FormBuilder::class,
         'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'Laravel\Socialite\Contracts\Factory' => \Laravel\Socialite\SocialiteManager::class,
+        'purifier' => \Mews\Purifier\Purifier::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
@@ -448,6 +450,7 @@ namespace PHPSTORM_META {
         'form' => \Collective\Html\FormBuilder::class,
         'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'Laravel\Socialite\Contracts\Factory' => \Laravel\Socialite\SocialiteManager::class,
+        'purifier' => \Mews\Purifier\Purifier::class,
     ]));
     override(\App::make(0), map([
         '' => '@',
@@ -595,6 +598,7 @@ namespace PHPSTORM_META {
         'form' => \Collective\Html\FormBuilder::class,
         'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'Laravel\Socialite\Contracts\Factory' => \Laravel\Socialite\SocialiteManager::class,
+        'purifier' => \Mews\Purifier\Purifier::class,
     ]));
     override(\App::makeWith(0), map([
         '' => '@',
@@ -742,6 +746,7 @@ namespace PHPSTORM_META {
         'form' => \Collective\Html\FormBuilder::class,
         'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'Laravel\Socialite\Contracts\Factory' => \Laravel\Socialite\SocialiteManager::class,
+        'purifier' => \Mews\Purifier\Purifier::class,
     ]));
     override(\app(0), map([
         '' => '@',
@@ -889,6 +894,7 @@ namespace PHPSTORM_META {
         'form' => \Collective\Html\FormBuilder::class,
         'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'Laravel\Socialite\Contracts\Factory' => \Laravel\Socialite\SocialiteManager::class,
+        'purifier' => \Mews\Purifier\Purifier::class,
     ]));
     override(\resolve(0), map([
         '' => '@',
@@ -1036,6 +1042,7 @@ namespace PHPSTORM_META {
         'form' => \Collective\Html\FormBuilder::class,
         'command.tinker' => \Laravel\Tinker\Console\TinkerCommand::class,
         'Laravel\Socialite\Contracts\Factory' => \Laravel\Socialite\SocialiteManager::class,
+        'purifier' => \Mews\Purifier\Purifier::class,
     ]));
 
     override(\Illuminate\Support\Arr::add(0), type(0));

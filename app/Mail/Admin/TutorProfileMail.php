@@ -8,6 +8,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * @ToDo old method (user notification)
+ */
 class TutorProfileMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;

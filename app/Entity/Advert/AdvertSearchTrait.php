@@ -242,7 +242,7 @@ trait AdvertSearchTrait
             'user' => [
                 'id' => $advert->user->id,
                 'name' => $advert->user->name,
-                'email' => $advert->user->email
+                'email' => $advert->user->email,
             ],
             'categories' => array_values(array_unique($categories)),
             'prices' => array_values($prices),

@@ -31143,7 +31143,7 @@ var OBSERVER_CONFIG = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(76);
-module.exports = __webpack_require__(238);
+module.exports = __webpack_require__(239);
 
 
 /***/ }),
@@ -31155,6 +31155,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bootstrap_vue__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__custom_OnlineUsers__ = __webpack_require__(214);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -31167,11 +31168,17 @@ __webpack_require__(77);
 
 
 
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+Object.assign(window, {
+  onlineUser: new __WEBPACK_IMPORTED_MODULE_2__custom_OnlineUsers__["a" /* OnlineUsers */]()
+});
 
 try {
   if (!document.querySelector('#app')) {
@@ -31180,10 +31187,10 @@ try {
 
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_bootstrap_vue__["a" /* default */]);
 
-  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('example-component', __webpack_require__(214));
-  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('advert-form-component', __webpack_require__(217));
-  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('search-category-component', __webpack_require__(220));
-  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('advert-list-component', __webpack_require__(223));
+  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('example-component', __webpack_require__(215));
+  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('advert-form-component', __webpack_require__(218));
+  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('search-category-component', __webpack_require__(221));
+  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('advert-list-component', __webpack_require__(224));
 
   var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app'
@@ -66866,14 +66873,126 @@ function removeBVPO(el) {
 
 /***/ }),
 /* 214 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OnlineUsers; });
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var OnlineUsers = function () {
+  function OnlineUsers() {
+    _classCallCheck(this, OnlineUsers);
+
+    this.time = new Date().getTime();
+    this.port = 8888;
+    this.host = window.location.hostname;
+    this.user = document.querySelector('body[self-user-id]').getAttribute('self-user-id');
+
+    this.initServer();
+
+    this.event();
+  }
+
+  _createClass(OnlineUsers, [{
+    key: 'initServer',
+    value: function initServer() {
+      this.connect = new WebSocket('ws://' + this.host + ':' + this.port + '/online');
+
+      this.connect.onopen = function (e) {
+        console.log('/online [OK]');
+      };
+
+      this.connect.onmessage = this.message.bind(this);
+    }
+  }, {
+    key: 'event',
+    value: function event() {
+      window.onmousemove = this.change.bind(this);
+    }
+  }, {
+    key: 'isTimeout',
+    value: function isTimeout() {
+      return this.time <= new Date().getTime();
+    }
+  }, {
+    key: 'addTime',
+    value: function addTime(time) {
+      this.time = new Date().getTime() + time;
+    }
+  }, {
+    key: 'message',
+    value: function message(e) {
+      var _this = this;
+
+      var _JSON$parse = JSON.parse(e.data),
+          id = _JSON$parse.id;
+
+      [].forEach.call(document.querySelectorAll('[user-id]'), function (element) {
+        if (!element.hasAttribute('user-active-date')) {
+          return false;
+        }
+
+        _this.toOlder(element);
+
+        if (parseInt(element.getAttribute('user-id')) === parseInt(id)) {
+          _this.toActive(element);
+        }
+      });
+    }
+  }, {
+    key: 'toOlder',
+    value: function toOlder(element) {
+      var time = element.getAttribute('user-active-date');
+      var selfTime = new Date().getTime();
+
+      if (selfTime > time) {
+        element.classList.contains('active') ? element.classList.remove('active') : null;
+      }
+    }
+  }, {
+    key: 'toActive',
+    value: function toActive(element) {
+      // + 15 minute
+      element.setAttribute('user-active-date', new Date().getTime() + 15 * 60 * 1000);
+      !element.classList.contains('active') ? element.classList.add('active') : null;
+    }
+  }, {
+    key: 'change',
+    value: function change(e) {
+      var _this2 = this;
+
+      // close connection
+      if (this.connect.readyState === 3) {
+        this.initServer();
+      }
+
+      if (this.isTimeout() === true) {
+        this.addTime(5 * 1000);
+
+        axios.get('/profile/online/user').then(function (response) {
+          _this2.connect.send(JSON.stringify(response.data));
+        }).catch(function (err) {
+          console.log(err);
+        });
+      }
+    }
+  }]);
+
+  return OnlineUsers;
+}();
+
+/***/ }),
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(215)
+var __vue_script__ = __webpack_require__(216)
 /* template */
-var __vue_template__ = __webpack_require__(216)
+var __vue_template__ = __webpack_require__(217)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -66912,7 +67031,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -66941,7 +67060,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -66984,15 +67103,15 @@ if (false) {
 }
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(218)
+var __vue_script__ = __webpack_require__(219)
 /* template */
-var __vue_template__ = __webpack_require__(219)
+var __vue_template__ = __webpack_require__(220)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67031,7 +67150,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67077,7 +67196,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('form-price', {
 });
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67121,15 +67240,15 @@ if (false) {
 }
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(221)
+var __vue_script__ = __webpack_require__(222)
 /* template */
-var __vue_template__ = __webpack_require__(222)
+var __vue_template__ = __webpack_require__(223)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67168,7 +67287,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67259,7 +67378,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -67358,15 +67477,15 @@ if (false) {
 }
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(224)
+var __vue_script__ = __webpack_require__(225)
 /* template */
-var __vue_template__ = __webpack_require__(237)
+var __vue_template__ = __webpack_require__(238)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67405,18 +67524,18 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SearchFormAdvertComponent_vue__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SearchFormAdvertComponent_vue__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SearchFormAdvertComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__SearchFormAdvertComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListAdvertsComponent_vue__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListAdvertsComponent_vue__ = __webpack_require__(229);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListAdvertsComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ListAdvertsComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__SortAdvertComponent_vue__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__SortAdvertComponent_vue__ = __webpack_require__(235);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__SortAdvertComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__SortAdvertComponent_vue__);
 //
 //
@@ -67535,15 +67654,15 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('advert-sort', __WEBPACK_I
 });
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(226)
+var __vue_script__ = __webpack_require__(227)
 /* template */
-var __vue_template__ = __webpack_require__(227)
+var __vue_template__ = __webpack_require__(228)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -67582,7 +67701,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67779,7 +67898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68215,15 +68334,15 @@ if (false) {
 }
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(229)
+var __vue_script__ = __webpack_require__(230)
 /* template */
-var __vue_template__ = __webpack_require__(233)
+var __vue_template__ = __webpack_require__(234)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -68262,14 +68381,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ItemAdvertComponent_vue__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ItemAdvertComponent_vue__ = __webpack_require__(231);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ItemAdvertComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ItemAdvertComponent_vue__);
 //
 //
@@ -68305,15 +68424,15 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('item-advert', __WEBPACK_I
 });
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(231)
+var __vue_script__ = __webpack_require__(232)
 /* template */
-var __vue_template__ = __webpack_require__(232)
+var __vue_template__ = __webpack_require__(233)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -68352,11 +68471,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -68426,7 +68547,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68456,7 +68577,11 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("span", { staticClass: "d-block text-crop" }, [
-            _vm._v("@" + _vm._s(_vm.item.user.name))
+            _vm._v("\n                @" + _vm._s(_vm.item.user.name) + " "),
+            _c("i", {
+              staticClass: "indecator-user-min fas fa-circle",
+              attrs: { "user-id": _vm.item.user.id, "user-active-date": "0" }
+            })
           ])
         ]),
         _vm._v(" "),
@@ -68581,7 +68706,7 @@ if (false) {
 }
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68632,15 +68757,15 @@ if (false) {
 }
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(11)
 /* script */
-var __vue_script__ = __webpack_require__(235)
+var __vue_script__ = __webpack_require__(236)
 /* template */
-var __vue_template__ = __webpack_require__(236)
+var __vue_template__ = __webpack_require__(237)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -68679,7 +68804,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -68729,7 +68854,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68801,7 +68926,7 @@ if (false) {
 }
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -68894,7 +69019,7 @@ if (false) {
 }
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

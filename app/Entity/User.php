@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Admin\RoleHasUser;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -37,7 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'status', 'verify_token'
+        'name', 'email', 'password', 'status', 'verify_token', 'active_at'
     ];
 
     /**
@@ -167,6 +168,23 @@ class User extends Authenticatable
     public function isBanned(): bool
     {
         return $this->status === self::STATUS_BANNED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOnline(): bool
+    {
+        return strtotime($this->active_at) >= time();
+    }
+
+    /**
+     * @return void
+     */
+    public function onlineUpdate(): void
+    {
+        $this->active_at = (new Carbon())->addMinutes(15);
+        $this->save();
     }
 
     /**

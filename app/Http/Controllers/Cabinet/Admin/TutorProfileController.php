@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cabinet\Admin;
 
 use App\Components\Sort;
+use App\Notifications\TutorProfile\ProfileIsActive;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Entity\Admin\TutorProfile;
@@ -48,6 +49,7 @@ class TutorProfileController extends Controller
     public function update(Request $request, TutorProfile $tutor)
     {
         $tutor->update($request->only('status', 'comment'));
+
         return redirect()->route('cabinet.admin.tutor.index')
             ->with('success', 'Успешно обновлено!');
     }

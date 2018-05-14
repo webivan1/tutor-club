@@ -65,8 +65,6 @@ Route::group(
                 Route::get('/login/{user}/verify/{code}', 'LoginProviderController@verify')
                     ->where('user', '\d+')
                     ->name('login.provider.email.verify');
-//                Route::get('/login/{provider}/handle', 'LoginProviderController@index')
-//                    ->name('login.provider.handle');
             });
 
             // Logout routes
@@ -83,6 +81,7 @@ Route::group(
                 'as' => 'profile.'
             ],
             function () {
+                Route::get('/online/user', 'OnlineUserController@index');
                 Route::get('/', 'HomeController@index')->name('home');
 
                 Route::group(['prefix' => '/email', 'as' => 'email.'], function () {

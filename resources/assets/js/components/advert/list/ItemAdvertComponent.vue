@@ -8,7 +8,9 @@
         <div class="card-body">
             <h5 class="card-title">
                 <span class="d-block text-crop">{{ item.title }}</span>
-                <span class="d-block text-crop">@{{ item.user.name }}</span>
+                <span class="d-block text-crop">
+                    @{{ item.user.name }} <i :user-id="item.user.id" user-active-date="0" class="indecator-user-min fas fa-circle"></i>
+                </span>
             </h5>
             <div class="card-text mb-2">
                 <div class="row no-wrap col-inline mx-0 mb-1" v-for="price in item.prices.slice(0, 7)">

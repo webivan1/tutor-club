@@ -48,7 +48,7 @@ class SmsRu implements SmsSenderInterface
             'form_params' => [
                 'api_id' => $this->apiToken,
                 'to' => $phone,
-                'text' => '[web.pro] Verify code: ' . $token,
+                'text' => '[TutorClub] Verify code: ' . $token,
                 'json' => 1,
             ],
         ]);
