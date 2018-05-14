@@ -5,7 +5,6 @@ export class OnlineUsers {
     this.time = (new Date()).getTime();
     this.port = 8888;
     this.host = window.location.hostname;
-    this.user = document.querySelector('body[self-user-id]').getAttribute('self-user-id');
 
     this.initServer();
 
