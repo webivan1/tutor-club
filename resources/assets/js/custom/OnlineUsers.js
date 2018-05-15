@@ -5,6 +5,7 @@ export class OnlineUsers {
     this.time = (new Date()).getTime();
     this.port = 8888;
     this.host = window.location.hostname;
+    this.protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
 
     this.initServer();
 
@@ -12,7 +13,7 @@ export class OnlineUsers {
   }
 
   initServer() {
-    this.connect = new WebSocket(`ws://${this.host}:${this.port}/online`);
+    this.connect = new WebSocket(`${this.protocol}://${this.host}:${this.port}/online`);
 
     this.connect.onopen = e => {
       console.log('/online [OK]');
