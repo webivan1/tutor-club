@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Entity\Category;
+use App\Http\Middleware\AuthDev;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -54,7 +55,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware('web')
+        Route::middleware(['web', AuthDev::class])
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
     }
