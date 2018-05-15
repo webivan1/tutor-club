@@ -13,7 +13,7 @@ export class OnlineUsers {
   }
 
   initServer() {
-    this.connect = new WebSocket(`${this.protocol}://${this.host}:${this.port}/online`);
+    this.connect = new WebSocket(`${this.protocol}://${this.host}:${this.port}`);
 
     this.connect.onopen = e => {
       console.log('/online [OK]');

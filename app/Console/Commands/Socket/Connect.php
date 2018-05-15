@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands\Socket;
 
-use Ratchet\App;
+use Ratchet\Server\IoServer;
+use Ratchet\Http\HttpServer;
+use Ratchet\WebSocket\WsServer;
 use App\Console\Commands\Socket\Servers\OnlineUserServer;
 use Illuminate\Console\Command;
 
@@ -65,15 +67,18 @@ class Connect extends Command
      */
     private function runApp()
     {
-        $url = parse_url(env('APP_URL'));
+        foreach ($this->routeServers() as $port => $server) {
+            $server = IoServer::factory(
+                new HttpServer(
+                    new WsServer(
+                        new $server
+                    )
+                ),
+                $port
+            );
 
-        $app = new App($url['host'], $this->port);
-
-        foreach ($this->routeServers() as $route => $server) {
-            $app->route('/' . ltrim($route, '/'), new $server);
+            $server->run();
         }
-
-        $app->run();
     }
 
     /**
@@ -82,7 +87,7 @@ class Connect extends Command
     private function routeServers(): array
     {
         return [
-            'online' => OnlineUserServer::class
+            8888 => OnlineUserServer::class
         ];
     }
 }
