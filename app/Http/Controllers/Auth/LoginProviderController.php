@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\Pusher\PingUser;
 use Socialite;
 use App\Entity\UserProvider;
 use App\Http\Requests\Auth\ProviderRequest;

@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Category\ChangeCategory' => [
             'App\Listeners\Category\ElasticSearch',
         ],
+        'App\Events\Chat\ChangeDialog' => [
+            'App\Listeners\Chat\ElasticSearch'
+        ]
     ];
 
     /**

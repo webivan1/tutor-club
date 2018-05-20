@@ -2,40 +2,37 @@
 export class OnlineUsers {
 
   constructor() {
-    this.time = (new Date()).getTime();
-    this.port = 8888;
-    this.host = window.location.hostname;
-    this.protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    this.time = this.now();
+    this.userId = false;
 
     this.initServer();
 
     this.event();
   }
 
+  now() {
+    return (new Date()).getTime();
+  }
+
   initServer() {
-    this.connect = new WebSocket(`${this.protocol}://${this.host}:${this.port}`);
-
-    this.connect.onopen = e => {
-      console.log('/online [OK]');
-    };
-
-    this.connect.onmessage = this.message.bind(this);
+    Echo.channel('online')
+      .on('user', this.message.bind(this));
   }
 
   event() {
-    window.onmousemove = this.change.bind(this);
+    setInterval(this.change.bind(this), 2000);
   }
 
   isTimeout() {
-    return this.time <= (new Date()).getTime();
+    return this.time <= this.now();
   }
 
   addTime(time) {
-    this.time = (new Date()).getTime() + time;
+    this.time = this.now() + (time * 1000);
   }
 
   message(e) {
-    let { id } = JSON.parse(e.data);
+    let id = e.id;
 
     [].forEach.call(document.querySelectorAll('[user-id]'), element => {
       if (!element.hasAttribute('user-active-date')) {
@@ -52,7 +49,7 @@ export class OnlineUsers {
 
   toOlder(element) {
     let time = (element.getAttribute('user-active-date'));
-    let selfTime = (new Date()).getTime();
+    let selfTime = this.now();
 
     if (selfTime > time) {
       element.classList.contains('active') ? element.classList.remove('active') : null;
@@ -61,27 +58,24 @@ export class OnlineUsers {
 
   toActive(element) {
     // + 15 minute
-    element.setAttribute('user-active-date', (new Date()).getTime() + (15 * 60 * 1000));
+    element.setAttribute('user-active-date', this.now() + (15 * 60 * 1000));
     !element.classList.contains('active') ? element.classList.add('active') : null;
   }
 
-  change(e) {
-    // close connection
-    if (this.connect.readyState === 3) {
-      this.initServer();
-    }
-
+  change() {
     if (this.isTimeout() === true) {
-      this.addTime(5 * 1000);
+      this.addTime(30);
 
       axios.get('/profile/online/user')
-        .then(response => {
-          this.connect.send(JSON.stringify(response.data));
-        })
+        .then(response => { this.userId = response.data.id })
         .catch(err => {
+          this.userId = false;
           console.log(err);
         });
+    } else if (this.userId !== false) {
+      Echo.connector.socket.emit('user', 'online', {
+        id: this.userId
+      });
     }
   }
-
 }

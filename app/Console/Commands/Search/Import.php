@@ -4,6 +4,7 @@ namespace App\Console\Commands\Search;
 
 use App\Entity\Advert\Advert;
 use App\Entity\Category;
+use App\Entity\Chat\Dialogs;
 use App\Services\ElasticSearch\ElasticSearchService;
 use Illuminate\Console\Command;
 
@@ -48,5 +49,6 @@ class Import extends Command
     {
         $this->service->reindexModels(new Advert());
         $this->service->reindexModels(new Category());
+        $this->service->reindexModels(new Dialogs());
     }
 }

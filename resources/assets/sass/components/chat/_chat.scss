@@ -1,0 +1,35 @@
+.chat {
+  position: fixed;
+  width: 400px;
+  right: 1rem;
+  bottom: 0;
+  z-index: 1000;
+
+  &.active {
+    z-index: 1051;
+
+    .card-body {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .card-header {
+      border-radius: 0;
+    }
+  }
+
+  .card-body.loader {
+    overflow: hidden !important;
+  }
+
+  .card-header {
+    padding: 0.75rem 1.25rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.chat-area-field {
+  font-size: 12px;
+  line-height: 15px;
+}

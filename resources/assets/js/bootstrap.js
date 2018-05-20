@@ -1,5 +1,7 @@
 window._ = require('lodash');
 window.Popper = require('popper.js').default;
+window.io = require('socket.io-client');
+window.EventEmitter = require('events');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -7,38 +9,8 @@ window.Popper = require('popper.js').default;
  * code may be modified to fit the specific needs of your application.
  */
 
-try {
-  window.$ = window.jQuery = require('jquery');
-
-  require('bootstrap-material-design');
-
-  $(document).ready(function () {
-    $('body').bootstrapMaterialDesign();
-
-    $('[data-clone-container]').on('click', function () {
-      var nameContainer = $(this).data('clone-container');
-      var container = $(nameContainer);
-      if (!container.length) {
-        console.error('Undefined container ' + nameContainer);
-        return false;
-      }
-
-      var cloneblock = container.find('.js-item').eq(0).clone();
-      cloneblock.find('input, textarea, select').each(function () {
-        $(this).val('');
-      });
-      container.append(cloneblock);
-      return false;
-    });
-
-    window.deleteItem = function (element, containerName) {
-      return confirm('Вы уверены?') && $(element).closest(containerName).find('.js-item').length > 1
-        ? $(element).closest('.js-item').remove()
-        : null;
-    };
-  });
-} catch (e) {
-}
+window.$ = window.jQuery = require('jquery');
+require('bootstrap-material-design');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -47,7 +19,6 @@ try {
  */
 
 window.axios = require('axios');
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
@@ -75,7 +46,14 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo'
+import Echo from 'laravel-echo'
+
+window.Echo = new Echo({
+  broadcaster: 'socket.io',
+  host: window.location.hostname + ':6001'
+});
+
+window.ee = new EventEmitter();
 
 // window.Pusher = require('pusher-js');
 

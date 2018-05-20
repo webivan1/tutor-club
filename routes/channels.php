@@ -14,3 +14,21 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+// Оналйн юзер
+Broadcast::channel('online', function () {
+    return true;
+});
+
+// Добавление нового диалога, уведомляем пользователей
+Broadcast::channel('add.dialog.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});
+
+// Получение сообщений
+Broadcast::channel('dialog.{id}', function ($user, $id) {
+    return (bool) (new \App\Entity\Chat\Dialogs())->isAccess($id, $user->id);
+});
+Broadcast::channel('send.message.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});

@@ -30,6 +30,12 @@
                 <i class="material-icons">description</i>
             </b-btn>
 
+            <add-dialog
+                :user="item.user.id"
+                :title="item.title"
+                :data-json="{}"
+            ></add-dialog>
+
             <b-modal ref="modelMoreRef" hide-footer :title="messages.DescriptionOffer">
                 <div v-html="item.description"></div>
 

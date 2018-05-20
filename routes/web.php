@@ -11,13 +11,20 @@
 |
 */
 
+use App\Http\Middleware\AuthDev;
+
+Route::get('/check-user', function () {
+    return ['auth' => \Auth::check()];
+});
+
 Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => [
             'localeSessionRedirect',
             'localizationRedirect',
-            'localeViewPath'
+            'localeViewPath',
+            AuthDev::class
         ]
     ],
     function() {
@@ -82,6 +89,7 @@ Route::group(
             ],
             function () {
                 Route::get('/online/user', 'OnlineUserController@index');
+
                 Route::get('/', 'HomeController@index')->name('home');
 
                 Route::group(['prefix' => '/email', 'as' => 'email.'], function () {
@@ -231,5 +239,22 @@ Route::group(
                 );
             }
         );
+
+        Route::group([
+            'prefix' => 'chat',
+            'namespace' => 'Chat',
+            'as' => 'chat.',
+            'middleware' => ['auth']
+        ], function () {
+            Route::post('list', 'ListController@index')->name('list');
+            Route::post('exist', 'DialogController@exist')->name('exist');
+            Route::post('dialog/create', 'DialogController@create')->name('dialog.create');
+            Route::get('dialog/{dialog}/close', 'DialogController@close')
+                ->where('dialog', '\d+');
+            Route::get('messages/{accessDialog}', 'MessagesController@index')
+                ->where('accessDialog', '\d+');
+            Route::put('messages/{sendMessageDialog}', 'MessagesController@create')
+                ->where('sendMessageDialog', '\d+');
+        });
     }
 );

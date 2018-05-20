@@ -185,6 +185,15 @@ class ElasticSearchModel
     {
         $this->fetchResponse();
 
-        return $this->response['hits']['total'];
+        return (int) $this->response['hits']['total'];
+    }
+
+    /**
+     * @return array
+     */
+    public function first()
+    {
+        $response = array_values($this->querySource());
+        return array_shift($response);
     }
 }

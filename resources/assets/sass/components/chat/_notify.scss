@@ -1,0 +1,25 @@
+.notify {
+  position: fixed;
+  z-index: 2010;
+  top: 1rem;
+  right: 1rem;
+  width: 220px;
+}
+
+.notify-block {
+  background: rgba(0,0,0,0.5);
+  color: white;
+  font-size: 13px;
+  line-height: 15px;
+  padding: 13px;
+  border-radius: 3px;
+
+  * {
+    margin-bottom: 0;
+  }
+}
+
+.notify-message {
+  background: $text-muted;
+  color: white;
+}

@@ -18,7 +18,7 @@
 
     @yield('script.head')
 </head>
-<body self-user-id="{{ \Auth::id() }}">
+<body self-user-id="{{ \Auth::id() }}" data-url="{{ route('home') }}">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
@@ -105,6 +105,21 @@
                 </div>
             </div>
         </div>
+
+        @auth
+            <chat
+                user="{{ \Auth::id() }}"
+                data-json='{{ json_encode([
+                    'prependUrl' => route('home'),
+                    'messages' => [
+                        'heading' => t('Chat'),
+                        'open' => t('Open'),
+                        'close' => t('Close'),
+                        'PrevToDialogs' => t('Prev to dialogs')
+                    ]
+                ]) }}'
+            ></chat>
+        @endauth
     </main>
 
     <footer class="footer">

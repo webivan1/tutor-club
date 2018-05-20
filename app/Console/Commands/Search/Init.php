@@ -4,6 +4,7 @@ namespace App\Console\Commands\Search;
 
 use App\Entity\Advert\Advert;
 use App\Entity\Category;
+use App\Entity\Chat\Dialogs;
 use App\Services\ElasticSearch\ElasticSearchService;
 use Illuminate\Console\Command;
 
@@ -48,5 +49,6 @@ class Init extends Command
     {
         $this->service->createIndex(new Advert());
         $this->service->createIndex(new Category());
+        $this->service->createIndex(new Dialogs());
     }
 }
