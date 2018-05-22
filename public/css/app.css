@@ -20901,6 +20901,10 @@ footer {
   font-size: 5rem;
 }
 
+.list-group-item :first-child {
+  margin-right: 0;
+}
+
 .form-control-search {
   width: 100%;
   padding: 1rem;

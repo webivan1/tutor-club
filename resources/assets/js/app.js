@@ -45,6 +45,7 @@ try {
   Vue.component('advert-list-component', require('./components/advert/list/ListWrapperComponent.vue'));
   Vue.component('chat', require('./components/chat/ChatMainComponent.vue'));
   Vue.component('add-dialog', require('./components/chat/AddDialogComponent.vue'));
+  Vue.component('online', require('./components/online/OnlineUserComponent'));
 
   const app = new Vue({
     el: '#app'

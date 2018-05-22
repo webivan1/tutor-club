@@ -156,3 +156,7 @@ footer {
     font-size: 5rem;
   }
 }
+
+.list-group-item :first-child {
+  margin-right: 0;
+}

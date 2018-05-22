@@ -21,6 +21,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\Chat\ChangeDialog' => [
             'App\Listeners\Chat\ElasticSearch'
+        ],
+        'Illuminate\Auth\Events\Logout' => [
+            'App\Listeners\User\LoggedOut',
+        ],
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\User\Logged'
         ]
     ];
 

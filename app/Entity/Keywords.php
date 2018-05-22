@@ -45,6 +45,8 @@ class Keywords extends Model
             return;
         }
 
+        $keys = array_unique($keys);
+
         info('Translate new keys ' . json_encode($keys));
 
         $existKeys = self::whereIn('name', $keys)->pluck('name')->toArray();
@@ -58,7 +60,11 @@ class Keywords extends Model
         }
 
         foreach ($keys as $key) {
-            self::firstOrCreate(['name' => $key]);
+            try {
+                self::firstOrCreate(['name' => $key]);
+            } catch (\Exception $e) {
+                info('Double key ' . $key);
+            }
         }
     }
 }

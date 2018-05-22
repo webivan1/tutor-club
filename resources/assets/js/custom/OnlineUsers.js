@@ -5,7 +5,7 @@ export class OnlineUsers {
     this.time = this.now();
     this.userId = false;
 
-    this.initServer();
+    //this.initServer();
 
     this.event();
   }
@@ -63,19 +63,17 @@ export class OnlineUsers {
   }
 
   change() {
-    if (this.isTimeout() === true) {
-      this.addTime(30);
+    if (document.querySelector('body').getAttribute('self-user-id')) {
+      if (this.isTimeout() === true) {
+        this.addTime(10);
 
-      axios.get('/profile/online/user')
-        .then(response => { this.userId = response.data.id })
-        .catch(err => {
-          this.userId = false;
-          console.log(err);
-        });
-    } else if (this.userId !== false) {
-      Echo.connector.socket.emit('user', 'online', {
-        id: this.userId
-      });
+        axios.get('/profile/online/user')
+          .then(response => { this.userId = response.data.id })
+          .catch(err => {
+            this.userId = false;
+            console.log(err);
+          });
+      }
     }
   }
 }

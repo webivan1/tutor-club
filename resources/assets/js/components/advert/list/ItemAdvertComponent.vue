@@ -9,7 +9,7 @@
             <h5 class="card-title">
                 <span class="d-block text-crop">{{ item.title }}</span>
                 <span class="d-block text-crop">
-                    @{{ item.user.name }} <i :user-id="item.user.id" user-active-date="0" class="indecator-user-min fas fa-circle"></i>
+                    @{{ item.user.name }} <online :user="item.user.id"></online>
                 </span>
             </h5>
             <div class="card-text mb-2">

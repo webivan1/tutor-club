@@ -1,5 +1,7 @@
 ### TODO
 
+- Переделать online users
+
 Создать глобальный эвент для добавления сообщений
 
 - Сортировка по полю updated_at ДИАЛОГИ
@@ -64,6 +66,8 @@
     
 # Install
 
+Перед установкой зависимостей composer следует поставить Elasticsearch - https://www.elastic.co/downloads/elasticsearch
+
 При использовании docker, все клонсольные команды начинаютя с `docker-compose exec php-cli`
 
 - cp .env.example .env (Указать все параметры в новом файле .env)
@@ -86,6 +90,13 @@
     
 ### Устанавливаем роль админа
     - php artisan user:assign {email} {role}
+    
+### Запустить создания индексов для Elasticsearch
+    - php artisan search:init
+    - php artisan search:import
+    
+### Laravel Echo
+    - https://github.com/tlaverdure/laravel-echo-server
     
 ### Server 
     - Запуск скрипта в фоне

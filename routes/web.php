@@ -13,8 +13,8 @@
 
 use App\Http\Middleware\AuthDev;
 
-Route::get('/check-user', function () {
-    return ['auth' => \Auth::check()];
+Route::get('/check-user/{user}', function (\App\Entity\User $user) {
+//    event()
 });
 
 Route::group(

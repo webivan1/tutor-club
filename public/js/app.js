@@ -34855,7 +34855,7 @@ module.exports = buildFormattingTokensRegExp
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(100);
-module.exports = __webpack_require__(323);
+module.exports = __webpack_require__(326);
 
 
 /***/ }),
@@ -34915,6 +34915,7 @@ try {
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('advert-list-component', __webpack_require__(290));
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('chat', __webpack_require__(305));
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('add-dialog', __webpack_require__(320));
+  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('online', __webpack_require__(323));
 
   var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app'
@@ -77727,7 +77728,7 @@ var OnlineUsers = function () {
     this.time = this.now();
     this.userId = false;
 
-    this.initServer();
+    //this.initServer();
 
     this.event();
   }
@@ -77798,19 +77799,17 @@ var OnlineUsers = function () {
     value: function change() {
       var _this2 = this;
 
-      if (this.isTimeout() === true) {
-        this.addTime(30);
+      if (document.querySelector('body').getAttribute('self-user-id')) {
+        if (this.isTimeout() === true) {
+          this.addTime(10);
 
-        axios.get('/profile/online/user').then(function (response) {
-          _this2.userId = response.data.id;
-        }).catch(function (err) {
-          _this2.userId = false;
-          console.log(err);
-        });
-      } else if (this.userId !== false) {
-        Echo.connector.socket.emit('user', 'online', {
-          id: this.userId
-        });
+          axios.get('/profile/online/user').then(function (response) {
+            _this2.userId = response.data.id;
+          }).catch(function (err) {
+            _this2.userId = false;
+            console.log(err);
+          });
+        }
       }
     }
   }]);
@@ -79769,13 +79768,15 @@ var render = function() {
             _vm._v(_vm._s(_vm.item.title))
           ]),
           _vm._v(" "),
-          _c("span", { staticClass: "d-block text-crop" }, [
-            _vm._v("\n                @" + _vm._s(_vm.item.user.name) + " "),
-            _c("i", {
-              staticClass: "indecator-user-min fas fa-circle",
-              attrs: { "user-id": _vm.item.user.id, "user-active-date": "0" }
-            })
-          ])
+          _c(
+            "span",
+            { staticClass: "d-block text-crop" },
+            [
+              _vm._v("\n                @" + _vm._s(_vm.item.user.name) + " "),
+              _c("online", { attrs: { user: _vm.item.user.id } })
+            ],
+            1
+          )
         ]),
         _vm._v(" "),
         _c(
@@ -80837,22 +80838,21 @@ var render = function() {
                   "div",
                   { staticClass: "d-flex w-100 justify-content-between" },
                   [
-                    _c("h5", { staticClass: "mb-1" }, [
-                      _c("i", {
-                        staticClass: "indecator-user-min fas fa-circle mr-0",
-                        attrs: {
-                          "user-id": item.user.user.id,
-                          "user-active-date": 0
-                        }
-                      }),
-                      _vm._v(
-                        "\n                    #" +
-                          _vm._s(item.user.user.id) +
-                          " " +
-                          _vm._s(item.user.user.name) +
-                          "\n                "
-                      )
-                    ]),
+                    _c(
+                      "h5",
+                      { staticClass: "mb-1" },
+                      [
+                        _c("online", { attrs: { user: item.user.user.id } }),
+                        _vm._v(
+                          "\n                    #" +
+                            _vm._s(item.user.user.id) +
+                            " " +
+                            _vm._s(item.user.user.name) +
+                            "\n                "
+                        )
+                      ],
+                      1
+                    ),
                     _vm._v(" "),
                     _c(
                       "small",
@@ -81005,6 +81005,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -81017,19 +81019,66 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
     return {
       messageField: '',
       loaderSend: false,
-      prependUrl: ''
+      prependUrl: '',
+      upScroll: false
     };
   },
+
+  watch: {
+    'list': {
+      handler: function handler(data) {
+        var _this = this;
+
+        if (this.upScroll === false) {
+          setTimeout(function (_) {
+            _this.scrollToBottom();
+          });
+        }
+      },
+      deep: true
+    },
+    'loader': {
+      handler: function handler(data) {
+        var _this2 = this;
+
+        if (data === false) {
+          setTimeout(function (_) {
+            _this2.scrollToBottom();
+          });
+        }
+      },
+      deep: true
+    }
+  },
   mounted: function mounted() {
+    var _this3 = this;
+
     this.prependUrl = document.querySelector('body').getAttribute('data-url');
+
+    if (this.$refs.mw) {
+      this.$refs.mw.onscroll = function (e) {
+        _this3.upScroll = true;
+      };
+    }
   },
 
   methods: {
+    scrollToBottom: function scrollToBottom() {
+      if (this.$refs.mw) {
+        this.$refs.mw.scrollTop = this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight;
+      }
+    },
     close: function close() {
       this.$emit('close');
     },
+    Keydown: function Keydown(e) {
+      if (e.keyCode === 13 && e.shiftKey === true && this.messageField !== '') {
+        e.preventDefault();
+        this.sendMessage();
+      }
+    },
     sendMessage: function sendMessage() {
-      var _this = this;
+      var _this4 = this;
 
       if (this.loaderSend === true) {
         return false;
@@ -81040,11 +81089,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       axios.put(this.prependUrl + '/chat/messages/' + this.dialog.id, {
         message: this.messageField
       }).then(function (response) {
-        _this.$emit('new-message', response.data);
-        _this.messageField = '';
-        _this.loaderSend = false;
+        _this4.$emit('new-message', response.data);
+        _this4.messageField = '';
+        _this4.loaderSend = false;
       }).catch(function (err) {
-        _this.loaderSend = false;
+        _this4.loaderSend = false;
         console.log(err);
       });
     }
@@ -81255,57 +81304,60 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     !_vm.loader
-      ? _c(
-          "div",
-          { staticClass: "card-body" },
-          _vm._l(_vm.list.data, function(item) {
-            return _c("div", [_c("message", { attrs: { item: item } })], 1)
-          })
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-footer" }, [
-      _c(
-        "form",
-        {
-          staticClass: "row mx-0 my-0",
-          class: { loader: _vm.loaderSend },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.sendMessage($event)
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "col px-0" }, [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.messageField,
-                  expression: "messageField"
-                }
-              ],
-              staticClass: "form-control chat-area-field",
-              attrs: { required: "" },
-              domProps: { value: _vm.messageField },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.messageField = $event.target.value
-                }
-              }
+      ? _c("div", [
+          _c(
+            "div",
+            { ref: "mw", staticClass: "card-body" },
+            _vm._l(_vm.list.data, function(item) {
+              return _c("div", [_c("message", { attrs: { item: item } })], 1)
             })
-          ]),
+          ),
           _vm._v(" "),
-          _vm._m(0)
-        ]
-      )
-    ])
+          _c("div", { staticClass: "card-footer" }, [
+            _c(
+              "form",
+              {
+                staticClass: "row mx-0 my-0",
+                class: { loader: _vm.loaderSend },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.sendMessage($event)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "col px-0" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.messageField,
+                        expression: "messageField"
+                      }
+                    ],
+                    staticClass: "form-control chat-area-field",
+                    attrs: { required: "" },
+                    domProps: { value: _vm.messageField },
+                    on: {
+                      keydown: _vm.Keydown,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.messageField = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _vm._m(0)
+              ]
+            )
+          ])
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -82069,6 +82121,131 @@ if (false) {
 
 /***/ }),
 /* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(7)
+/* script */
+var __vue_script__ = __webpack_require__(324)
+/* template */
+var __vue_template__ = __webpack_require__(325)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\online\\OnlineUserComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-98085766", Component.options)
+  } else {
+    hotAPI.reload("data-v-98085766", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 324 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['user'],
+  data: function data() {
+    return {
+      prependUrl: '',
+      isActive: false,
+      lastTimerUpdate: null
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    Echo.channel('user.' + this.user).on('online', function (user) {
+      _this.isActive = true;
+      _this.lastTimerUpdate = new Date();
+    });
+    Echo.channel('user.' + this.user).on('disonline', function (user) {
+      _this.isActive = false;
+      _this.lastTimerUpdate = new Date();
+    });
+  },
+  created: function created() {
+    setInterval(this.disableUserIsTimeoutActive.bind(this), 3000);
+  },
+
+  methods: {
+    now: function now() {
+      var date = new Date();
+      return date.getTime();
+    },
+    diffSec: function diffSec(time) {
+      return (this.now() - time) / 1000;
+    },
+    disableUserIsTimeoutActive: function disableUserIsTimeoutActive() {
+      if (this.isActive === true && this.lastTimerUpdate && this.diffSec(this.lastTimerUpdate.getTime()) > 30) {
+        this.isActive = false;
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 325 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "span",
+    { staticClass: "indecator-user-min", class: { active: _vm.isActive } },
+    [_c("i", { staticClass: " fas fa-circle" })]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-98085766", module.exports)
+  }
+}
+
+/***/ }),
+/* 326 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -19,6 +19,9 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 Broadcast::channel('online', function () {
     return true;
 });
+Broadcast::channel('user.{id}', function ($user, $id) {
+    return true;
+});
 
 // Добавление нового диалога, уведомляем пользователей
 Broadcast::channel('add.dialog.{id}', function ($user, $id) {

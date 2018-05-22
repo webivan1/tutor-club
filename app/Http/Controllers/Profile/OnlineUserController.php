@@ -9,7 +9,7 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Entity\User;
-use App\Events\Pusher\PingUser;
+use App\Events\User\ActiveEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -34,7 +34,7 @@ class OnlineUserController extends Controller
             \Auth::setUser($user);
         }
 
-        event(new PingUser(\Auth::user()));
+        event(new ActiveEvent(\Auth::user()));
 
         return ['id' => \Auth::user()->id];
     }

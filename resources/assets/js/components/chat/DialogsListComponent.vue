@@ -10,7 +10,7 @@
             <a v-for="(item, key) in list.data" @click="checkDialog(item)" href="javascript:void(0)" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">
-                        <i class="indecator-user-min fas fa-circle mr-0" :user-id="item.user.user.id" :user-active-date="0"></i>
+                        <online :user="item.user.user.id"></online>
                         #{{ item.user.user.id }} {{ item.user.user.name }}
                     </h5>
                     <small>

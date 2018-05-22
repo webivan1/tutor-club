@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Pusher;
+namespace App\Events\User;
 
 use App\Entity\User;
 use Illuminate\Broadcasting\Channel;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class PingUser implements ShouldBroadcast
+class ActiveEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -37,7 +37,7 @@ class PingUser implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('active.' . $this->user->id);
+        return new Channel('user.' . $this->user->id);
     }
 
     /**
@@ -47,16 +47,6 @@ class PingUser implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'user';
-    }
-
-    /**
-     * Get the data to broadcast.
-     *
-     * @return array
-     */
-    public function broadcastWith()
-    {
-        return [];
+        return 'online';
     }
 }
