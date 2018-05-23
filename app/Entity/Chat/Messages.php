@@ -3,8 +3,10 @@
 namespace App\Entity\Chat;
 
 use App\Entity\User;
+use App\Events\Chat\CreateMessage;
 use App\Events\Chat\MessageEvent;
 use App\Events\Chat\SendMessage;
+use App\Events\Chat\SendMessageArray;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +20,7 @@ class Messages extends Model
     /**
      * @var array
      */
-    public $fillable = ['message', 'dialog_id', 'user_id'];
+    public $fillable = ['message', 'dialog_id', 'user_id', 'created_at'];
 
     /**
      * {@inheritdoc}
@@ -26,11 +28,6 @@ class Messages extends Model
     public static function boot()
     {
         parent::boot();
-
-        self::created(function (Messages $messages) {
-            // Send message to users
-            event(new SendMessage($messages));
-        });
 
         self::observe(new MessageEvent());
     }
@@ -134,5 +131,55 @@ class Messages extends Model
     public function getItem(int $id): array
     {
         return self::withUser(null, $id)->first()->toArray();
+    }
+
+    /**
+     * Create model message for chat
+     *
+     * @param array $sourceDialog
+     * @param string $message
+     * @param int $fromUser
+     * @return array
+     */
+    public function createModelBySourceDialog(array $sourceDialog, string $message, int $fromUser): array
+    {
+        // Создаем модель на основе данных
+        $model = self::make([
+            'created_at' => now()->format('Y-m-d H:i:s'),
+            'message' => $message,
+            'user_id' => $fromUser,
+            'dialog_id' => $sourceDialog['id'],
+        ]);
+
+        $name = null;
+        $users = [];
+
+        // Заполняем юзера из данных диалога
+        if (!empty($sourceDialog['users'])) {
+            foreach ($sourceDialog['users'] as $user) {
+                if ((int) $user['user_id'] === $fromUser) {
+                    $name = $user['user']['name'];
+                } else {
+                    array_push($users, (int) $user['user_id']);
+                }
+            }
+        } else {
+            $name = User::where('id', $fromUser)->first()->name;
+        }
+
+        $messageResult = array_merge($model->toArray(), [
+            'user' => [
+                'id' => $fromUser,
+                'name' => $name
+            ]
+        ]);
+
+        // Отправляем всем в чат
+        event(new SendMessageArray($messageResult, $users));
+
+        // Создаем в базе
+        $model->save();
+
+        return $messageResult;
     }
 }

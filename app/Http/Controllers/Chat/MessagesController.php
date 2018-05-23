@@ -34,17 +34,15 @@ class MessagesController extends Controller
     /**
      * Create message
      *
-     * @param int $sendMessageDialog
+     * @param array $sendMessageDialog
      * @param CreateMessageRequest $request
      * @param Messages $messages
      * @return array
      */
     public function create($sendMessageDialog, CreateMessageRequest $request, Messages $messages)
     {
-        $message = Messages::new(
-            $request->input('message'), $sendMessageDialog, \Auth::id()
+        return $messages->createModelBySourceDialog(
+            $sendMessageDialog, $request->input('message'), \Auth::id()
         );
-
-        return $message->getItem($message->id);
     }
 }

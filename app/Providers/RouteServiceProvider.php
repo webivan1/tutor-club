@@ -41,14 +41,14 @@ class RouteServiceProvider extends ServiceProvider
 
         \Route::bind('sendMessageDialog', function ($value) {
             try {
-                if (!(new Dialogs())->isSendMessage(intval($value), \Auth::id())) {
+                if (!$source = (new Dialogs())->isSendMessage(intval($value), \Auth::id())) {
                     throw new \DomainException(t('You do not have rights to write in this dialog'));
                 }
             } catch (\DomainException $e) {
                 abort(404, $e->getMessage());
             }
 
-            return intval($value);
+            return $source;
         });
     }
 

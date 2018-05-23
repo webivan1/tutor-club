@@ -12,6 +12,7 @@ use App\Entity\Chat\Dialogs;
 use App\Entity\Chat\Messages;
 use App\Events\Chat\ChangeDialog;
 use App\Events\Chat\CreateDialog;
+use App\Events\Chat\SendMessage;
 
 class CreateDialogService
 {
@@ -72,7 +73,10 @@ class CreateDialogService
         return \DB::transaction(function () use ($title, $fromId, $toId) {
             Dialogs::saved(function (Dialogs $model) use ($fromId, $toId) {
                 $model->users()->create(['user_id' => $fromId]);
-                $model->users()->create(['user_id' => $toId]);
+                $model->users()->create([
+                    'visited_at' => now()->format('Y-m-d H:i:s'),
+                    'user_id' => $toId
+                ]);
             });
 
             $model = Dialogs::new($title, $fromId);
@@ -100,6 +104,8 @@ class CreateDialogService
             // add elastic
             event(new ChangeDialog($model, ChangeDialog::EVENT_CREATE));
             !$newDialog ?: event((new CreateDialog($model)));
+
+            event((new SendMessage($messages))->delay(now()->addSeconds(5)));
         });
 
         // first message

@@ -4,7 +4,6 @@ namespace App\Events\Chat;
 
 use App\Entity\Chat\Messages;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,12 +12,12 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class SendMessage implements ShouldQueue, ShouldBroadcast
+class SendMessageArray implements ShouldQueue, ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels, Queueable;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var Messages
+     * @var array
      */
     private $message;
 
@@ -30,17 +29,13 @@ class SendMessage implements ShouldQueue, ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param Messages $message
+     * @param array $message
+     * @param array $users
      */
-    public function __construct(Messages $message)
+    public function __construct(array $message, array $users)
     {
         $this->message = $message;
-
-        // Выбираем всех юзеров кому надо отправить сообщение
-        $this->sendUsers = $message->users()
-            ->where('user_id', '!=', $message->user_id)
-            ->pluck('user_id')
-            ->toArray();
+        $this->sendUsers = $users;
     }
 
     /**
@@ -69,7 +64,7 @@ class SendMessage implements ShouldQueue, ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'data' => $this->message->getItem($this->message->id)
+            'data' => $this->message
         ];
     }
 }
