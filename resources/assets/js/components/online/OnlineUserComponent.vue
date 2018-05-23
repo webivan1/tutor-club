@@ -15,17 +15,22 @@
       }
     },
     mounted() {
-      Echo.channel(`user.${this.user}`).on('online', user => {
+      // Echo.channel(`user.${this.user}`).on('online', user => {
+      //   this.isActive = true;
+      //   this.lastTimerUpdate = new Date();
+      // });
+      // Echo.channel(`user.${this.user}`).on('disonline', user => {
+      //   this.isActive = false;
+      //   this.lastTimerUpdate = new Date();
+      // });
+
+      io(':6002').on('is.online.' + this.user, e => {
         this.isActive = true;
-        this.lastTimerUpdate = new Date();
-      });
-      Echo.channel(`user.${this.user}`).on('disonline', user => {
-        this.isActive = false;
         this.lastTimerUpdate = new Date();
       });
     },
     created() {
-      setInterval(this.disableUserIsTimeoutActive.bind(this), 3000);
+      setInterval(this.disableUserIsTimeoutActive.bind(this), 1000);
     },
     methods: {
       now() {
@@ -38,7 +43,7 @@
       },
 
       disableUserIsTimeoutActive() {
-        if (this.isActive === true && this.lastTimerUpdate && this.diffSec(this.lastTimerUpdate.getTime()) > 30) {
+        if (this.isActive === true && this.lastTimerUpdate && this.diffSec(this.lastTimerUpdate.getTime()) > 3) {
           this.isActive = false;
         }
       }

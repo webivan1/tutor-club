@@ -3,9 +3,7 @@ export class OnlineUsers {
 
   constructor() {
     this.time = this.now();
-    this.userId = false;
-
-    //this.initServer();
+    this.userId = document.querySelector('body').getAttribute('self-user-id');
 
     this.event();
   }
@@ -14,13 +12,10 @@ export class OnlineUsers {
     return (new Date()).getTime();
   }
 
-  initServer() {
-    Echo.channel('online')
-      .on('user', this.message.bind(this));
-  }
-
   event() {
-    setInterval(this.change.bind(this), 2000);
+    if (this.userId) {
+      setInterval(this.change.bind(this), 1000);
+    }
   }
 
   isTimeout() {
@@ -63,17 +58,19 @@ export class OnlineUsers {
   }
 
   change() {
-    if (document.querySelector('body').getAttribute('self-user-id')) {
-      if (this.isTimeout() === true) {
-        this.addTime(10);
+    io(':6002').emit(`user.online`, this.userId);
 
-        axios.get('/profile/online/user')
-          .then(response => { this.userId = response.data.id })
-          .catch(err => {
-            this.userId = false;
-            console.log(err);
-          });
-      }
-    }
+    // if (document.querySelector('body').getAttribute('self-user-id')) {
+    //   if (this.isTimeout() === true) {
+    //     this.addTime(10);
+    //
+    //     axios.get('/profile/online/user')
+    //       .then(response => { this.userId = response.data.id })
+    //       .catch(err => {
+    //         this.userId = false;
+    //         console.log(err);
+    //       });
+    //   }
+    // }
   }
 }
