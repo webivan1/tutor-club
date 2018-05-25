@@ -96,7 +96,7 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
 
     <div class="row">
         <div class="col-md-auto">
-            {{ Html::image($profile->image->file_path . '?t=' . time(), t('Avatar'), [
+            {{ Html::image(Storage::url($profile->image->file_path) . '?t=' . time(), t('Avatar'), [
                 'class' => 'img-thumbnail'
             ]) }}
         </div>

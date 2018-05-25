@@ -63,6 +63,20 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => env('FILESYSTEM_FTP_HOST'),
+            'username' => env('FILESYSTEM_FTP_USERNAME'),
+            'password' => env('FILESYSTEM_FTP_PASSWORD'),
+        ],
+
+        'subdomain' => [
+            'driver' => 'subdomain',
+            'url' => env('FILESYSTEM_FTP_URL'),
+            'username' => env('FILESYSTEM_FTP_USERNAME'),
+            'password' => env('FILESYSTEM_FTP_PASSWORD'),
+        ]
+
     ],
 
 ];

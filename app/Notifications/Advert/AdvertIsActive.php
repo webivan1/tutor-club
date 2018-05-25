@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Notifications\TutorProfile;
+namespace App\Notifications\Advert;
 
-use App\Entity\TutorProfile;
+use App\Entity\Advert\Advert;
 use App\Entity\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ProfileIsActive extends Notification implements ShouldQueue
+class AdvertIsActive extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
-     * @var TutorProfile
+     * @var Advert
      */
-    private $profile;
+    private $advert;
 
     /**
      * @var User
@@ -26,12 +26,12 @@ class ProfileIsActive extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @param TutorProfile $profile
+     * @param Advert $advert
      * @param User $user
      */
-    public function __construct(TutorProfile $profile, User $user)
+    public function __construct(Advert $advert, User $user)
     {
-        $this->profile = $profile;
+        $this->advert = $advert;
         $this->user = $user;
     }
 
@@ -56,8 +56,7 @@ class ProfileIsActive extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->greeting(t('Hello :name', ['name' => $this->user->name]))
-            ->line(t('Your profile is active'))
-            ->action(t('View profile'), route('profile.tutor.home'))
+            ->line(t('Your ad #:id was moderated', ['id' => $this->advert->id]))
             ->line(t('Thank you for using our application'));
     }
 }

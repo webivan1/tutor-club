@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cabinet\Admin;
 
 use App\Components\Sort;
+use App\Entity\Advert\Advert;
 use App\Notifications\TutorProfile\ProfileIsActive;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

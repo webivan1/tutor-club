@@ -9,6 +9,8 @@
 namespace App\Entity\Admin;
 
 use App\Entity\Advert\Advert as Base;
+use App\Events\Advert\ChangeAdvert;
+use App\Notifications\Advert\AdvertIsActive;
 use App\Search\Admin\AdvertSearch;
 use Illuminate\Http\Request;
 use App\Components\Sort;
@@ -16,6 +18,25 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Advert extends Base
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        self::updated(function (Advert $advert) {
+            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_UPDATE));
+
+            $user = $advert->user;
+            $user->notify(new AdvertIsActive($advert, $user));
+        });
+
+        self::deleted(function (Advert $advert) {
+            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_DELETE));
+        });
+    }
+
     /**
      * @param Request $request
      * @param int $paginationSize

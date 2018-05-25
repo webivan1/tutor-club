@@ -45,10 +45,6 @@ class AdvertController extends Controller
      */
     public function update(UpdateRequest $request, Advert $advert)
     {
-        Advert::updated(function ($advert) {
-            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_UPDATE));
-        });
-
         $advert->update($request->only('status'));
 
         return redirect()->route('cabinet.admin.advert.index')
@@ -63,12 +59,7 @@ class AdvertController extends Controller
      */
     public function destroy(Advert $advert)
     {
-        Advert::deleted(function ($advert) {
-            event(new ChangeAdvert($advert, ChangeAdvert::EVENT_DELETE));
-        });
-
         $advert->delete();
-
         return back()->with('success', 'Успешно удалено!');
     }
 }

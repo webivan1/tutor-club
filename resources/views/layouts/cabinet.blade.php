@@ -17,7 +17,7 @@
 
     @yield('script.head')
 </head>
-<body>
+<body self-user-id="{{ \Auth::id() }}" data-url="{{ route('home') }}">
     <div class="bmd-layout-container bmd-drawer-f-l @hasSection('not-drawers') @else bmd-drawer-in @endif">
         <header class="bmd-layout-header">
             <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
@@ -79,11 +79,29 @@
 
                 @yield('content')
             </div>
+
+            @auth
+                <div id="app">
+                    <chat
+                        user="{{ \Auth::id() }}"
+                        data-json='{{ json_encode([
+                            'prependUrl' => route('home'),
+                            'messages' => [
+                                'heading' => t('Chat'),
+                                'open' => t('Open'),
+                                'close' => t('Close'),
+                                'PrevToDialogs' => t('Prev to dialogs')
+                            ]
+                        ]) }}'
+                    ></chat>
+                </div>
+            @endauth
         </main>
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script defer src="/fontawesome-free-5.0.13/svg-with-js/js/fontawesome-all.js"></script>
     @yield('script.body')
 </body>
 </html>

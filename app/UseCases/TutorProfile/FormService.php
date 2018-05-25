@@ -61,7 +61,7 @@ class FormService
 
         if ($request->hasFile('photo')) {
             // delete old photo
-            $profile->image->delete();
+            !$profile->image ?: $profile->image->delete();
 
             // create new photo
             $file = $this->createFile(
@@ -103,10 +103,19 @@ class FormService
     public function uploadImage(UploadedFile $file, string $path, ?string $filename = null)
     {
         // save image
-        $file = !$filename ? $file->store($path) : $file->storeAs($path, $filename);
-        $this->cropImage(public_path($file));
+        $pathLocalFile = !$filename
+            ? \Storage::disk('public')->putFile($path, $file)
+            : \Storage::disk('public')->putFileAs($path, $file, $filename);
 
-        return $file;
+        $this->cropImage(public_path($pathLocalFile));
+
+//        $fileLocalObject = new UploadedFile(public_path($pathLocalFile), basename($pathLocalFile));
+//
+//        $pathStorage = !$filename ? $fileLocalObject->store($path) : $fileLocalObject->storeAs($path, $filename);
+//
+//        \Storage::disk('public')->delete($pathLocalFile);
+
+        return $pathLocalFile;
     }
 
     /**
