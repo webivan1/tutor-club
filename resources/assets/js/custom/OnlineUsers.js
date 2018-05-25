@@ -2,23 +2,24 @@
 export class OnlineUsers {
 
   constructor() {
-    this.time = this.now();
+    //this.time = this.now();
     this.userId = document.querySelector('body').getAttribute('self-user-id');
-
     this.event();
   }
 
-  now() {
-    return (new Date()).getTime();
-  }
+  // now() {
+  //   return (new Date()).getTime();
+  // }
 
   event() {
     if (this.userId) {
-      setInterval(this.change.bind(this), 1000);
+      io(':6002').on(`is.online.${this.userId}`, _ => {
+        io(':6002').emit(`user.online`, this.userId);
+      });
     }
   }
 
-  isTimeout() {
+  /*isTimeout() {
     return this.time <= this.now();
   }
 
@@ -72,5 +73,5 @@ export class OnlineUsers {
     //       });
     //   }
     // }
-  }
+  }*/
 }
