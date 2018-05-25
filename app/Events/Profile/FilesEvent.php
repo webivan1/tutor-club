@@ -3,9 +3,11 @@
 namespace App\Events\Profile;
 
 use App\Entity\Files;
+use App\Jobs\ImagickJob;
 use App\Services\File\FileImagick;
 use App\Services\File\Preset;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -18,16 +20,6 @@ class FilesEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
-    }
-
-    /**
      * After save
      *
      * @param Files $model
@@ -35,12 +27,7 @@ class FilesEvent
     public function created(Files $model)
     {
         if (array_key_exists($model->source, $model->preset)) {
-            $presetGenerator = new FileImagick(
-                new Preset($model->file_path),
-                $model->preset[$model->source]
-            );
-
-            $presetGenerator->generate();
+            ImagickJob::dispatch($model->file_path, $model->preset[$model->source]);
         }
     }
 
@@ -59,7 +46,7 @@ class FilesEvent
 
         if (!empty($scanFiles)) {
             foreach ($scanFiles as $file) {
-                unlink($file);
+                \Storage::delete($file);
             }
         }
     }

@@ -49,7 +49,22 @@ class Preset
      */
     public function exist(string $presetName): bool
     {
-        return is_file(public_path(ltrim($this->presetFilename($presetName), '/')));
+        return \Storage::exists($this->presetFilename($presetName));
+    }
+
+    /**
+     * Получаем корень файла без пресета
+     *
+     * @param string $filename
+     * @return string
+     */
+    public function getFilenameWithoutPreset(string $filename): string
+    {
+        if (preg_match('/^([\dx]+)_.*/', $filename)) {
+            return explode('_', $filename)[1];
+        }
+
+        return $filename;
     }
 
     /**
@@ -57,8 +72,17 @@ class Preset
      */
     public function getAllPresets(): ?array
     {
-        $mask = public_path(ltrim(dirname($this->path) . '/*_' . basename($this->path), '/'));
-        $scanFiles = glob($mask);
-        return empty($scanFiles) ? null : $scanFiles;
+        $allFiles = \Storage::allFiles(dirname($this->path)) ?? [];
+
+        $filename = $this->getFilenameWithoutPreset(basename($this->path));
+        $presetFiles = [];
+
+        foreach ($allFiles as $file) {
+            if (strpos($file, $filename) !== false) {
+                $presetFiles[] = $file;
+            }
+        }
+
+        return $presetFiles;
     }
 }

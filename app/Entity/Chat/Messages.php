@@ -175,7 +175,10 @@ class Messages extends Model
         ]);
 
         // Отправляем всем в чат
-        event(new SendMessageArray($messageResult, $users));
+        event(
+            (new SendMessageArray($messageResult, $users))
+                ->onQueue('messages')
+        );
 
         // Создаем в базе
         $model->save();

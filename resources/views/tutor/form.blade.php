@@ -70,7 +70,7 @@ use App\Entity\TutorProfile;
                     <div class="form-group">
                         @if ($model->id && $model->image)
                             <div class="mb-2">
-                                {{ Html::image(Storage::url($model->image->file_path) . '?t=' . time(), 'Аватар', [
+                                {{ Html::image(Storage::url($model->image->getPreset('200x250')) . '?t=' . time(), 'Аватар', [
                                     'class' => 'img-thumbnail'
                                 ]) }}
                             </div>

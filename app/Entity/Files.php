@@ -46,15 +46,15 @@ class Files extends Model
     }
 
     /**
-     * @param string $preset
+     * @param string $presetName
      * @return string
      */
-    public function getPreset(string $preset = ''): string
+    public function getPreset(string $presetName = ''): string
     {
         $preset = new Preset($this->file_path);
 
-        return $preset->exist($preset)
-            ? $preset->presetFilename($preset)
+        return $preset->exist($presetName)
+            ? $preset->presetFilename($presetName)
             : $this->file_path;
     }
 }

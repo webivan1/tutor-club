@@ -8,6 +8,7 @@ use App\Entity\TutorProfile;
 use App\Events\Profile\TutorProfileEvent;
 use App\Http\Requests\TutorProfile\CreateRequest;
 use App\Http\Requests\TutorProfile\UpdateRequest;
+use App\Jobs\ImagickJob;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 
@@ -107,7 +108,9 @@ class FormService
             ? \Storage::disk('public')->putFile($path, $file)
             : \Storage::disk('public')->putFileAs($path, $file, $filename);
 
-        $this->cropImage(public_path($pathLocalFile));
+        ImagickJob::dispatch($pathLocalFile, [
+            '200x250', '300x350', '350', '400'
+        ]);
 
 //        $fileLocalObject = new UploadedFile(public_path($pathLocalFile), basename($pathLocalFile));
 //
@@ -116,18 +119,6 @@ class FormService
 //        \Storage::disk('public')->delete($pathLocalFile);
 
         return $pathLocalFile;
-    }
-
-    /**
-     * @param string $file
-     */
-    private function cropImage(string $file): void
-    {
-        if (class_exists('Imagick')) {
-            $image = new \Imagick($file);
-            $image->cropThumbnailImage(200, 250);
-            $image->writeImage($file);
-        }
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Events\Chat;
 
 use App\Entity\Chat\Messages;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -14,7 +15,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class SendMessageArray implements ShouldQueue, ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels, Queueable;
 
     /**
      * @var array
