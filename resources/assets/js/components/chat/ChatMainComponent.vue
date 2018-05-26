@@ -44,6 +44,7 @@
                         :dialog="dialog"
                         v-on:close="closeMessage"
                         v-on:new-message="addMessage"
+                        v-on:next-page="nextPageMessages"
                     ></messages>
                 </div>
             </div>
@@ -258,16 +259,26 @@
         this.messages.data.push(message);
       },
 
+      nextPageMessages(pageUrl) {
+        this.fetchMessages(this.dialog.id, pageUrl);
+      },
+
       /**
        * Запрос к сообщениям
        *
        * @return void
        */
-      fetchMessages(dialogId) {
-        axios.get(`${this.data.prependUrl}/chat/messages/${dialogId}`)
+      fetchMessages(dialogId, pageUrl) {
+        axios.get(pageUrl || `${this.data.prependUrl}/chat/messages/${dialogId}`)
           .then(response => {
-            this.messages = response.data;
-            this.loaderMessage = false;
+            if (!pageUrl) {
+              this.messages = response.data;
+              this.loaderMessage = false;
+            } else {
+              let models = [...this.messages.data];
+              this.messages = response.data;
+              this.messages.data = [].concat(response.data.data, models);
+            }
           })
           .catch(err => console.log(err));
       },

@@ -39,7 +39,8 @@
         messageField: '',
         loaderSend: false,
         prependUrl: '',
-        upScroll: false
+        upScroll: false,
+        nextPage: null,
       }
     },
     watch: {
@@ -50,6 +51,8 @@
               this.scrollToBottom();
             });
           }
+
+          this.nextPage = data.next_page_url;
         },
         deep: true
       },
@@ -64,18 +67,33 @@
         deep: true
       },
     },
+    created() {
+      this.nextPage = this.list.next_page_url;
+    },
     mounted() {
       this.prependUrl = document.querySelector('body').getAttribute('data-url');
 
       if (this.$refs.mw) {
         this.$refs.mw.onscroll = e => {
           this.upScroll = true;
+
+          if (this.$refs.mw.scrollTop === 0) {
+            this.nextPageLoad();
+          }
         };
       }
+
+      console.log(this.list);
     },
     methods: {
+      nextPageLoad() {
+        if (this.nextPage) {
+          this.$emit('next-page', this.nextPage);
+        }
+      },
+
       scrollToBottom() {
-        if (this.$refs.mw) {
+        if (this.$refs.mw && this.upScroll === false) {
           this.$refs.mw.scrollTop = this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight;
         }
       },
