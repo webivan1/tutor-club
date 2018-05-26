@@ -1,8 +1,6 @@
 ### TODO
 
-- Установить laravel horizon (Мониторинг очередей)
-
-- Запустить больше процессов для очередей
+- Пагинация в чате, сообщения
 
 - Отзывы
     - Таблица | id, source, source_id, status, created_at, rating, comment, parent_id

@@ -28,6 +28,16 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         $this->registerTutorProfilePolicies();
         $this->registerAdvertPolicies();
+        $this->registerHorizonAuth();
+    }
+
+    public function registerHorizonAuth(): void
+    {
+        if (class_exists('Horizon')) {
+            Horizon::auth(function ($request) {
+                return \Auth::check() && \Auth::user()->hasRole('super_admin');
+            });
+        }
     }
 
     public function registerTutorProfilePolicies(): void
