@@ -2,11 +2,7 @@
 
 namespace App\Providers;
 
-use App\Entity\TutorProfile;
-use App\Entity\User;
-use App\Policies\TutorProfilePolicy;
-use App\State\ModelState;
-use Illuminate\Support\Facades\Gate;
+use Horizon;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
