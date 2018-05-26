@@ -1,6 +1,10 @@
 ### TODO
 
- - Отзывы
+- Установить laravel horizon (Мониторинг очередей)
+
+- Запустить больше процессов для очередей
+
+- Отзывы
     - Таблица | id, source, source_id, status, created_at, rating, comment, parent_id
 
 - Сделать вебсокеты для https
