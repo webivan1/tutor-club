@@ -2,6 +2,8 @@
 
 - Пагинация в чате, сообщения
 
+- Восстановление пароля
+
 - Отзывы
     - Таблица | id, source, source_id, status, created_at, rating, comment, parent_id
 
