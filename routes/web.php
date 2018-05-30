@@ -13,10 +13,6 @@
 
 use App\Http\Middleware\AuthDev;
 
-Route::get('/check-user/{user}', function (\App\Entity\User $user) {
-//    event()
-});
-
 Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),
@@ -72,6 +68,12 @@ Route::group(
                 Route::get('/login/{user}/verify/{code}', 'LoginProviderController@verify')
                     ->where('user', '\d+')
                     ->name('login.provider.email.verify');
+
+                // Restore password
+                Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+                Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+                Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+                Route::post('password/reset', 'ResetPasswordController@reset');
             });
 
             // Logout routes

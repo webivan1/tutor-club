@@ -41,3 +41,13 @@ Breadcrumbs::register('category.show', function (Crumbs $breadcrumbs, \App\Entit
 
     $breadcrumbs->push(t($category->name), route('category.show', $category->slug));
 });
+
+Breadcrumbs::register('password.request', function (Crumbs $breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(t('Form reset password'), route('password.request'));
+});
+
+Breadcrumbs::register('password.reset', function (Crumbs $breadcrumbs, $token) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(t('Write new password'), route('password.reset', $token));
+});
