@@ -10,6 +10,8 @@
                     <div class="card-body">
                         {{ Form::open(['method' => 'POST', 'url' => route('password.request'), 'novalidate' => true]) }}
 
+                            {{ Form::hidden('token', $token) }}
+
                             <div class="form-group">
                                 {{ Form::label('email', 'Email', ['class' => 'bmd-label-floating']) }}
                                 {{ Form::input('email', 'email', old('email', $email), [
