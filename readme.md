@@ -52,3 +52,6 @@
             - npm run watch
         - Собираем для продакшена
             - npm run prod
+
+### Tests
+    - Запуск тестов для винды - vendor\bin\phpunit
