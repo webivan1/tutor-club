@@ -40,3 +40,6 @@
         - Материалы для задания
             - Номер задания, номер файла
     ...
+
+- WEBRTC
+    - npm simple-peer (https://www.youtube.com/watch?v=ieBtXwHvoNk)
