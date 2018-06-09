@@ -4,6 +4,7 @@ namespace App\UseCases\Auth;
 
 use App\Entity\User;
 use App\Events\Auth\RegisterEvent;
+use App\Events\User\ChangeRoleEvent;
 
 /**
  * Class RegisterService
@@ -20,6 +21,7 @@ class RegisterService
     public function register(array $data): User
     {
         User::observe(new RegisterEvent);
+        User::observe(new ChangeRoleEvent());
 
         return User::register(
             $data['name'],

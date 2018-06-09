@@ -9,6 +9,7 @@
 
 namespace Tests\Unit;
 
+use App\Events\User\ChangeRoleEvent;
 use Tests\TestCase;
 use App\Entity\Admin\Role;
 use App\Entity\User;
@@ -23,7 +24,7 @@ class RoleTest extends TestCase
     {
         $user = factory(User::class)->make();
 
-        User::observe(new RegisterEvent());
+        User::observe(new ChangeRoleEvent());
 
         $role = Role::where('name', 'admin')->first();
 
