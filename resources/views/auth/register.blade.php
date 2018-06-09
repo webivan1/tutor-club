@@ -69,7 +69,7 @@
 
                     <div class="card-footer">
                         <div>
-                            {{ t('Do you have account') }}? <a href="{{ route('login') }}" class="card-link">
+                            {{ t('Do not you have account') }}? <a href="{{ route('login') }}" class="card-link">
                                 {{ t('You can login') }}
                             </a>
                         </div>
