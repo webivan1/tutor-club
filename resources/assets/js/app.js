@@ -4,7 +4,6 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-
 require('./bootstrap');
 require('./jquery/main');
 
@@ -39,13 +38,13 @@ try {
     }
   });
 
-  Vue.component('example-component', require('./components/ExampleComponent.vue'));
   Vue.component('advert-form-component', require('./components/advert/FormWrapper.vue'));
   Vue.component('search-category-component', require('./components/category/SearchComponent.vue'));
   Vue.component('advert-list-component', require('./components/advert/list/ListWrapperComponent.vue'));
   Vue.component('chat', require('./components/chat/ChatMainComponent.vue'));
   Vue.component('add-dialog', require('./components/chat/AddDialogComponent.vue'));
   Vue.component('online', require('./components/online/OnlineUserComponent'));
+  Vue.component('classroom', require('./components/classroom/ClassroomComponent'));
 
   const app = new Vue({
     el: '#app'

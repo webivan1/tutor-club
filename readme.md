@@ -39,6 +39,7 @@
         
 ### Надо запустить в фоне
     - php /home/admin/web/dev.my-tutor.club/public_html/artisan queue:listen
+    - php /home/admin/web/dev.my-tutor.club/public_html/artisan queue:work --queue=messages
     
 ### Javascript
     - Установить laravel-echo-server (https://github.com/tlaverdure/laravel-echo-server)

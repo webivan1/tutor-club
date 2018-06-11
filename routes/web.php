@@ -26,6 +26,8 @@ Route::group(
     function() {
 
         Route::get('/', 'HomeController@index')->name('home');
+        Route::post('/test', 'HomeController@test')->name('test');
+        Route::post('/peer', 'HomeController@peer')->name('peer');
 
         // search category
         Route::post('/search', 'Category\SearchController@index')->name('category.search');

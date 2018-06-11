@@ -13,5 +13,9 @@
                 Hello!
             </div>
         </div>
+
+        @auth
+            <classroom user="{{ \Auth::id() }}"></classroom>
+        @endauth
     </div>
 @endsection
