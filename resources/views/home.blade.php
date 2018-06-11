@@ -14,8 +14,6 @@
             </div>
         </div>
 
-        @auth
-            <classroom user="{{ \Auth::id() }}"></classroom>
-        @endauth
+        <classroom user="{{ \Auth::id() }}"></classroom>
     </div>
 @endsection

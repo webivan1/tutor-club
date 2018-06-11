@@ -1,15 +1,10 @@
 <template>
     <div>
-        <label>Your ID:</label><br/>
-        <textarea id="yourId"></textarea><br/>
-        <label>Other ID:</label><br/>
-        <textarea id="otherId"></textarea>
-        <button id="connect">connect</button><br/>
-
-        <label>Enter Message:</label><br/>
-        <textarea id="yourMessage"></textarea>
-        <button id="send">send</button>
-        <pre id="messages"></pre>
+        <form id="form">
+            <textarea id="incoming"></textarea>
+            <button type="submit">submit</button>
+        </form>
+        <pre id="outgoing"></pre>
 
         <!--<div v-if="isAccess">-->
             <!--<div v-if="loaderPeerConnect">-->
@@ -37,59 +32,73 @@
 
 <script>
   import getUserMedia from 'getusermedia'
-  import Peer from 'simple-peer'
 
   export default {
     props: ['user'],
     data() {
       return {
         isAccess: false,
-        loaderPeerConnect: true,
+        errorString: null,
+        configPeer: null,
+        stream: null,
         peer: null,
-        data: null,
-        otherData: null,
-        field: '',
-        messages: []
       }
     },
     mounted() {
-      getUserMedia({ video: true, audio: false }, function (err, stream) {
-        if (err) return console.error(err);
+      getUserMedia({ video: true, audio: false }, (err, stream) => {
+        if (err) {
+          return console.error(err);
+        }
 
-        var peer = new Peer({
-          initiator: true,
-          trickle: false,
-          stream: stream
-        });
+        this.stream = stream;
 
-        peer.on('signal', function (data) {
-          document.getElementById('yourId').value = JSON.stringify(data)
-        });
+        this.peer = new RTCPeerConnection(this.configPeer);
+        this.peer.addStream(this.stream);
+        this.peer.onicecandidate = this.iceCandidate.bind(this);
+        this.peer.onaddstream = this.remoteStream.bind(this);
 
-        document.getElementById('connect').addEventListener('click', function () {
-          var otherId = JSON.parse(document.getElementById('otherId').value)
-          console.log(otherId);
-          peer.signal(otherId)
-        });
 
-        document.getElementById('send').addEventListener('click', function () {
-          var yourMessage = document.getElementById('yourMessage').value
-          peer.send(yourMessage)
-        });
+        let video = document.getElementById('video');
+        video.src = URL.createObjectURL(stream);
+      });
 
-        peer.on('data', function (data) {
-          document.getElementById('messages').textContent += data + '\n'
-        });
 
-        peer.on('stream', function (stream) {
-          var video = document.createElement('video')
-          document.body.appendChild(video)
-
-          video.src = window.URL.createObjectURL(stream)
-          video.play()
-        });
-      })
-
+//      getUserMedia({ video: true, audio: false }, function (err, stream) {
+//        if (err) return console.error(err);
+//
+//        var peer = new Peer({
+//          initiator: true,
+//          trickle: false,
+//          stream: stream
+//        });
+//
+//        peer.on('signal', function (data) {
+//          document.getElementById('yourId').value = JSON.stringify(data)
+//        });
+//
+//        document.getElementById('connect').addEventListener('click', function () {
+//          var otherId = JSON.parse(document.getElementById('otherId').value)
+//          console.log(otherId);
+//          peer.signal(otherId)
+//        });
+//
+//        document.getElementById('send').addEventListener('click', function () {
+//          var yourMessage = document.getElementById('yourMessage').value
+//          peer.send(yourMessage)
+//        });
+//
+//        peer.on('data', function (data) {
+//          document.getElementById('messages').textContent += data + '\n'
+//        });
+//
+//        peer.on('stream', function (stream) {
+//          var video = document.createElement('video')
+//          document.body.appendChild(video)
+//
+//          video.src = window.URL.createObjectURL(stream)
+//          video.play()
+//        });
+//      })
 
       //this.isAccess = this.isAccessWebRTC();
 
@@ -111,6 +120,67 @@
 //      }
     },
     methods: {
+
+      sendMessage(message) {
+
+      },
+
+      iceCandidate(event) {
+        if (event.candidate) {
+          this.sendMessage({
+            type: 'candidate',
+            label: event.candidate.sdpMLineIndex,
+            id: event.candidate.sdpMid,
+            candidate: event.candidate.candidate
+          });
+        }
+      },
+
+      remoteStream() {
+
+      },
+
+      createOffer() {
+        if (this.peer) {
+          this.peer.createOffer(this.localDescription.bind(this), err => console.error(err), {
+            mandatory: {
+              OfferToReceiveAudio: true,
+              OfferToReceiveVideo: true
+            }
+          });
+        }
+      },
+
+      createAnswer() {
+        if (this.peer) {
+          this.peer.createAnswer(this.localDescription.bind(this), err => console.error(err), {
+            mandatory: {
+              OfferToReceiveAudio: true,
+              OfferToReceiveVideo: true
+            }
+          });
+        }
+      },
+
+      localDescription(description) {
+        this.peer.setLocalDescription(description);
+        this.sendMessage(description);
+      },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       /**
        * @return boolean
        */
