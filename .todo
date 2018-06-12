@@ -23,6 +23,8 @@ id, classroom_id, user_id, filename, created_at, ext_file
 ssl_certificate      /home/admin/conf/web/ssl.pre.my-tutor.club.pem;
 ssl_certificate_key  /home/admin/conf/web/ssl.pre.my-tutor.club.key;
 
+Создать Youtube player для видео трансляции - отдельный компонент
+
 
 
 
