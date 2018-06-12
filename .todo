@@ -25,6 +25,9 @@ ssl_certificate_key  /home/admin/conf/web/ssl.pre.my-tutor.club.key;
 
 Создать Youtube player для видео трансляции - отдельный компонент
 
+// POST /classroom/message - Добавить собщение и вернуть отфильтрованое [classroom_id, message]
+// GET /classroom/message - Вывести все сообщения
+
 
 
 
