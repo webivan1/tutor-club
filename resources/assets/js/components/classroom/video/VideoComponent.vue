@@ -1,9 +1,9 @@
 <template>
     <div>
-        <video autoplay v-if="stream" :src="createUrl(stream)" width="200"></video>
+        <!--<video autoplay v-if="stream" :src-object="stream" width="200"></video>-->
 
-        <div v-for="item in peers">
-            <video :src="createUrl(item.peer.stream)" autoplay width="200"></video>
+        <div v-for="peer in swarm.peers">
+            <video :src="createUrl(peer.stream)" autoplay width="200"></video>
         </div>
 
         <!--<div v-if="tutor === true">-->
@@ -32,7 +32,7 @@
 
 <script>
   export default {
-    props: ['stream', 'tutor', 'peers'],
+    props: ['stream', 'tutor', 'peers', 'swarm'],
     methods: {
       createUrl(stream) {
         return URL.createObjectURL(stream);

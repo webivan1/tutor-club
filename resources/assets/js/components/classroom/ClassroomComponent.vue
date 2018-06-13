@@ -3,12 +3,15 @@
         <div v-if="!loader && !error">
             <div class="row">
                 <div class="col-md-6">
-                    <Video
-                        ref="video"
-                        :stream="stream"
-                        :tutor="isTutor"
-                        :peers="peers"
-                    ></Video>
+                    <video ref="video"></video>
+
+                    <!--<Video-->
+                        <!--ref="video"-->
+                        <!--:stream="stream"-->
+                        <!--:tutor="isTutor"-->
+                        <!--:swarm="swarm"-->
+                        <!--:peers="peers"-->
+                    <!--&gt;</Video>-->
                 </div>
                 <div class="col-md-6">
                     <Chat
@@ -33,9 +36,10 @@
 </template>
 
 <script>
-  import getUserMedia from 'getUserMedia'
+  //import getUserMedia from 'getUserMedia'
   import signalhub from 'signalhub'
   import createSwarm from 'webrtc-swarm'
+  import wrtc from 'wrtc'
 
   import Chat from './chat/ChatComponent.vue'
   import Video from './video/VideoComponent.vue'
@@ -76,32 +80,25 @@
     mounted() {
       this.changeTotalUsers(this.peers);
 
-      getUserMedia({
+      navigator.mediaDevices.getUserMedia({
         video: this.roomData.video,
         audio: this.roomData.audio
-      }, (err, stream) => {
-        if (err) {
-          this.error = err.message;
-          return console.error(err);
-        }
+      })
+        .then(stream => {
+          this.loader = false;
 
-        this.loader = false;
-        this.stream = stream;
+          let hub = signalhub(`room:${this.roomData.id}`, [
+            `${this.host || 'http://localhost'}:6003`
+          ]);
 
-        this.hub = signalhub('room', [
-          `${this.host || 'http://localhost'}:6003`
-        ]);
+          this.swarm = new createSwarm(hub, {
+            stream: stream
+          });
 
-        this.swarm = new createSwarm(this.hub, {
-          stream: this.stream,
-          channelConfig: {
-            user: this.user,
-            room: this.room,
-            isTutor: this.isTutor
-          }
-        });
+          this.swarm.on('peer', (peer, id) => {
+            this.$refs.video.srcObject = peer.stream;
+            this.$refs.video.play();
 
-        this.swarm.on('connect', (peer, id) => {
 //          let exist = false;
 //
 //          this.peers.forEach(item => {
@@ -110,29 +107,43 @@
 //            }
 //          });
 
-          peer.on('data', data => {
-            data = JSON.parse(data.toString());
+//            console.log(peer);
 
-            switch (data.type) {
-              case 'message':
-                this.getChat().getMessage().addMessage(data.data);
-              break;
-            }
-          });
+//            peer.on('data', data => {
+//              data = JSON.parse(data.toString());
+//
+//              switch (data.type) {
+//                case 'message':
+//                  this.getChat().getMessage().addMessage(data.data);
+//                  break;
+//              }
+//            });
 
 //          if (exist === true) {
 //            return false;
 //          }
 
-          let data = Object.assign({}, {id: id, peer: peer}, peer.channelConfig);
+//            let data = Object.assign({}, {id: id, peer: peer});
+//
+//            this.peers.push(data);
+          });
 
-          this.peers.push(data);
+          this.swarm.on('disconnect', (peer, id) => {
+            this.deletePeer(id);
+          });
         });
 
-        this.swarm.on('disconnect', (peer, id) => {
-          this.deletePeer(id);
-        });
-      });
+//      getUserMedia({
+//        video: this.roomData.video,
+//        audio: this.roomData.audio
+//      }, (err, stream) => {
+//        if (err) {
+//          this.error = err.message;
+//          return console.error(err);
+//        }
+//
+//
+//      });
     },
     methods: {
       changeTotalUsers(value) {
