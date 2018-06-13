@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Entity\Category;
 use App\Entity\Chat\Dialogs;
+use App\Entity\Classroom\Classroom;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -49,6 +50,20 @@ class RouteServiceProvider extends ServiceProvider
             }
 
             return $source;
+        });
+
+        \Route::bind('room', function ($value) {
+            /** @var Classroom $model */
+            $model = Classroom::findOrFail(intval($value));
+
+            if (!$model->isAccessUser(\Auth::id())) {
+                abort(404, t('You have not access'));
+            }
+
+            // relation call
+            $model->tutor;
+
+            return $model;
         });
     }
 

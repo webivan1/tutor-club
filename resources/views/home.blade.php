@@ -8,12 +8,6 @@
             <h1>
                 Home page
             </h1>
-
-            <div class="py-3">
-                Hello!
-            </div>
         </div>
-
-        <classroom user="{{ \Auth::id() }}"></classroom>
     </div>
 @endsection

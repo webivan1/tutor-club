@@ -73,7 +73,7 @@ class Classroom extends Model
      */
     public function messages()
     {
-        return $this->hasMany(ClassroomMessage::class, 'classroom_id', 'id');
+        return $this->hasMany(ClassroomMessage::class, 'id', 'classroom_id');
     }
 
     /**
@@ -114,5 +114,13 @@ class Classroom extends Model
     public function isCancel(): bool
     {
         return $this->status === self::STATUS_CANCEL;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccessUser(int $userId): bool
+    {
+        return $this->users()->where('user_id', $userId)->exists();
     }
 }

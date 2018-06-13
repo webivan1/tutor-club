@@ -1,40 +1,37 @@
 <template>
     <div>
-        <video autoplay ref="localVideo" width="200"></video>
+        <video autoplay v-if="stream" :src="createUrl(stream)" width="200"></video>
 
         <div v-for="item in peers">
             <video :src="createUrl(item.peer.stream)" autoplay width="200"></video>
         </div>
 
-        <div style="max-height: 250px; overflow-y: auto">
-            <div v-for="message in messages">{{ message }}</div>
+        <pre>{{ peers }}</pre>
+
+        <div v-if="!loader && !error">
+            <div class="row">
+                <div class="col">
+                    <Chat
+                        ref="chat"
+                        :t="t"
+                        :host="host"
+                        :room="roomData"
+                        :user="userData"
+                        :lang="lang"
+                        v-on:send="sendMessage"
+                    ></Chat>
+                </div>
+                <div class="col-auto">
+                    video component
+                </div>
+            </div>
         </div>
-
-        <textarea v-model="field" class="form-control"></textarea>
-        <button type="button" class="btn btn-info" @click="sendMessage">Send</button>
-
-
-        <!--<div v-if="isAccess">-->
-        <!--<div v-if="loaderPeerConnect">-->
-        <!--loading...-->
-        <!--</div>-->
-        <!--<div v-else>-->
-        <!--<pre>{{ messages }}</pre>-->
-
-        <!--<textarea :value="JSON.stringify(data)" placeholder="Your ID"></textarea>-->
-        <!--<textarea v-model="otherData" placeholder="other ID"></textarea>-->
-
-        <!--<button type="button" class="btn btn-primary" @click="call">Connect</button>-->
-
-        <!--<textarea class="textarea" v-model="field"></textarea>-->
-        <!--<button type="button" class="btn btn-primary" @click="sendMessage">Send</button>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div v-else>-->
-        <!--<div class="alert alert-danger">-->
-        <!--Your browser is old! Change to browser on chrome or firefox-->
-        <!--</div>-->
-        <!--</div>-->
+        <div v-else>
+            <div v-if="error" class="alert alert-danger">
+                {{ error }}
+            </div>
+            <div v-else>loading...</div>
+        </div>
     </div>
 </template>
 
@@ -43,26 +40,39 @@
   import signalhub from 'signalhub'
   import createSwarm from 'webrtc-swarm'
 
+  import Chat from './chat/ChatComponent.vue'
+
   export default {
-    props: ['user', 'host', 't', 'lang'],
+    props: ['trans', 'user', 'host', 'room'],
+    components: { Chat },
     data() {
       return {
+        lang: 'en',
+        error: false,
+        loader: true,
         hub: null,
         swarm: null,
         stream: null,
-        field: null,
         peers: [],
-        messages: [],
+        roomData: JSON.parse(this.room),
+        userData: JSON.parse(this.user),
+        isTutor: false,
+        t: JSON.parse(this.trans)
       }
+    },
+    created() {
+      this.lang = document.querySelector('html').getAttribute('lang');
+      this.isTutor = parseInt(this.roomData.tutor.user_id) === parseInt(this.userData.id);
     },
     mounted() {
       getUserMedia({video: true, audio: false}, (err, stream) => {
         if (err) {
+          this.error = err.message;
           return console.error(err);
         }
 
+        this.loader = false;
         this.stream = stream;
-        this.$refs.localVideo.srcObject = stream;
 
         this.hub = signalhub('room', [
           `${this.host || 'http://localhost'}:6003`
@@ -74,12 +84,15 @@
 
         this.swarm.on('connect', (peer, id) => {
           peer.on('data', data => {
-            this.messages.push(data.toString());
+            data = JSON.parse(data.toString());
+            this.getChat().getMessage().addMessage(data);
           });
 
           this.peers.push({
             id: id,
-            peer: peer
+            peer: peer,
+            user: this.userData,
+            room: this.roomData
           });
         });
 
@@ -97,13 +110,14 @@
         return URL.createObjectURL(stream);
       },
 
-      sendMessage() {
-        this.messages.push(this.field);
-        this.field = '';
-
+      sendMessage(message) {
         this.swarm.peers.forEach(peer => {
-          peer.send(this.field);
+          peer.send(message);
         });
+      },
+
+      getChat() {
+        return this.$refs.chat;
       }
     }
   }

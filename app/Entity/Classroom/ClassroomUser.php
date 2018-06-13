@@ -56,4 +56,6 @@ class ClassroomUser extends Model
     {
         return (bool) $this->tutor === true;
     }
+
+
 }

@@ -46,6 +46,7 @@
     - Демоны (SCREEN)
         - node ./resources/assets/js/ws.server/server.js
         - laravel-echo-server start
+        - npm run signalhub
     - Как работать с js (Запуск скриптов в корне проекта)
         - Если первый раз производится запуск
             - npm install

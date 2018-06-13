@@ -4,7 +4,6 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-//require('webrtc-adapter');
 require('./bootstrap');
 require('./jquery/main');
 

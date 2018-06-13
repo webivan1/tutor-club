@@ -17,14 +17,4 @@ class HomeController extends Controller
     {
         return view('home');
     }
-
-    public function test(Request $request)
-    {
-        event(new TestPeerConnect((string) $request->input('data'), (int) $request->input('user')));
-    }
-
-    public function peer(Request $request)
-    {
-        event(new TestPeer2Peer((string) $request->input('data'), (int) $request->input('user')));
-    }
 }

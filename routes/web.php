@@ -26,8 +26,6 @@ Route::group(
     function() {
 
         Route::get('/', 'HomeController@index')->name('home');
-        Route::post('/test', 'HomeController@test')->name('test');
-        Route::post('/peer', 'HomeController@peer')->name('peer');
 
         // search category
         Route::post('/search', 'Category\SearchController@index')->name('category.search');
@@ -259,6 +257,19 @@ Route::group(
                 ->where('accessDialog', '\d+');
             Route::put('messages/{sendMessageDialog}', 'MessagesController@create')
                 ->where('sendMessageDialog', '\d+');
+        });
+
+        Route::group([
+            'prefix' => 'classroom',
+            'namespace' => 'Classroom',
+            'as' => 'classroom.',
+            'middleware' => ['auth']
+        ], function () {
+            Route::get('/{room}', 'DefaultController@index')
+                ->name('home');
+
+            Route::get('/{room}/message', 'MessagesController@index');
+            Route::post('/{room}/message', 'MessagesController@store');
         });
     }
 );

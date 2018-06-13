@@ -1,0 +1,54 @@
+.note-btn {
+  color: #000 !important;
+}
+
+.classroom-messages-list {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-top: 20px;
+}
+
+.message-candidate, .message-you, .message-hiring-manager {
+  margin-bottom: 20px;
+}
+
+.message-candidate {
+  .message-text {
+    background: rgba(223, 229, 121, 0.9);
+  }
+}
+
+.message-you {
+  .message-text {
+    background: rgba(122, 230, 152, 0.9);
+  }
+}
+
+.message-hiring-manager {
+  .message-text {
+    background: rgba(0, 167, 204, 0.9);
+  }
+}
+
+.messaging {
+  max-width: 600px;
+  margin-top: 15px;
+}
+
+.message-text {
+  padding: 10px;
+  font-size: 13px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,0.05);
+
+  p:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+.message-name {
+  margin-left: 7px;
+  display: inline-block;
+  vertical-align: middle;
+}

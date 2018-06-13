@@ -241,4 +241,20 @@ class User extends Authenticatable
         $this->password = bcrypt($password);
         return $this->save();
     }
+
+    /**
+     * @param string $username
+     * @return string
+     */
+    public static function getLabelName(string $username): string
+    {
+        $username = preg_replace('/[^\A-zА-я0-9\s]/ui', '', $username);
+
+        $usernameArr = explode(' ', $username);
+        $usernameArr = array_map(function ($str) use ($usernameArr) {
+            return mb_strtoupper(mb_substr($str, 0, count($usernameArr) > 1 ? 1 : 2, 'UTF8'), 'UTF8');
+        }, array_slice($usernameArr, 0, 2));
+
+        return implode('', $usernameArr);
+    }
 }
