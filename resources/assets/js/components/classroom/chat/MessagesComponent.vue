@@ -54,7 +54,7 @@
   export default {
     props: ['user', 'host', 'room', 'lang', 't'],
     mounted() {
-      this.getList();
+      this.getList(response => setTimeout(_ => this.scrollDown()));
 
       if (this.$refs.wrapper) {
         this.$refs.wrapper.onscroll = e => {
@@ -86,7 +86,7 @@
         return this.$refs.wrapper.scrollHeight + this.$refs.wrapper.clientHeight;
       },
 
-      getList() {
+      getList(handler) {
         axios.get(this.nextPageUrl || `${this.host}/classroom/${this.room.id}/message`)
           .then(response => {
             this.loader = false;
@@ -94,7 +94,7 @@
             this.nextPageUrl = response.data.next_page_url;
             this.messages = [].concat(response.data.data, this.messages);
 
-            setTimeout(_ => this.scrollDown());
+            typeof handler === 'function' ? handler(response) : null;
           })
           .catch(err => console.error(err));
       },

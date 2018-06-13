@@ -26,7 +26,12 @@
 
 .message-hiring-manager {
   .message-text {
-    background: rgba(0, 167, 204, 0.9);
+    background: $indigo;
+    color: white;
+
+    table, tr, td {
+      border-color: lighten($indigo, 50%) !important;
+    }
   }
 }
 

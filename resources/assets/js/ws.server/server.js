@@ -1,7 +1,22 @@
+var fs = require('fs');
 var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var axios = require('axios');
+var config = require('./config');
+
+var port = config.port || 6002;
+var secure = config.secure || false;
+
+if (secure === true) {
+  var options = {
+    key: fs.readFileSync(config.secureKey),
+    cert: fs.readFileSync(config.secureCert)
+  };
+
+  var server = require('https').createServer(options, app);
+} else {
+  var server = require('http').Server(app);
+}
+
+var io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
 
@@ -18,6 +33,6 @@ io.on('connection', function (socket) {
 
 });
 
-http.listen(6002, function () {
-  console.log('listening on *:6002');
+server.listen(port, function () {
+  console.log('listening on *:' + port);
 });

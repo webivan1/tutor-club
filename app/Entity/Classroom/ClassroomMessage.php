@@ -79,7 +79,7 @@ class ClassroomMessage extends Model
         $result = self::where('classroom_id', $classroom->id)
             ->with(['classroom', 'user'])
             ->orderByDesc('created_at')
-            ->paginate(50)
+            ->paginate(30)
             ->toArray();
 
         if ($result['total'] > 0) {

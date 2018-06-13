@@ -1,16 +1,16 @@
 <template>
     <div>
-        <video autoplay v-if="stream" :src="createUrl(stream)" width="200"></video>
-
-        <div v-for="item in peers">
-            <video :src="createUrl(item.peer.stream)" autoplay width="200"></video>
-        </div>
-
-        <pre>{{ peers }}</pre>
-
         <div v-if="!loader && !error">
             <div class="row">
-                <div class="col">
+                <div class="col-md-6">
+                    <Video
+                        ref="video"
+                        :stream="stream"
+                        :tutor="isTutor"
+                        :peers="peers"
+                    ></Video>
+                </div>
+                <div class="col-md-6">
                     <Chat
                         ref="chat"
                         :t="t"
@@ -20,9 +20,6 @@
                         :lang="lang"
                         v-on:send="sendMessage"
                     ></Chat>
-                </div>
-                <div class="col-auto">
-                    video component
                 </div>
             </div>
         </div>
@@ -41,10 +38,14 @@
   import createSwarm from 'webrtc-swarm'
 
   import Chat from './chat/ChatComponent.vue'
+  import Video from './video/VideoComponent.vue'
 
   export default {
     props: ['trans', 'user', 'host', 'room'],
-    components: { Chat },
+    components: {
+      Chat,
+      Video
+    },
     data() {
       return {
         lang: 'en',
@@ -60,11 +61,21 @@
         t: JSON.parse(this.trans)
       }
     },
+    watch: {
+      peers: {
+        handler: function (value) {
+          this.changeTotalUsers(value);
+        },
+        deep: true
+      }
+    },
     created() {
       this.lang = document.querySelector('html').getAttribute('lang');
       this.isTutor = parseInt(this.roomData.tutor.user_id) === parseInt(this.userData.id);
     },
     mounted() {
+      this.changeTotalUsers(this.peers);
+
       getUserMedia({video: true, audio: false}, (err, stream) => {
         if (err) {
           this.error = err.message;
@@ -79,40 +90,71 @@
         ]);
 
         this.swarm = new createSwarm(this.hub, {
-          stream: this.stream
+          stream: this.stream,
+          channelConfig: {
+            user: this.user,
+            room: this.room,
+            isTutor: this.isTutor
+          }
         });
 
         this.swarm.on('connect', (peer, id) => {
-          peer.on('data', data => {
-            data = JSON.parse(data.toString());
-            this.getChat().getMessage().addMessage(data);
+          let exist = false;
+
+          this.peers.forEach(item => {
+            if (item.user.id === this.user.id) {
+              exist = true;
+            }
           });
 
-          this.peers.push({
-            id: id,
-            peer: peer,
-            user: this.userData,
-            room: this.roomData
+          peer.on('data', data => {
+            data = JSON.parse(data.toString());
+
+            switch (data.type) {
+              case 'message':
+                this.getChat().getMessage().addMessage(data.data);
+              break;
+            }
           });
+
+          if (exist === true) {
+            return false;
+          }
+
+          this.peers.push(Object.assign({}, {
+            id: id,
+            peer: peer
+          }, peer.channelConfig));
         });
 
         this.swarm.on('disconnect', (peer, id) => {
-          this.peers.forEach((item, key) => {
-            if (item.id === id) {
-              this.peers.splice(key, 1);
-            }
-          });
+          this.deletePeer(id);
         });
       });
     },
     methods: {
-      createUrl(stream) {
-        return URL.createObjectURL(stream);
+      changeTotalUsers(value) {
+        let count = value.length;
+        let element = document.getElementById('total-users');
+        if (element) {
+          element.innerText = count;
+        }
+      },
+
+      deletePeer(id) {
+        this.peers.forEach((item, key) => {
+          if (item.id === id) {
+            this.peers.splice(key, 1);
+          }
+        });
       },
 
       sendMessage(message) {
         this.swarm.peers.forEach(peer => {
-          peer.send(message);
+          peer.send(JSON.stringify({
+            type: 'message',
+            data: JSON.parse(message)
+          }));
         });
       },
 

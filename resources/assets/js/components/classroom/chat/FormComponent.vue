@@ -3,7 +3,9 @@
         <div class="mb-1">
             <textarea ref="message" class="form-control"></textarea>
         </div>
-        <button :disabled="loader" class="btn-block btn-raised btn btn-primary">{{ t.Send }}</button>
+        <button :disabled="loader" class="btn-block btn-raised btn btn-primary">
+            {{ t.Send }} <small>(shift + enter)</small>
+        </button>
     </form>
 </template>
 
@@ -33,7 +35,7 @@
                 this.message = contents;
               },
               onKeyup: (e) => {
-                if (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) {
+                if (e.keyCode === 13 && e.shiftKey) {
                   e.preventDefault();
                   return this.send();
                 }
