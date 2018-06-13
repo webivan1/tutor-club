@@ -76,7 +76,10 @@
     mounted() {
       this.changeTotalUsers(this.peers);
 
-      getUserMedia({video: true, audio: false}, (err, stream) => {
+      getUserMedia({
+        video: this.roomData.video,
+        audio: this.roomData.audio
+      }, (err, stream) => {
         if (err) {
           this.error = err.message;
           return console.error(err);
@@ -99,13 +102,13 @@
         });
 
         this.swarm.on('connect', (peer, id) => {
-          let exist = false;
-
-          this.peers.forEach(item => {
-            if (item.user.id === this.user.id) {
-              exist = true;
-            }
-          });
+//          let exist = false;
+//
+//          this.peers.forEach(item => {
+//            if (item.user.id === this.user.id) {
+//              exist = true;
+//            }
+//          });
 
           peer.on('data', data => {
             data = JSON.parse(data.toString());
@@ -117,14 +120,13 @@
             }
           });
 
-          if (exist === true) {
-            return false;
-          }
+//          if (exist === true) {
+//            return false;
+//          }
 
-          this.peers.push(Object.assign({}, {
-            id: id,
-            peer: peer
-          }, peer.channelConfig));
+          let data = Object.assign({}, {id: id, peer: peer}, peer.channelConfig);
+
+          this.peers.push(data);
         });
 
         this.swarm.on('disconnect', (peer, id) => {
