@@ -138,6 +138,8 @@ export default class WebrtcEasy {
         this.connection.addIceCandidate(
           new RTCIceCandidate(message.candidate), this.onSuccess, this.onError
         );
+      } else {
+        emit.emit('wrtc.message', message);
       }
     });
   }
