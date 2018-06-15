@@ -1,28 +1,30 @@
 <template>
     <div>
+        <video ref="video" width="200"></video>
+
+        <pre>{{ users }}</pre>
+
         <div v-if="!loader && !error">
             <div class="row">
                 <div class="col-md-6">
-                    <video ref="video"></video>
-
                     <!--<Video-->
-                        <!--ref="video"-->
-                        <!--:stream="stream"-->
-                        <!--:tutor="isTutor"-->
-                        <!--:swarm="swarm"-->
-                        <!--:peers="peers"-->
+                    <!--ref="video"-->
+                    <!--:stream="stream"-->
+                    <!--:tutor="isTutor"-->
+                    <!--:swarm="swarm"-->
+                    <!--:peers="peers"-->
                     <!--&gt;</Video>-->
                 </div>
                 <div class="col-md-6">
-                    <Chat
-                        ref="chat"
-                        :t="t"
-                        :host="host"
-                        :room="roomData"
-                        :user="userData"
-                        :lang="lang"
-                        v-on:send="sendMessage"
-                    ></Chat>
+                    <!--<Chat-->
+                    <!--ref="chat"-->
+                    <!--:t="t"-->
+                    <!--:host="host"-->
+                    <!--:room="roomData"-->
+                    <!--:user="userData"-->
+                    <!--:lang="lang"-->
+                    <!--v-on:send="sendMessage"-->
+                    <!--&gt;</Chat>-->
                 </div>
             </div>
         </div>
@@ -36,10 +38,9 @@
 </template>
 
 <script>
-  //import getUserMedia from 'getUserMedia'
+  import Peer from 'simple-peer'
   import signalhub from 'signalhub'
   import createSwarm from 'webrtc-swarm'
-  import wrtc from 'wrtc'
 
   import Chat from './chat/ChatComponent.vue'
   import Video from './video/VideoComponent.vue'
@@ -52,128 +53,109 @@
     },
     data() {
       return {
-        lang: 'en',
-        error: false,
         loader: true,
-        hub: null,
-        swarm: null,
-        stream: null,
-        peers: [],
+        error: null,
+        lang: 'en',
+        isTutor: false,
+        roomName: null,
         roomData: JSON.parse(this.room),
         userData: JSON.parse(this.user),
-        isTutor: false,
-        t: JSON.parse(this.trans)
-      }
-    },
-    watch: {
-      peers: {
-        handler: function (value) {
-          this.changeTotalUsers(value);
-        },
-        deep: true
+        stream: null,
+        server: null,
+        connect: null,
+        users: [],
+        connections: [],
+        swarm: null,
+        streams: {},
+        isSendOffer: false,
+        peers: {}
       }
     },
     created() {
       this.lang = document.querySelector('html').getAttribute('lang');
       this.isTutor = parseInt(this.roomData.tutor.user_id) === parseInt(this.userData.id);
+      this.roomName = `room-${this.roomData.id}`;
     },
     mounted() {
-      this.changeTotalUsers(this.peers);
+      this.server = signalhub(this.roomName, [
+        `${this.host || 'http://localhost'}:6003`
+      ]);
 
-      navigator.mediaDevices.getUserMedia({
-        video: this.roomData.video,
-        audio: this.roomData.audio
-      })
-        .then(stream => {
-          this.loader = false;
+      this.initMedia(stream => {
+        this.stream = stream;
 
-          let hub = signalhub(`room:${this.roomData.id}`, [
-            `${this.host || 'http://localhost'}:6003`
-          ]);
+        this.server.broadcast('ping', { user: this.userData });
 
-          this.swarm = new createSwarm(hub, {
-            stream: stream
+        this.server.subscribe('ping')
+          .on('data', message => {
+            if (this.userData.id !== message.user.id) {
+              this.peers[message.user.id] = this.connectSimplePeer(message.user.id);
+            }
           });
+      });
 
-          this.swarm.on('peer', (peer, id) => {
-            this.$refs.video.srcObject = peer.stream;
-            this.$refs.video.play();
+      this.server.subscribe(`user-${this.userData.id}`)
+        .on('data', message => {
+          let peer = this.peers[message.user.id];
 
-//          let exist = false;
-//
-//          this.peers.forEach(item => {
-//            if (item.user.id === this.user.id) {
-//              exist = true;
-//            }
-//          });
+          if (peer === undefined) {
+            peer = this.initConnection(message.user.id, false);
+          }
 
-//            console.log(peer);
-
-//            peer.on('data', data => {
-//              data = JSON.parse(data.toString());
-//
-//              switch (data.type) {
-//                case 'message':
-//                  this.getChat().getMessage().addMessage(data.data);
-//                  break;
-//              }
-//            });
-
-//          if (exist === true) {
-//            return false;
-//          }
-
-//            let data = Object.assign({}, {id: id, peer: peer});
-//
-//            this.peers.push(data);
-          });
-
-          this.swarm.on('disconnect', (peer, id) => {
-            this.deletePeer(id);
-          });
+          peer.signal(message.data);
         });
-
-//      getUserMedia({
-//        video: this.roomData.video,
-//        audio: this.roomData.audio
-//      }, (err, stream) => {
-//        if (err) {
-//          this.error = err.message;
-//          return console.error(err);
-//        }
-//
-//
-//      });
+    },
+    watch: {
+//      streams: {
+//        handler: function (value) {
+//          for (id in value) {
+//            this.$refs.video.srcObject = value[id];
+//            this.$refs.video.play();
+//          }
+//        },
+//        deep: true
+//      }
     },
     methods: {
-      changeTotalUsers(value) {
-        let count = value.length;
-        let element = document.getElementById('total-users');
-        if (element) {
-          element.innerText = count;
-        }
+      initMedia(handler) {
+        navigator.mediaDevices.getUserMedia({
+          video: this.roomData.video,
+          audio: this.roomData.audio
+        })
+          .then(stream => {
+            this.loader = false;
+            handler(stream);
+          });
       },
 
-      deletePeer(id) {
-        this.peers.forEach((item, key) => {
-          if (item.id === id) {
-            this.peers.splice(key, 1);
-          }
+      connectSimplePeer(userId) {
+        return this.initConnection(userId, true);
+      },
+
+      remoteVideo(stream) {
+        this.$refs.video.srcObject = stream;
+        this.$refs.video.play();
+      },
+
+      initConnection(sendUser, initiator) {
+        let peer = new Peer({
+          initiator: initiator,
+          stream: this.stream,
+          trickle: false,
         });
-      },
 
-      sendMessage(message) {
-        this.swarm.peers.forEach(peer => {
-          peer.send(JSON.stringify({
-            type: 'message',
-            data: JSON.parse(message)
-          }));
+        peer.on('signal', signal => {
+          this.server.broadcast(`user-${sendUser}`, {
+            type: 'signal',
+            user: this.userData,
+            data: signal
+          });
         });
-      },
 
-      getChat() {
-        return this.$refs.chat;
-      }
+        peer.on('stream', stream => this.remoteVideo(stream));
+
+        return peer;
+      },
     }
   }
 </script>
