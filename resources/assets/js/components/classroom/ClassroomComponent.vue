@@ -1,21 +1,16 @@
 <template>
     <div>
-        <video ref="video" width="200"></video>
-
-        <pre>{{ users }}</pre>
-
         <div v-if="!loader && !error">
             <div class="row">
                 <div class="col-md-6">
-                    <!--<Video-->
-                    <!--ref="video"-->
-                    <!--:stream="stream"-->
-                    <!--:tutor="isTutor"-->
-                    <!--:swarm="swarm"-->
-                    <!--:peers="peers"-->
-                    <!--&gt;</Video>-->
+                    <Video
+                        ref="video"
+                        :local-stream="stream"
+                        :tutor="isTutor"
+                        :streams="streams"
+                    ></Video>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" v-if="streams.length > 0">
                     <!--<Chat-->
                     <!--ref="chat"-->
                     <!--:t="t"-->
@@ -40,7 +35,7 @@
 <script>
   import Peer from 'simple-peer'
   import signalhub from 'signalhub'
-  import createSwarm from 'webrtc-swarm'
+  import P2PLite from './webrtc/test/P2PLite'
 
   import Chat from './chat/ChatComponent.vue'
   import Video from './video/VideoComponent.vue'
@@ -60,15 +55,19 @@
         roomName: null,
         roomData: JSON.parse(this.room),
         userData: JSON.parse(this.user),
+        t: JSON.parse(this.trans),
         stream: null,
         server: null,
-        connect: null,
-        users: [],
-        connections: [],
-        swarm: null,
-        streams: {},
-        isSendOffer: false,
-        peers: {}
+        streams: [],
+        ping: null
+      }
+    },
+    watch: {
+      streams: {
+        handler: function (value) {
+          this.changeTotalUsers(value.length + 1);
+        },
+        deep: true
       }
     },
     created() {
@@ -82,39 +81,57 @@
       ]);
 
       this.initMedia(stream => {
-        this.stream = stream;
-
-        this.server.broadcast('ping', { user: this.userData });
-
-        this.server.subscribe('ping')
-          .on('data', message => {
-            if (this.userData.id !== message.user.id) {
-              this.peers[message.user.id] = this.connectSimplePeer(message.user.id);
-            }
-          });
-      });
-
-      this.server.subscribe(`user-${this.userData.id}`)
-        .on('data', message => {
-          let peer = this.peers[message.user.id];
-
-          if (peer === undefined) {
-            peer = this.initConnection(message.user.id, false);
+        this.ping = new P2PLite(this.server, stream, {
+          params: {
+            user: this.userData,
+            isTutor: this.isTutor
           }
-
-          peer.signal(message.data);
         });
-    },
-    watch: {
-//      streams: {
-//        handler: function (value) {
-//          for (id in value) {
-//            this.$refs.video.srcObject = value[id];
-//            this.$refs.video.play();
+
+        this.ping.onStream(peer => {
+          this.streams.push({
+            user: peer,
+            stream: peer.getStream(),
+            params: peer.getParams()
+          });
+        });
+
+        this.ping.onSignal(peer => {
+          if (peer.getId() !== this.ping.getUser().getId()) {
+            peer.call(true);
+          }
+        });
+
+        this.ping.onClose(uuid => {
+          this.streams.forEach((item, key) => {
+            if (item.user.getId() === uuid) {
+              this.streams.splice(key, 1);
+            }
+          })
+        });
+
+//        this.ping = new SignalP2P(this.server, {
+//          params: {
+//            user: this.userData,
+//            isTutor: this.isTutor
 //          }
-//        },
-//        deep: true
-//      }
+//        });
+//
+//        this.listen(this.ping.getUser());
+//
+//        this.ping.onSignal(peer => {
+//          if (peer.params.user.id !== this.userData.id) {
+//            this.peers[peer.getUuid()] = this.connectSimplePeer(peer);
+//          }
+//        });
+//
+//        this.ping.onRealtime(peer => {
+//          if (this.onlineUsers.indexOf(peer.getUuid()) === -1) {
+//            this.onlineUsers.push(peer.getUuid());
+//            // ...
+//          }
+//        });
+      });
     },
     methods: {
       initMedia(handler) {
@@ -124,38 +141,98 @@
         })
           .then(stream => {
             this.loader = false;
+            this.stream = stream;
+
             handler(stream);
-          });
+          })
+          .catch(err => this.error = err.message);
       },
 
-      connectSimplePeer(userId) {
-        return this.initConnection(userId, true);
+//      listen(user) {
+//        user.on('stream', uuid => {
+//          console.log('LISTENER STREAM OK');
+//
+//          let peer = this.ping.peers[uuid];
+//
+//          this.streams.push({
+//            user: peer,
+//            stream: peer.getStream(),
+//            params: peer.getParams()
+//          });
+//        });
+//
+//        user.on('signal', message => {
+//
+//          if (!this.peers[message.uuid]) {
+//            let user = this.ping.createUser(message.uuid, message.params);
+//            this.peers[message.uuid] = this.initConnection(user, false);
+//          }
+//
+//          this.peers[message.uuid].signal(message.signal);
+//        });
+//      },
+//
+//      connectSimplePeer(sendUser) {
+//        return this.initConnection(sendUser, true);
+//      },
+//
+//      initConnection(sendUser, initiator) {
+//        let peer = new Peer({
+//          initiator: initiator,
+//          stream: this.stream,
+//          //trickle: false,
+//        });
+//
+//        peer.on('signal', signal => {
+//          sendUser.send('signal', {
+//            uuid: this.ping.getUser().getUuid(),
+//            params: this.ping.getUser().getParams(),
+//            signal: signal
+//          });
+//        });
+//
+//        peer.on('stream', stream => {
+//          sendUser.addStream(stream);
+//          this.ping.getUser().send('stream', sendUser.getUuid());
+//        });
+//
+//        peer.on('close', _ => {
+//          if (this.peers[sendUser.getUuid()]) {
+//            delete this.peers[sendUser.getUuid()];
+//          }
+//
+//          this.streams.forEach((item, key) => {
+//            if (item.user.getUuid() === sendUser.getUuid()) {
+//              this.streams.splice(key, 1);
+//            }
+//          })
+//        });
+//
+//        return peer;
+//      },
+
+      changeTotalUsers(value) {
+        let count = value;
+        let element = document.getElementById('total-users');
+        if (element) {
+          element.innerText = count;
+        }
       },
 
-      remoteVideo(stream) {
-        this.$refs.video.srcObject = stream;
-        this.$refs.video.play();
-      },
-
-      initConnection(sendUser, initiator) {
-        let peer = new Peer({
-          initiator: initiator,
-          stream: this.stream,
-          trickle: false,
+      sendMessage(message) {
+        this.streams.forEach(item => {
+          if (item.user.getId() !== this.ping.getUser().getId()) {
+            this.server.broadcast(`listen-${item.getParams().user.id}`, {
+              type: 'message',
+              data: message
+            });
+          }
         });
-
-        peer.on('signal', signal => {
-          this.server.broadcast(`user-${sendUser}`, {
-            type: 'signal',
-            user: this.userData,
-            data: signal
-          });
-        });
-
-        peer.on('stream', stream => this.remoteVideo(stream));
-
-        return peer;
       },
+
+      getChat() {
+        return this.$refs.chat;
+      }
     }
   }
 </script>

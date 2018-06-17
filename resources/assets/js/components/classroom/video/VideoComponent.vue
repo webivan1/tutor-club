@@ -1,42 +1,37 @@
 <template>
     <div>
-        <!--<video autoplay v-if="stream" :src-object="stream" width="200"></video>-->
-
-        <div v-for="peer in swarm.peers">
-            <video :src="createUrl(peer.stream)" autoplay width="200"></video>
+        <div v-if="tutor === true">
+            <div v-if="streams.length === 0">loading...</div>
+            <div v-else-if="streams.length > 1">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" :src="createUrl(streams[0].stream)" autoplay></video>
+                </div>
+            </div>
+            <div v-else>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" :src="createUrl(streams[0].stream)" autoplay></video>
+                </div>
+            </div>
         </div>
-
-        <!--<div v-if="tutor === true">-->
-            <!--<div v-if="peers.length > 1">-->
-                <!--<div class="embed-responsive embed-responsive-16by9">-->
-                    <!--<video class="embed-responsive-item" :src="createUrl(stream)" autoplay></video>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div v-else>-->
-                <!--<div class="embed-responsive embed-responsive-16by9">-->
-                    <!--<video class="embed-responsive-item" :src="createUrl(peers[0].peer.stream)" autoplay></video>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div v-else>-->
-            <!--<div v-for="item in peers">-->
-                <!--<div v-if="item.isTutor === true">-->
-                    <!--<div class="embed-responsive embed-responsive-16by9">-->
-                        <!--<video class="embed-responsive-item" :src="createUrl(item.peer.stream)" autoplay></video>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+        <div v-else>
+            <div v-for="item in streams">
+                <div v-if="item.params.isTutor === true">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <video class="embed-responsive-item" :src="createUrl(item.stream)" autoplay></video>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
   export default {
-    props: ['stream', 'tutor', 'peers', 'swarm'],
+    props: ['localStream', 'streams', 'tutor'],
     methods: {
       createUrl(stream) {
-        return URL.createObjectURL(stream);
-      },
+        return stream ? URL.createObjectURL(stream) : '';
+      }
     }
   }
 </script>
