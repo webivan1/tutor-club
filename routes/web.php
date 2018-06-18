@@ -222,6 +222,16 @@ Route::group(
                             Route::get('/translate/generate', 'TranslateController@generate')
                                 ->name('translate.generate');
                             Route::resource('/translate', 'TranslateController');
+
+                            Route::group(
+                                [
+                                    'prefix' => '/media',
+                                    'namespace' => 'Media',
+                                    'as' => 'media.',
+                                ], function () {
+                                    Route::resource('/category', 'CategoryController');
+                                    Route::resource('/news', 'NewsController');
+                            });
                         });
 
                         Route::group(['middleware' => ['role:moderator']], function () {
