@@ -29,6 +29,14 @@
                             </div>
                         {{ Form::close() }}
                     </div>
+
+                    <div class="card-footer">
+                        <div>
+                            {{ t('Did you remember password') }}? <a href="{{ route('login') }}" class="card-link">
+                                {{ t('You can login') }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

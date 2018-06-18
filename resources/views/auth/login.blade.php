@@ -50,6 +50,19 @@
                             </div>
                         {{ Form::close() }}
                     </div>
+
+                    <div class="card-footer">
+                        <div>
+                            {{ t('Do you have account') }}? <a href="{{ route('register') }}" class="card-link">
+                                {{ t('You can register') }}
+                            </a>
+                        </div>
+                        <div>
+                            {{ t('Did you forget password') }}? <a href="{{ route('password.request') }}" class="card-link">
+                                {{ t('You can restore password') }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

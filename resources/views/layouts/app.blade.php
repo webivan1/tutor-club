@@ -122,11 +122,7 @@
         @endauth
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            @TutorOnline
-        </div>
-    </footer>
+    @include('layouts._footer')
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>

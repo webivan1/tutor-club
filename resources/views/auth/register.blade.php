@@ -66,6 +66,19 @@
                             </div>
                         {{ Form::close() }}
                     </div>
+
+                    <div class="card-footer">
+                        <div>
+                            {{ t('Do not you have account') }}? <a href="{{ route('login') }}" class="card-link">
+                                {{ t('You can login') }}
+                            </a>
+                        </div>
+                        <div>
+                            {{ t('Did you forget password') }}? <a href="{{ route('password.request') }}" class="card-link">
+                                {{ t('You can restore password') }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

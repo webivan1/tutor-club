@@ -47,22 +47,7 @@ class RegisterEvent
      */
     public function created(User $user)
     {
-        $this->assignRole($user);
         $this->sendInfo($user);
-    }
-
-    /**
-     * @param User $user
-     */
-    protected function assignRole(User $user): void
-    {
-        if ($user->getRole() === null) {
-            $user->setRole($user->defaultRole());
-        }
-
-        if ($user->getRole() !== null) {
-            $user->assign($user->getRole());
-        }
     }
 
     /**
