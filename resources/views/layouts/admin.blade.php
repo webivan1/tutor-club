@@ -68,6 +68,19 @@
                                 Переводы
                             </a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Медиа
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('cabinet.admin.media.category.index') }}">
+                                    Список категорий
+                                </a>
+                                <a class="dropdown-item" href="{{ route('cabinet.admin.media.news.index') }}">
+                                    Новости
+                                </a>
+                            </div>
+                        </li>
                     @endif
                 </ul>
 
