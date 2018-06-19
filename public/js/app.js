@@ -41219,10 +41219,6 @@ Object.assign(window, {
 });
 
 try {
-  if (!document.querySelector('#app')) {
-    throw new Error('Undefined #app');
-  }
-
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_bootstrap_vue__["a" /* default */]);
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_timeago__["a" /* default */], {
     name: 'Timeago', // Component name, `Timeago` by default
@@ -41241,8 +41237,10 @@ try {
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('online', __webpack_require__(342));
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('classroom', __webpack_require__(345));
 
-  var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-    el: '#app'
+  [].forEach.call(document.querySelectorAll('.app-vue'), function (element) {
+    new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+      el: element
+    });
   });
 } catch (err) {
   console.warn(err);
@@ -86227,8 +86225,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -86370,7 +86366,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['t', 'room', 'host', 'user', 'lang', 'localStream'],
+  props: ['t', 'room', 'host', 'user', 'lang'],
   components: {
     FormChat: __WEBPACK_IMPORTED_MODULE_2__FormComponent_vue___default.a,
     Messages: __WEBPACK_IMPORTED_MODULE_3__MessagesComponent_vue___default.a
@@ -86380,28 +86376,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.createServer();
   },
   mounted: function mounted() {
-    var _this = this;
-
-    this.swarm = __WEBPACK_IMPORTED_MODULE_1_webrtc_swarm___default()(this.server);
-
-    this.swarm.on('peer', function (peer, id) {
-      peer.on('data', function (message) {
-        console.log(JSON.parse(message.toString()));
-        message = JSON.parse(message.toString());
-
-        switch (message.type) {
-          case 'message':
-            _this.addMessage(message.data);
-            break;
-        }
-      });
-
-      _this.total = _this.swarm.peers.length + 1;
-    });
-
-    this.swarm.on('disconnect', function (peer, id) {
-      _this.total = _this.swarm.peers.length + 1;
-    });
+    this.initSwarm();
+    this.changeTotalUsers(this.total);
   },
 
   watch: {
@@ -86416,7 +86392,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       server: null,
       channel: null,
       swarm: null,
-      total: 1
+      total: 0
     };
   },
 
@@ -86427,6 +86403,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (element) {
         element.innerText = count;
       }
+    },
+    initSwarm: function initSwarm() {
+      var _this = this;
+
+      this.swarm = __WEBPACK_IMPORTED_MODULE_1_webrtc_swarm___default()(this.server);
+
+      this.swarm.on('peer', function (peer, id) {
+        peer.on('data', function (message) {
+          message = JSON.parse(message.toString());
+
+          switch (message.type) {
+            case 'message':
+              _this.addMessage(message.data);
+              break;
+          }
+        });
+
+        _this.total = _this.swarm.peers.length;
+      });
+
+      this.swarm.on('disconnect', function (peer, id) {
+        _this.total = _this.swarm.peers.length;
+      });
     },
     createServer: function createServer() {
       this.server = __WEBPACK_IMPORTED_MODULE_0_signalhub___default()(this.channel, [(this.host || 'http://localhost') + ':6004']);
@@ -92894,54 +92893,55 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    !_vm.loader && !_vm.error
-      ? _c("div", [
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              { staticClass: "col-md-6" },
-              [
-                _c("Video", {
-                  ref: "video",
-                  attrs: {
-                    tutor: _vm.isTutor,
-                    room: _vm.roomData,
-                    user: _vm.userData,
-                    host: _vm.host,
-                    "local-stream": _vm.stream
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-6" },
-              [
-                _c("Chat", {
-                  ref: "chat",
-                  attrs: {
-                    t: _vm.t,
-                    host: _vm.host,
-                    room: _vm.roomData,
-                    user: _vm.userData,
-                    lang: _vm.lang,
-                    "local-stream": _vm.stream
-                  }
-                })
-              ],
-              1
-            )
-          ])
-        ])
-      : _c("div", [
-          _vm.error
-            ? _c("div", { staticClass: "alert alert-danger" }, [
-                _vm._v("\n            " + _vm._s(_vm.error) + "\n        ")
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
+        [
+          !_vm.loader && !_vm.error
+            ? _c("Video", {
+                ref: "video",
+                attrs: {
+                  tutor: _vm.isTutor,
+                  room: _vm.roomData,
+                  user: _vm.userData,
+                  host: _vm.host,
+                  "local-stream": _vm.stream
+                }
+              })
+            : _c("div", [
+                _vm.error
+                  ? _c("div", { staticClass: "alert alert-danger" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.error) +
+                          "\n                "
+                      )
+                    ])
+                  : _c("div", [_vm._v("loading...")])
               ])
-            : _c("div", [_vm._v("loading...")])
-        ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
+        [
+          _c("Chat", {
+            ref: "chat",
+            attrs: {
+              t: _vm.t,
+              host: _vm.host,
+              room: _vm.roomData,
+              user: _vm.userData,
+              lang: _vm.lang
+            }
+          })
+        ],
+        1
+      )
+    ])
   ])
 }
 var staticRenderFns = []

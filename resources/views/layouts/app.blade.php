@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css?t=' . time()) }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     @yield('script.head')
 </head>
@@ -50,7 +50,7 @@
         </div>
     </nav>
 
-    <main id="app" class="app-content pb-4">
+    <main class="app-vue app-content pb-4">
         <div class="container-fluid">
             <div class="header-line bg-primary row align-content-center">
                 <div class="col-md-12">
@@ -125,7 +125,7 @@
     @include('layouts._footer')
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js?t=' . time() ) }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script defer src="/fontawesome-free-5.0.13/svg-with-js/js/fontawesome-all.js"></script>
     @yield('script.body')
 </body>

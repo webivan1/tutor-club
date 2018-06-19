@@ -1,8 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.classroom')
 
-@section('script.body')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+@section('left-content')
+    <div class="app-vue">
+        <classroom
+            user="{{ \Auth::user() }}"
+            host="{{ route('home') }}"
+            room="{{ json_encode($room) }}"
+            trans="{{ json_encode([
+                'Send' => t('Send'),
+                'MoreMessages' => t('More'),
+                'ErrorDoubleConnect' => t('You are already in the room!')
+            ]) }}"
+        ></classroom>
+    </div>
 @endsection
 
 @section('title', '')
@@ -20,14 +30,5 @@
 
     <h4>{{ t('Of participants') }} <b id="total-users"></b></h4>
 
-    <classroom
-        user="{{ \Auth::user() }}"
-        host="{{ route('home') }}"
-        room="{{ json_encode($room) }}"
-        trans="{{ json_encode([
-            'Send' => t('Send'),
-            'MoreMessages' => t('More'),
-            'ErrorDoubleConnect' => t('You are already in the room!')
-        ]) }}"
-    ></classroom>
+
 @endsection

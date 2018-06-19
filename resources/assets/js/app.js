@@ -24,10 +24,6 @@ Object.assign(window, {
 });
 
 try {
-  if (!document.querySelector('#app')) {
-    throw new Error('Undefined #app');
-  }
-
   Vue.use(BootstrapVue);
   Vue.use(VueTimeago, {
     name: 'Timeago', // Component name, `Timeago` by default
@@ -46,8 +42,10 @@ try {
   Vue.component('online', require('./components/online/OnlineUserComponent'));
   Vue.component('classroom', require('./components/classroom/ClassroomComponent'));
 
-  const app = new Vue({
-    el: '#app'
+  [].forEach.call(document.querySelectorAll('.app-vue'), element => {
+    new Vue({
+      el: element
+    });
   });
 
 } catch (err) {

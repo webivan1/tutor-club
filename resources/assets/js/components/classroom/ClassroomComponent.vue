@@ -1,35 +1,33 @@
 <template>
     <div>
-        <div v-if="!loader && !error">
-            <div class="row">
-                <div class="col-md-6">
-                    <Video
-                        ref="video"
-                        :tutor="isTutor"
-                        :room="roomData"
-                        :user="userData"
-                        :host="host"
-                        :local-stream="stream"
-                    ></Video>
-                </div>
-                <div class="col-md-6">
-                    <Chat
-                        ref="chat"
-                        :t="t"
-                        :host="host"
-                        :room="roomData"
-                        :user="userData"
-                        :lang="lang"
-                        :local-stream="stream"
-                    ></Chat>
+        <div class="row">
+            <div class="col-md-6">
+                <Video
+                    v-if="!loader && !error"
+                    ref="video"
+                    :tutor="isTutor"
+                    :room="roomData"
+                    :user="userData"
+                    :host="host"
+                    :local-stream="stream"
+                ></Video>
+                <div v-else>
+                    <div v-if="error" class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                    <div v-else>loading...</div>
                 </div>
             </div>
-        </div>
-        <div v-else>
-            <div v-if="error" class="alert alert-danger">
-                {{ error }}
+            <div class="col-md-6">
+                <Chat
+                    ref="chat"
+                    :t="t"
+                    :host="host"
+                    :room="roomData"
+                    :user="userData"
+                    :lang="lang"
+                ></Chat>
             </div>
-            <div v-else>loading...</div>
         </div>
     </div>
 </template>

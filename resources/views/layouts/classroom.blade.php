@@ -8,17 +8,18 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} | Cabinet | @yield('title')</title>
+    <title>{{ config('app.name', 'Laravel') }} | Cabinet | Classroom | @yield('title')</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     @yield('script.head')
 </head>
-<body self-user-id="{{ \Auth::id() }}" data-url="{{ route('home') }}">
-    <div class="bmd-layout-container bmd-drawer-f-l @hasSection('not-drawers') @else bmd-drawer-in @endif">
+<body>
+    <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-in">
         <header class="bmd-layout-header">
             <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
                 <div class="container">
@@ -27,20 +28,6 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                        @hasSection('not-drawers')
-
-                        @else
-                            <!-- Left Side Of Navbar -->
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#" role="button"  data-toggle="drawer" data-target="#dw-s1">
-                                        <i class="material-icons">menu</i>
-                                    </a>
-                                </li>
-                            </ul>
-                        @endif
-
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('home') }}">
@@ -59,15 +46,8 @@
                 </div>
             </nav>
         </header>
-        <div id="dw-s1" class="bmd-layout-drawer bg-faded">
-            <header>
-                <a href="{{ route('home') }}" class="navbar-brand">
-                    {{ config('app.name', 'SiteName') }}
-                </a>
-            </header>
-            <ul class="list-group">
-                @yield('nav-left')
-            </ul>
+        <div id="dw-s1" class="bmd-layout-drawer bg-faded app-vue" style="width: 420px">
+            @yield('left-content')
         </div>
         <main class="bmd-layout-content">
             <div class="container pt-3 pb-3">
@@ -80,28 +60,28 @@
                 @yield('content')
             </div>
 
-            @auth
-                <div class="app-vue">
-                    <chat
-                        user="{{ \Auth::id() }}"
-                        data-json='{{ json_encode([
-                            'prependUrl' => route('home'),
-                            'messages' => [
-                                'heading' => t('Chat'),
-                                'open' => t('Open'),
-                                'close' => t('Close'),
-                                'PrevToDialogs' => t('Prev to dialogs')
-                            ]
-                        ]) }}'
-                    ></chat>
-                </div>
-            @endauth
+            <div class="app-vue">
+                <chat
+                    user="{{ \Auth::id() }}"
+                    data-json='{{ json_encode([
+                        'prependUrl' => route('home'),
+                        'messages' => [
+                            'heading' => t('Chat'),
+                            'open' => t('Open'),
+                            'close' => t('Close'),
+                            'PrevToDialogs' => t('Prev to dialogs')
+                        ]
+                    ]) }}'
+                ></chat>
+            </div>
         </main>
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js?t=' . time() ) }}"></script>
     <script defer src="/fontawesome-free-5.0.13/svg-with-js/js/fontawesome-all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
     @yield('script.body')
 </body>
 </html>
+

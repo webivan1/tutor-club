@@ -28,7 +28,7 @@
   import Messages from './MessagesComponent.vue'
 
   export default {
-    props: ['t', 'room', 'host', 'user', 'lang', 'localStream'],
+    props: ['t', 'room', 'host', 'user', 'lang'],
     components: {
       FormChat,
       Messages
@@ -38,26 +38,8 @@
       this.createServer();
     },
     mounted() {
-      this.swarm = swarm(this.server);
-
-      this.swarm.on('peer', (peer, id) => {
-        peer.on('data', message => {
-          console.log(JSON.parse(message.toString()));
-          message = JSON.parse(message.toString());
-
-          switch (message.type) {
-            case 'message':
-              this.addMessage(message.data);
-              break;
-          }
-        });
-
-        this.total = this.swarm.peers.length + 1;
-      });
-
-      this.swarm.on('disconnect', (peer, id) => {
-        this.total = this.swarm.peers.length + 1;
-      });
+      this.initSwarm();
+      this.changeTotalUsers(this.total);
     },
     watch: {
       total: {
@@ -71,7 +53,7 @@
         server: null,
         channel: null,
         swarm: null,
-        total: 1
+        total: 0
       }
     },
     methods: {
@@ -81,6 +63,28 @@
         if (element) {
           element.innerText = count;
         }
+      },
+
+      initSwarm() {
+        this.swarm = swarm(this.server);
+
+        this.swarm.on('peer', (peer, id) => {
+          peer.on('data', message => {
+            message = JSON.parse(message.toString());
+
+            switch (message.type) {
+              case 'message':
+                this.addMessage(message.data);
+                break;
+            }
+          });
+
+          this.total = this.swarm.peers.length;
+        });
+
+        this.swarm.on('disconnect', (peer, id) => {
+          this.total = this.swarm.peers.length;
+        });
       },
 
       createServer() {
