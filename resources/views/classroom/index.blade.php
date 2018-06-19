@@ -1,34 +1,32 @@
 @extends('layouts.classroom')
 
-@section('left-content')
-    <div class="app-vue">
-        <classroom
-            user="{{ \Auth::user() }}"
-            host="{{ route('home') }}"
-            room="{{ json_encode($room) }}"
-            trans="{{ json_encode([
-                'Send' => t('Send'),
-                'MoreMessages' => t('More'),
-                'ErrorDoubleConnect' => t('You are already in the room!')
-            ]) }}"
-        ></classroom>
-    </div>
+@section('script.head')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
 @endsection
 
-@section('title', '')
-@section('description', '')
-@section('width-content', 'col-md-12')
+@section('script.body')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+@endsection
 
 @section('content')
-    <div class="card">
+    <h1>
+        {{ $room->subject }}
+    </h1>
+
+    <div class="card mb-3">
         <div class="card-body">
-            <h1>
-                Test heading
-            </h1>
+            <h4 class="my-0">{{ t('Of participants') }} <b id="total-users"></b></h4>
         </div>
     </div>
 
-    <h4>{{ t('Of participants') }} <b id="total-users"></b></h4>
-
-
+    <classroom
+        user="{{ \Auth::user() }}"
+        host="{{ route('home') }}"
+        room="{{ json_encode($room) }}"
+        trans="{{ json_encode([
+            'Send' => t('Send'),
+            'MoreMessages' => t('More'),
+            'ErrorDoubleConnect' => t('You are already in the room!')
+        ]) }}"
+    ></classroom>
 @endsection
