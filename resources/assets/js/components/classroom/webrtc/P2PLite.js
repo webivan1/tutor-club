@@ -43,8 +43,6 @@ export default class P2PLite {
     });
 
     this.onClose(uuid => {
-      console.log('CLOSE', uuid);
-
       if (this.peers[uuid]) {
         delete this.peers[uuid];
       }

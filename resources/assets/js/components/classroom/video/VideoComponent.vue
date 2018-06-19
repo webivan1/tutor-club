@@ -57,6 +57,8 @@
       },
 
       connect() {
+        console.log(this.localStream);
+
         this.p2p = new P2PLite(this.server, this.localStream, {
           params: {
             user: this.user,

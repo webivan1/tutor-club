@@ -1,21 +1,21 @@
 <template>
     <div>
         <Messages
-                ref="message"
-                :t="t"
-                :user="user"
-                :host="host"
-                :room="room"
-                :lang="lang"
+            ref="message"
+            :t="t"
+            :user="user"
+            :host="host"
+            :room="room"
+            :lang="lang"
         ></Messages>
 
         <FormChat
-                ref="form"
-                :t="t"
-                :host="host"
-                :room="room"
-                :lang="lang"
-                v-on:send="onMessage"
+            ref="form"
+            :t="t"
+            :host="host"
+            :room="room"
+            :lang="lang"
+            v-on:send="onMessage"
         ></FormChat>
     </div>
 </template>
@@ -38,15 +38,9 @@
       this.createServer();
     },
     mounted() {
-      this.swarm = swarm(this.server, {
-        stream: this.localStream
-      });
+      this.swarm = swarm(this.server);
 
       this.swarm.on('peer', (peer, id) => {
-        peer.on('stream', stream => {
-          console.log('OK STREAM');
-        });
-
         peer.on('data', message => {
           console.log(JSON.parse(message.toString()));
           message = JSON.parse(message.toString());

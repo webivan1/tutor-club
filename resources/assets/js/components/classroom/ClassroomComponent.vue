@@ -3,14 +3,14 @@
         <div v-if="!loader && !error">
             <div class="row">
                 <div class="col-md-6">
-                    <!--<Video-->
-                        <!--ref="video"-->
-                        <!--:tutor="isTutor"-->
-                        <!--:room="roomData"-->
-                        <!--:user="userData"-->
-                        <!--:host="host"-->
-                        <!--:loacal-stream="stream"-->
-                    <!--&gt;</Video>-->
+                    <Video
+                        ref="video"
+                        :tutor="isTutor"
+                        :room="roomData"
+                        :user="userData"
+                        :host="host"
+                        :local-stream="stream"
+                    ></Video>
                 </div>
                 <div class="col-md-6">
                     <Chat
@@ -20,7 +20,7 @@
                         :room="roomData"
                         :user="userData"
                         :lang="lang"
-                        :loacal-stream="stream"
+                        :local-stream="stream"
                     ></Chat>
                 </div>
             </div>

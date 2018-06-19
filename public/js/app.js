@@ -86382,15 +86382,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted: function mounted() {
     var _this = this;
 
-    this.swarm = __WEBPACK_IMPORTED_MODULE_1_webrtc_swarm___default()(this.server, {
-      stream: this.localStream
-    });
+    this.swarm = __WEBPACK_IMPORTED_MODULE_1_webrtc_swarm___default()(this.server);
 
     this.swarm.on('peer', function (peer, id) {
-      peer.on('stream', function (stream) {
-        console.log('OK STREAM');
-      });
-
       peer.on('data', function (message) {
         console.log(JSON.parse(message.toString()));
         message = JSON.parse(message.toString());
@@ -91240,6 +91234,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     connect: function connect() {
       var _this = this;
 
+      console.log(this.localStream);
+
       this.p2p = new __WEBPACK_IMPORTED_MODULE_1__webrtc_P2PLite__["a" /* default */](this.server, this.localStream, {
         params: {
           user: this.user,
@@ -91340,8 +91336,6 @@ var P2PLite = function () {
       });
 
       this.onClose(function (uuid) {
-        console.log('CLOSE', uuid);
-
         if (_this.peers[uuid]) {
           delete _this.peers[uuid];
         }
@@ -92903,7 +92897,23 @@ var render = function() {
     !_vm.loader && !_vm.error
       ? _c("div", [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-6" }),
+            _c(
+              "div",
+              { staticClass: "col-md-6" },
+              [
+                _c("Video", {
+                  ref: "video",
+                  attrs: {
+                    tutor: _vm.isTutor,
+                    room: _vm.roomData,
+                    user: _vm.userData,
+                    host: _vm.host,
+                    "local-stream": _vm.stream
+                  }
+                })
+              ],
+              1
+            ),
             _vm._v(" "),
             _c(
               "div",
@@ -92917,7 +92927,7 @@ var render = function() {
                     room: _vm.roomData,
                     user: _vm.userData,
                     lang: _vm.lang,
-                    "loacal-stream": _vm.stream
+                    "local-stream": _vm.stream
                   }
                 })
               ],
