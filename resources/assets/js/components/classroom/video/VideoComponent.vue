@@ -26,9 +26,67 @@
 </template>
 
 <script>
+  import signalhub from 'signalhub'
+  import P2PLite from '../webrtc/P2PLite'
+
   export default {
-    props: ['localStream', 'streams', 'tutor'],
+    props: ['tutor', 'room', 'user', 'host', 'localStream'],
+    data() {
+      return {
+        server: null,
+        p2p: null,
+        channel: null,
+        loader: true,
+        streams: []
+      }
+    },
+    created() {
+      this.channel = `classroom.${this.room.id}`;
+
+      // init server
+      this.createServer();
+    },
+    mounted() {
+      this.connect();
+    },
     methods: {
+      createServer() {
+        this.server = signalhub(this.channel, [
+          `${this.host || 'http://localhost'}:6003`
+        ]);
+      },
+
+      connect() {
+        this.p2p = new P2PLite(this.server, this.localStream, {
+          params: {
+            user: this.user,
+            isTutor: this.tutor
+          },
+        });
+
+        this.p2p.onStream(peer => {
+          this.streams.push({
+            user: peer,
+            stream: peer.getStream(),
+            params: peer.getParams()
+          });
+        });
+
+        this.p2p.onSignal(peer => {
+          if (peer.getId() !== this.p2p.getUser().getId()) {
+            peer.call(true);
+          }
+        });
+
+        this.p2p.onClose(uuid => {
+          this.streams.forEach((item, key) => {
+            if (item.user.getId() === uuid) {
+              this.streams.splice(key, 1);
+            }
+          });
+        });
+      },
+
       createUrl(stream) {
         return stream ? URL.createObjectURL(stream) : '';
       }
