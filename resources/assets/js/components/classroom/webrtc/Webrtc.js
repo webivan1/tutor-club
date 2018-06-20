@@ -16,6 +16,14 @@ export default class Webrtc {
       //trickle: false,
     });
 
+    this.peer.on('connect', _ => {
+      // ...
+    });
+
+    this.peer.on('data', data => {
+      this.from.attachEvent('data', JSON.parse(data.toString()));
+    });
+
     this.peer.on('signal', signal => {
       this.to.send('signal', {
         uuid: this.from.getId(),

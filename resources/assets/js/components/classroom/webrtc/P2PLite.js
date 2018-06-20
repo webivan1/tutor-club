@@ -1,11 +1,11 @@
 import Peer from './Peer'
 import Event from 'events'
 
-export default class P2PLite {
+export class P2PLite {
 
   /**
-   * @param Signalhub signalServer - interface server Signalgub
-   * @param Object options
+   * @param {Signalhub} signalServer - interface server Signalhub
+   * @param {Object} options
    */
   constructor(signalServer, stream, options) {
     this.server = signalServer;
@@ -25,8 +25,10 @@ export default class P2PLite {
   init() {
     this.createUser(this.options.uuid, this.options.params);
 
+    // add local stream
     this.getUser().addStream(this.stream);
 
+    // answer simple-peer
     this.getUser().on('signal', message => {
       let user = this.peers[message.uuid];
 
@@ -49,18 +51,36 @@ export default class P2PLite {
     });
   }
 
+  /**
+   * This user 
+   * 
+   * @return {Peer}
+   */
   getUser() {
     return this.peers[this.options.uuid];
   }
 
+  /**
+   * @param {number} id 
+   * @return {Peer}
+   */
   getUserById(id) {
     return this.peers[id] || null;
   }
 
+  /**
+   * @param {any} uuid 
+   * @return {boolean}
+   */
   isUser(uuid) {
     return this.getUser().getId() === uuid;
   }
 
+  /**
+   * @param {any} uuid 
+   * @param {Object} params
+   * @return {Peer}
+   */
   createUser(uuid, params) {
     if (!this.peers[uuid]) {
       this.peers[uuid] = new Peer(uuid, params, this.server, this.getUser());
@@ -74,10 +94,20 @@ export default class P2PLite {
     return Math.floor(Math.random() * 0xFFFFFF).toString(16);
   }
 
+  /**
+   * User send to signal server
+   * 
+   * @param {string|number} event
+   */
   sendUser(event) {
     this.server.broadcast(event, [this.options.uuid, this.options.params]);
   }
 
+  /**
+   * Listen new peers
+   * 
+   * @param {Function} handler
+   */
   onSignal(handler) {
     this.server.subscribe('all')
       .on('data', message => {
@@ -97,39 +127,38 @@ export default class P2PLite {
     this.sendUser('all');
   }
 
-  onUser(handler) {
-    this.server.subscribe('leave')
-      .on('data', message => {
-        let [ id, params ] = message;
-
-        console.log('leave');
-      });
-
-    this.sendUser('leave');
-
-    setInterval(() => this.sendUser('leave'), 4000);
-  }
-
+  /**
+   * Close connection
+   * 
+   * @param {Function} handler
+   */
   onClose(handler) {
     this.server.subscribe('close-peer').on('data', uuid => {
       handler(uuid);
     });
   }
 
+  /**
+   * Listen stream
+   * 
+   * @param {Function} handler
+   */
   onStream(handler) {
     this.getUser().on('stream', uuid => {
       let peer = this.getUserById(uuid);
-
       handler(peer);
     });
   }
 
+  /**
+   * @return {number}
+   */
   total() {
     return Object.keys(this.peers).length;
   }
 
   map(handler) {
-    return Object.keys(this.peers).forEach(key => {
+    Object.keys(this.peers).forEach(key => {
       handler(key, this.peers[key]);
     });
   }

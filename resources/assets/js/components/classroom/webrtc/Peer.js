@@ -1,4 +1,5 @@
 import Webrtc from './Webrtc'
+import Event from 'events'
 
 export default class Peer {
 
@@ -9,6 +10,11 @@ export default class Peer {
     this.stream = null;
     this.connect = null;
     this.from = from || null;
+    this.event = new Event();
+    this.events = [];
+
+    // listen events
+    this.listenEvent();
   }
 
   addStream(stream) {
@@ -29,6 +35,37 @@ export default class Peer {
 
   getParams() {
     return this.params;
+  }
+
+  attachEvent(event, handler) {
+    this.events.push([event, handler]);
+  }
+
+  sendMessage(event, message) {
+    try {
+      message = typeof message === 'object' ? message : JSON.parse(message);
+    } catch (err) {
+      message = { result: message };
+    }
+
+    Object.assign(message, { _eventName: event });
+
+    this.event.emit('data', JSON.stringify(message));
+  }
+
+  listenEvent() {
+    this.event.on('data', data => {
+      data = JSON.parse(data);
+
+      this.events.forEach(item => {
+        let [eventName, handler] = item;
+        if (eventName === data._eventName) {
+          let cloneData = {...data};
+          delete cloneData['_eventName'];
+          handler(cloneData);
+        }
+      });
+    });
   }
 
   send(event, message) {

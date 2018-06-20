@@ -3,8 +3,8 @@
         <div v-if="loader">
             loading...
         </div>
-        <div v-else>
-            <div ref="wrapper" class="classroom-messages-list">
+        <div v-else class="card">
+            <div ref="wrapper" class="card-body classroom-messages-list">
                 <div v-if="nextPageUrl" class="text-center">
                     <div v-if="afterLoader">loading...</div>
                     <div v-else>

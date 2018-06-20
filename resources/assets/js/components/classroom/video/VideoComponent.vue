@@ -9,8 +9,10 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <video class="embed-responsive-item" :src="createUrl(streams[0].stream)" autoplay></video>
+                    <div class="row">
+                        <div class="col" v-for="stream in streams">
+                            <video class="embed-responsive-item" :src="createUrl(stream.stream)" autoplay></video>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -29,7 +31,7 @@
 
 <script>
   import signalhub from 'signalhub'
-  import P2PLite from '../webrtc/P2PLite'
+  import { P2PLite } from '../webrtc'
 
   export default {
     props: ['tutor', 'room', 'user', 'host', 'localStream'],
@@ -59,8 +61,6 @@
       },
 
       connect() {
-        console.log(this.localStream);
-
         this.p2p = new P2PLite(this.server, this.localStream, {
           params: {
             user: this.user,

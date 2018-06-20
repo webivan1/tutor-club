@@ -1,0 +1,25 @@
+{
+  "name": "p2plite",
+  "version": "0.0.1",
+  "description": "Webrtc lite settings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webrtc",
+    "simple-peer",
+    "video",
+    "stream"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webivan1/P2PLite.git"
+  },
+  "author": "Ivan Maltsev (webivan1)",
+  "license": "MIT",
+  "dependencies": {
+    "signalhub": "^4.9.0",
+    "simple-peer": "^9.1.2"
+  }
+}

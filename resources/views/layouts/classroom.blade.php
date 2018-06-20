@@ -19,7 +19,7 @@
 </head>
 <body self-user-id="{{ \Auth::id() }}" data-url="{{ route('home') }}">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('home') }}">
                 {{ config('app.name') }}
             </a>
