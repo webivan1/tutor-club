@@ -31,7 +31,7 @@
 
 <script>
   import signalhub from 'signalhub'
-  import { P2PLite } from '../webrtc'
+  import { P2PLite } from 'p2plite'
 
   export default {
     props: ['tutor', 'room', 'user', 'host', 'localStream'],
