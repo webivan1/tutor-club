@@ -82,6 +82,10 @@
           if (this.$refs.mw.scrollTop === 0) {
             this.nextPageLoad();
           }
+
+          if (this.$refs.mw.scrollTop === this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight) {
+            this.upScroll = false;
+          }
         };
       }
 
@@ -95,6 +99,8 @@
       },
 
       scrollToBottom() {
+        console.log('DOWN', this.$refs.mw.scrollHeight, this.$refs.mw.clientHeight);
+
         if (this.$refs.mw && this.upScroll === false) {
           this.$refs.mw.scrollTop = this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight;
         }

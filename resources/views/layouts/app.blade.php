@@ -19,12 +19,6 @@
                     <li class="nav-item">
                         <a href="{{ route('profile.tutor.home') }}" class="nav-link">{{ t('Become a tutor') }}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link">{{ t('News') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">{{ t('Contacts') }}</a>
-                    </li>
                 </ul>
 
                 @include('layouts._nav_right')

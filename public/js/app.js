@@ -84178,6 +84178,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
 
 
 
@@ -84394,6 +84395,9 @@ var SHOW_MESSAGES = 'messages';
     },
     addMessage: function addMessage(message) {
       this.messages.data.push(message);
+      //        setTimeout(_ => {
+      //          this.$refs.messages.scrollToBottom();
+      //        });
     },
     nextPageMessages: function nextPageMessages(pageUrl) {
       this.fetchMessages(this.dialog.id, pageUrl);
@@ -84932,6 +84936,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
         if (_this3.$refs.mw.scrollTop === 0) {
           _this3.nextPageLoad();
         }
+
+        if (_this3.$refs.mw.scrollTop === _this3.$refs.mw.scrollHeight + _this3.$refs.mw.clientHeight) {
+          _this3.upScroll = false;
+        }
       };
     }
 
@@ -84945,6 +84953,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       }
     },
     scrollToBottom: function scrollToBottom() {
+      console.log('DOWN', this.$refs.mw.scrollHeight, this.$refs.mw.clientHeight);
+
       if (this.$refs.mw && this.upScroll === false) {
         this.$refs.mw.scrollTop = this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight;
       }
@@ -85069,6 +85079,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['item'],
@@ -85085,6 +85112,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     filterDate: function filterDate(date) {
       var serverDate = new Date(date);
       return new Date(serverDate.getTime() + -1 * serverDate.getTimezoneOffset() * 60000);
+    },
+    isOwnMessage: function isOwnMessage() {
+      return parseInt(this.item.user_id) === parseInt(this.user);
     }
   }
 });
@@ -85097,65 +85127,54 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.item.user_id === this.user
-      ? _c("div", [
-          _c("div", { staticClass: "pl-5 mb-2" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col" }, [
-                _c("div", {
-                  staticClass: "message own-message",
-                  domProps: { innerHTML: _vm._s(_vm.item.message) }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-auto" }, [
-                _c(
-                  "small",
-                  { staticClass: "text-muted" },
-                  [
-                    _c("timeago", {
-                      attrs: {
-                        since: _vm.filterDate(_vm.item.created_at),
-                        "auto-update": 60
-                      }
-                    })
-                  ],
-                  1
-                )
-              ])
-            ])
+  return _c(
+    "div",
+    {
+      staticClass: "message-chat",
+      class: {
+        own: _vm.isOwnMessage()
+      }
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "message-chat-created",
+          class: {
+            "text-left": !_vm.isOwnMessage(),
+            "text-right": _vm.isOwnMessage()
+          }
+        },
+        [
+          _c("timeago", {
+            attrs: {
+              since: _vm.filterDate(_vm.item.created_at),
+              "auto-update": 60
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "row",
+          class: {
+            "justify-content-end": _vm.isOwnMessage()
+          }
+        },
+        [
+          _c("div", { staticClass: "col-10" }, [
+            _c("div", {
+              staticClass: "message-chat-text",
+              domProps: { innerHTML: _vm._s(_vm.item.message) }
+            })
           ])
-        ])
-      : _c("div", [
-          _c("div", { staticClass: "row mb-2" }, [
-            _c("div", { staticClass: "col" }, [
-              _c("div", { staticClass: "pr-5" }, [
-                _c("div", {
-                  staticClass: "message",
-                  domProps: { innerHTML: _vm._s(_vm.item.message) }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-auto" }, [
-              _c(
-                "small",
-                { staticClass: "text-muted" },
-                [
-                  _c("timeago", {
-                    attrs: {
-                      since: _vm.filterDate(_vm.item.created_at),
-                      "auto-update": 60
-                    }
-                  })
-                ],
-                1
-              )
-            ])
-          ])
-        ])
-  ])
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -85642,6 +85661,7 @@ var render = function() {
                 { staticClass: "flex-auto-height" },
                 [
                   _c("messages", {
+                    ref: "messages",
                     attrs: {
                       data: _vm.data,
                       list: _vm.messages,

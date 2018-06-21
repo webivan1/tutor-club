@@ -1,3 +1,33 @@
+$gray-100: material-color('grey', '100');
+$gray-200: material-color('grey', '200');
+$gray-300: material-color('grey', '300');
+$gray-400: material-color('grey', '400');
+$gray-500: material-color('grey', '500');
+$gray-600: material-color('grey', '600');
+$gray-700: material-color('grey', '700');
+$gray-800: material-color('grey', '800');
+$gray-900: material-color('grey', '900');
+
+$blue: material-color('blue');
+$indigo: material-color('indigo');
+$purple: material-color('purple');
+$pink: material-color('pink');
+$red: material-color('red');
+$orange: material-color('orange');
+$yellow: material-color('yellow');
+$green: material-color('green');
+$teal: material-color('teal');
+$cyan: material-color('cyan');
+
+$primary: $blue;
+$secondary: $gray-300;
+$success: $green;
+$info: $purple;
+$warning: $orange;
+$danger: $red;
+$light: $gray-200 !default;
+$dark: $gray-900 !default;
+
 // breadcrumbs
 $breadcrumb-bg: none;
 $breadcrumb-padding-x: 0;

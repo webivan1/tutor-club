@@ -29,47 +29,9 @@
       height: 100vh;
     }
   }
+
+  @include mdc-elevation(2);
 }
-
-.messages-list {
-  .avatar-block {
-    display: table-cell;
-    vertical-align: middle;
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-    position: relative;
-    text-align: center;
-    //border: 1px solid rgba(0,0,0,0.05);
-    background: linear-gradient(-30deg, material-color('pink', '500') 50%, material-color('yellow', '400'));
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    overflow: hidden;
-
-    &:after {
-      content: ' ';
-      display: block;
-    }
-  }
-
-  .indecator-user-min {
-    position: absolute;
-    right: 1px;
-    bottom: 1px;
-  }
-
-  .messages-item {
-
-  }
-
-  .message-content {
-    line-height: 14px;
-  }
-}
-
-
-
 
 //.chat {
 //  position: fixed;

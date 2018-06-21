@@ -1,19 +1,26 @@
 // Fonts
 //@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
 
+// Material colors
+@import '~sass-material-colors/sass/sass-material-colors-map';
+
+// Functions
+@import 'functions/material_colors';
+
 // Variables
 @import "variables";
 
+// Material components
+@import "material/index";
+
+// Theme bootstrap pulse variables
 @import "theme/pulse/variables";
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 //@import '~bootstrap-material-design/scss/bootstrap-material-design';
 
-// Material colors
-@import '~sass-material-colors/sass/sass-material-colors-map';
-@import 'functions/material_colots';
-
+// Theme bootstrap pulse
 @import "theme/pulse/bootswatch";
 
 // Components

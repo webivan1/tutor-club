@@ -35,6 +35,7 @@
                 </div>
                 <div v-if="buttonToggle && isMessages() && dialog" class="flex-auto-height">
                     <messages
+                        ref="messages"
                         :data="data"
                         :list="messages"
                         :loader="loaderMessage"
@@ -254,6 +255,9 @@
 
       addMessage(message) {
         this.messages.data.push(message);
+//        setTimeout(_ => {
+//          this.$refs.messages.scrollToBottom();
+//        });
       },
 
       nextPageMessages(pageUrl) {
