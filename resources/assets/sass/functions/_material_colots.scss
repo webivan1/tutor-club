@@ -1,0 +1,13 @@
+@function material-color($color-name, $color-variant: '500', $default-color: $primary) {
+  @if map_has_key($material-colors, $color-name) {
+    $color-keys: map_get($material-colors, $color-name);
+
+    @if map_has_key($color-keys, $color-variant) {
+      @return map_get($color-keys, $color-variant);
+    } @else {
+      @return map_get($color-keys, '500');
+    }
+  }
+
+  @return $default-color;
+}

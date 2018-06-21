@@ -8,6 +8,10 @@ body {
   flex: 1;
 }
 
+.vh-100 {
+  height: 100vh;
+}
+
 .bmd-layout-container {
   min-height: 100vh;
 }
@@ -24,7 +28,7 @@ footer {
   //align-items: center !important;
   min-height: 16rem;
   @extend .pt-2;
-  padding-bottom: $header-line-bottom + 1rem;
+  //padding-bottom: $header-line-bottom + 1rem;
   background-image: url("/images/bg.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -36,7 +40,7 @@ footer {
 }
 
 .main-container {
-  margin-top: -#{$header-line-bottom};
+  //margin-top: -#{$header-line-bottom};
 }
 
 .py-3-no-empty:not(:empty) {
@@ -115,7 +119,7 @@ footer {
 }
 
 .border-line-bottom {
-  border-bottom: 1px dotted $gray-300;
+  border-bottom: 1px dotted material-color('grey', '300');
   overflow: hidden;
   display: block;
   height: 1rem;
@@ -163,4 +167,19 @@ footer {
 
 .max-w200 {
   max-width: 200px;
+}
+
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+  height: 100% !important;
+
+  > .flex-auto-height {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+.c-p {
+  cursor: pointer;
 }

@@ -1,7 +1,7 @@
 .message {
   border-radius: 3px;
   box-sizing: border-box;
-  background-color: $gray-100;
+  background-color: material-color('grey', '100');
   border: 1px solid rgba(0,0,0,0.1);
   color: black;
   font-size: 12px;
@@ -13,6 +13,6 @@
   }
 
   &.own-message {
-    background-color: $blue-100;
+    background-color: material-color('blue', '100');
   }
 }

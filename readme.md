@@ -46,7 +46,8 @@
     - Демоны (SCREEN)
         - node ./resources/assets/js/ws.server/server.js
         - laravel-echo-server start
-        - npm run signalhub
+        - signalhub --cert /home/admin/conf/web/ssl.dev.my-tutor.club.pem --key /home/admin/conf/web/ssl.dev.my-tutor.club.key listen -p 6003
+        - signalhub --cert /home/admin/conf/web/ssl.dev.my-tutor.club.pem --key /home/admin/conf/web/ssl.dev.my-tutor.club.key listen -p 6004
     - Как работать с js (Запуск скриптов в корне проекта)
         - Если первый раз производится запуск
             - npm install

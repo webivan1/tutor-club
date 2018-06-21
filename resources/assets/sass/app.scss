@@ -1,11 +1,20 @@
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
+//@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
 
 // Variables
 @import "variables";
 
+@import "theme/pulse/variables";
+
 // Bootstrap
-@import '~bootstrap-material-design/scss/bootstrap-material-design';
+@import '~bootstrap/scss/bootstrap';
+//@import '~bootstrap-material-design/scss/bootstrap-material-design';
+
+// Material colors
+@import '~sass-material-colors/sass/sass-material-colors-map';
+@import 'functions/material_colots';
+
+@import "theme/pulse/bootswatch";
 
 // Components
 @import "components/index";

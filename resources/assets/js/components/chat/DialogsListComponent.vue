@@ -1,32 +1,38 @@
 <template>
-    <div ref="wrapper" class="card-body px-0 py-0 flex-auto-height" :class="{
+    <div ref="wrapper" class="card-body px-0 py-0 flex-vertical" :class="{
         loader: searchLoader
     }">
         <form @submit.prevent="searchDialog()">
             <input type="text" class="form-control px-1" v-model="search" placeholder="Find dialog..." />
         </form>
-
-        <div class="list-group py-0">
-            <a v-for="(item, key) in list.data" @click="checkDialog(item)" href="javascript:void(0)" class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">
-                        <online :user="item.user.user.id"></online>
-                        #{{ item.user.user.id }} {{ item.user.user.name }}
-                    </h5>
-                    <small>
-                        <timeago :since="filterDate(item.max_updated_at)" :auto-update="60"></timeago>
-                    </small>
+        <div class="flex-auto-height py-2">
+            <div class="container-fluid messages-list">
+                <div v-for="(item, key) in list.data" class="row c-p mb-2" @click="checkDialog(item)">
+                    <div class="col-auto pr-0">
+                        <div class="position-relative">
+                            <div class="avatar-block">
+                                #{{ item.user.user.id }}
+                            </div>
+                            <online :user="item.user.user.id"></online>
+                        </div>
+                    </div>
+                    <div class="col pl-2">
+                        <small class="float-right text-grey-400">
+                            <timeago :since="filterDate(item.max_updated_at)" :auto-update="60"></timeago>
+                        </small>
+                        <h5 class="text-indigo-300 mb-0">
+                            {{ item.user.user.name }}
+                            <span v-if="item.message_no_read" class="badge badge-danger badge-pill">
+                                New
+                            </span>
+                        </h5>
+                        <div class="message-content text-grey">
+                            <div><small><b>Theme dialog:</b> {{ item.title }}</small></div>
+                            <div><small><b>Total messages:</b> {{ item.messages_count }}</small></div>
+                        </div>
+                    </div>
                 </div>
-                <p class="mb-1">
-                    {{ item.title }}
-                    <span class="badge badge-secondary badge-pill mr-1">
-                        {{ item.messages_count }}
-                    </span>
-                    <span v-if="item.message_no_read" class="badge badge-danger badge-pill">
-                        New
-                    </span>
-                </p>
-            </a>
+            </div>
 
             <div v-if="nextPageLoader" class="text-center py-3">
                 <div class="ld ld-ring ld-spin-fast mx-auto fs-1 text-info"></div>

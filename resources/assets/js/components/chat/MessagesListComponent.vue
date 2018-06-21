@@ -1,27 +1,29 @@
 <template>
-    <div>
-        <!--<div class="card-header">-->
-            <!--<a href="javascript:void(0)" @click="close()">Prev to dialogs</a>-->
-        <!--</div>-->
-        <div class="card-header px-1 py-1 text-center" v-if="loader">
-            <div class="ld ld-ring ld-spin-fast fs-1 text-info mx-auto"></div>
+    <div class="flex-vertical">
+        <div class="py-1 px-1 bg-grey-100">
+            <a href="javascript:void(0)" @click="close()" class="btn btn-sm btn-block btn-link">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+        </div>
+        <div class="px-1 py-1 text-center" v-if="loader">
+            <div class="ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"></div>
+        </div>
+        <div ref="mw" class="card-body flex-auto-height py-0" v-if="!loader">
+            <div v-for="item in list.data">
+                <message :item="item"></message>
+            </div>
         </div>
         <div v-if="!loader">
-            <div ref="mw" class="card-body">
-                <div v-for="item in list.data">
-                    <message :item="item"></message>
+            <form :class="{ loader: loaderSend }" class="mx-0 my-0" @submit.prevent="sendMessage">
+                <div class="input-group">
+                    <input v-model="messageField" required @keydown="Keydown" type="text" class="form-control" placeholder="Write message..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-share-square"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <form :class="{ loader: loaderSend }" class="row mx-0 my-0" @submit.prevent="sendMessage">
-                    <div class="col px-0">
-                        <textarea @keydown="Keydown" required v-model="messageField" class="form-control chat-area-field"></textarea>
-                    </div>
-                    <div class="col-auto px-0 pl-1">
-                        <button class="btn btn-primary">Send</button>
-                    </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 </template>
