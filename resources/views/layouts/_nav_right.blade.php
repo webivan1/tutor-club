@@ -16,8 +16,16 @@
 
     <!-- Authentication Links -->
     @guest
-        <li><a class="nav-link" href="{{ route('login') }}">{{ t('home.Login') }}</a></li>
-        <li><a class="nav-link" href="{{ route('register') }}">{{ t('home.Register') }}</a></li>
+        <li>
+            <a class="text-primary nav-link" href="{{ route('login') }}" title="{{ t('home.Login') }}">
+                <b>{{ t('home.Login') }}</b> <i class="fas fa-sign-in-alt"></i>
+            </a>
+        </li>
+        <li>
+            <a class="text-primary nav-link" href="{{ route('register') }}" title="{{ t('home.Register') }}">
+                <i class="fas fa-user-plus"></i>
+            </a>
+        </li>
     @else
         <li class="nav-item dropdown">
             <a id="navbarDropdown" class="dropdown-toggle nav-link not-after btn mb-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

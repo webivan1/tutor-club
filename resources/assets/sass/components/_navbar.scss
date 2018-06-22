@@ -1,0 +1,14 @@
+.navbar {
+  border: none;
+  @include mdc-elevation(3);
+
+  .navbar-brand {
+    font-size: 2rem;
+    color: $primary;
+
+    &:first-letter {
+      font-weight: bolder;
+      color: $red;
+    }
+  }
+}
