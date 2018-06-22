@@ -28,8 +28,8 @@
         </li>
     @else
         <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="dropdown-toggle nav-link not-after btn mb-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                <i class="material-icons">face</i>
+            <a id="navbarDropdown" class="text-primary dropdown-toggle nav-link not-after btn mb-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                <i class="fas fa-user"></i>
             </a>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

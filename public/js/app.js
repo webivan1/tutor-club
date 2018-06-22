@@ -82354,12 +82354,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['messages'],
   mounted: function mounted() {},
   data: function data() {
     return {
+      formShow: false,
       content: typeof this.messages === 'string' ? JSON.parse(this.messages) : {},
       loader: false,
       items: [],
@@ -82413,86 +82443,85 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      class: {
-        dropdown: true,
-        "search-container": true,
-        show: _vm.items.length
-      }
-    },
-    [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.search,
-            expression: "search"
-          }
-        ],
-        staticClass: "form-control-search bg-white",
-        attrs: { type: "text", placeholder: _vm.content.placeholder },
-        domProps: { value: _vm.search },
+  return _c("div", [
+    _c(
+      "a",
+      {
+        staticClass: "fs-24 text-blue-200",
+        attrs: { href: "javascript:void(0)" },
         on: {
-          keydown: function($event) {
-            _vm.change()
-          },
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.search = $event.target.value
+          click: function($event) {
+            _vm.formShow = !_vm.formShow
           }
         }
-      }),
-      _vm._v(" "),
-      (_vm.items.length && _vm.search.length >= 2) || _vm.errors
-        ? _c("div", { staticClass: "close-search-form" }, [
+      },
+      [
+        !_vm.formShow
+          ? _c("i", { staticClass: "fas fa-search" })
+          : _c("i", { staticClass: "fas fa-times" })
+      ]
+    ),
+    _vm._v(" "),
+    _vm.formShow
+      ? _c("div", { staticClass: "form-control-search bg-grey-900" }, [
+          _c("div", { staticClass: "container position-relative" }, [
             _c(
-              "a",
+              "form",
               {
-                staticClass: "text-danger",
-                attrs: { href: "javascript:void(0)" },
-                on: {
-                  click: function($event) {
-                    _vm.closeDropdown()
-                  }
-                }
+                staticClass: "dropdown px-0 py-0 my-0 mx-0",
+                class: { show: _vm.items.length }
               },
-              [_c("i", { staticClass: "material-icons" }, [_vm._v("close")])]
-            )
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.errors
-        ? _c("div", [
-            _c("div", { staticClass: "dropdown-menu show" }, [
-              _c("div", { staticClass: "alert alert-danger mb-0" }, [
-                _vm._v(
-                  "\n                " + _vm._s(_vm.errors) + "\n            "
+              [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.search,
+                      expression: "search"
+                    }
+                  ],
+                  staticClass: "form-control form-control-lg",
+                  attrs: { type: "text", placeholder: _vm.content.placeholder },
+                  domProps: { value: _vm.search },
+                  on: {
+                    keydown: function($event) {
+                      _vm.change()
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.search = $event.target.value
+                    }
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _vm.items.length && _vm.search.length >= 2
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "dropdown-menu",
+                    class: { show: _vm.items.length }
+                  },
+                  _vm._l(_vm.items, function(item) {
+                    return _c(
+                      "a",
+                      {
+                        staticClass: "dropdown-item",
+                        attrs: { href: item.slug }
+                      },
+                      [_vm._v(_vm._s(item.name))]
+                    )
+                  })
                 )
-              ])
-            ])
+              : _vm._e()
           ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.items.length && _vm.search.length >= 2
-        ? _c(
-            "div",
-            { staticClass: "dropdown-menu show" },
-            _vm._l(_vm.items, function(item) {
-              return _c(
-                "a",
-                { staticClass: "dropdown-item", attrs: { href: item.slug } },
-                [_vm._v(_vm._s(item.name))]
-              )
-            })
-          )
-        : _vm._e()
-    ]
-  )
+        ])
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

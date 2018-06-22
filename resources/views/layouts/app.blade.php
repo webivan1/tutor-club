@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('body')
-    <nav class="navbar navbar-expand-md navbar-light bg-white">
+    <nav class="navbar navbar-expand-md navbar-light bg-white position-relative">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 {{ config('app.name') }}
@@ -12,7 +12,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a href="{{ route('category.list') }}" class="nav-link">{{ t('Tutor search') }}</a>
                     </li>
@@ -21,51 +21,37 @@
                     </li>
                 </ul>
 
+                <div class="ml-2 app-vue">
+                    <search-category-component
+                        messages='{{ json_encode([
+                            'placeholder' => t('home.SearchCategoryField'),
+                            'button' => t('home.SearchCategoryButton'),
+                            'search' => route('category.search')
+                        ]) }}'
+                    ></search-category-component>
+                </div>
+
                 @include('layouts._nav_right')
             </div>
         </div>
     </nav>
 
     <main class="app-vue app-content pb-4">
-        <div class="container-fluid">
-            <div class="header-line bg-primary row align-content-center">
-                <div class="col-md-12">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="@section('width-content') col-md-9 @show">
-                                <div class="breadcrumb-color-white">
-                                    @section('breadcrumbs')
-                                        {{ Breadcrumbs::render() }}
-                                    @show
-                                </div>
+
+        <div class="container-fluid px-0 @hasSection('top-content') top-content @endif">
+            <div class="header-line">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="@section('width-content') col-md-10 @show">
+                            <div class="breadcrumb-color-white">
+                                @section('breadcrumbs')
+                                    {{ Breadcrumbs::render() }}
+                                @show
                             </div>
-                        </div>
-                    </div>
-                </div>
-                @section('search')
-                    <div class="col-md-12">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="@section('width-content') col-md-9 @show">
-                                    <search-category-component
-                                            messages='{{ json_encode([
-                                            'placeholder' => t('home.SearchCategoryField'),
-                                            'button' => t('home.SearchCategoryButton'),
-                                            'search' => route('category.search')
-                                        ]) }}'
-                                    ></search-category-component>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @show
-                <div class="col-md-12">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="@section('width-content') col-md-9 @show">
-                                @include('errors.flash_message')
-                                @include('errors.list')
-                            </div>
+
+                            @hasSection('h1')
+                                <h1 class="text-white">@yield('h1')</h1>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -75,7 +61,7 @@
         <div class="main-container">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="@section('width-content') col-md-9 @show">
+                    <div class="@section('width-content') col-md-10 @show">
                         @yield('content')
                     </div>
                 </div>
@@ -83,18 +69,18 @@
         </div>
 
         @auth
-        <chat
+            <chat
                 user="{{ \Auth::id() }}"
                 data-json='{{ json_encode([
-                    'prependUrl' => route('home'),
-                    'messages' => [
+                'prependUrl' => route('home'),
+                'messages' => [
                         'heading' => t('Chat'),
                         'open' => t('Open'),
                         'close' => t('Close'),
                         'PrevToDialogs' => t('Prev to dialogs')
                     ]
                 ]) }}'
-        ></chat>
+            ></chat>
         @endauth
     </main>
 

@@ -23,24 +23,40 @@ footer {
 }
 
 .header-line {
-  //display: flex;
-  //flex-direction: column;
-  //align-items: center !important;
-  min-height: 16rem;
-  @extend .pt-2;
-  //padding-bottom: $header-line-bottom + 1rem;
   background-image: url("/images/bg.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  position: relative;
+  z-index: 0;
+  padding: 2rem 0;
 
-  //.container {
-  //  flex: 0 0 100%;
-  //}
+  &:after {
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: lighten($info, 10%);
+    opacity: 0.7;
+    z-index: 0;
+    top: 0;
+    left: 0;
+  }
+
+  * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
-.main-container {
-  //margin-top: -#{$header-line-bottom};
+.top-content {
+  .header-line {
+    padding-bottom: 7rem;
+  }
+
+  + .main-container {
+    margin-top: -5rem;
+  }
 }
 
 .py-3-no-empty:not(:empty) {

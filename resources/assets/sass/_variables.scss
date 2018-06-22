@@ -19,7 +19,7 @@ $green: material-color('green');
 $teal: material-color('teal');
 $cyan: material-color('cyan');
 
-$primary: $blue;
+$primary: material-color('blue', '400');
 $secondary: $gray-300;
 $success: $green;
 $info: $purple;
@@ -34,6 +34,9 @@ $breadcrumb-padding-x: 0;
 
 $header-line-bottom: 3.346rem;
 
-$font-family-base: 'Roboto';
+$font-family-base: 'Roboto Condensed', sans-serif;
 
 $dropdown-border-width: 0;
+
+$body-bg: #fafafa;
+$font-size-base: 1.1rem;

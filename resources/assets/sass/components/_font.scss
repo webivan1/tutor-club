@@ -1,0 +1,10 @@
+$font-size-max: 32;
+$font-size-min: 8;
+
+@while $font-size-min <= $font-size-max {
+  .fs-#{$font-size-min} {
+    font-size: #{$font-size-min}px;
+  }
+
+  $font-size-min: $font-size-min + 1;
+}
