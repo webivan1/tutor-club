@@ -20,13 +20,18 @@ $teal: material-color('teal');
 $cyan: material-color('cyan');
 
 $primary: material-color('blue', '400');
-$secondary: $gray-300;
+$secondary: $gray-500;
 $success: $green;
 $info: $purple;
 $warning: $orange;
 $danger: $red;
 $light: $gray-200 !default;
 $dark: $gray-900 !default;
+
+//$mdc-theme-primary: $info;
+//$mdc-theme-secondary: $secondary;
+//$mdc-theme-on-primary: material-color('purple', '100');
+//$mdc-theme-on-secondary: material-color('grey', '100');
 
 // breadcrumbs
 $breadcrumb-bg: none;
@@ -40,3 +45,14 @@ $dropdown-border-width: 0;
 
 $body-bg: #fafafa;
 $font-size-base: 1.1rem;
+
+// List group
+
+$list-group-bg: white;
+$list-group-border-color: $gray-100;
+
+$list-group-hover-bg: $gray-200;
+$list-group-active-color: $primary;
+$list-group-active-bg: $list-group-bg;
+
+$list-group-disabled-color: $gray-400;

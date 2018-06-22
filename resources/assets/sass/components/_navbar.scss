@@ -1,5 +1,6 @@
 .navbar {
   border: none;
+  z-index: 2;
   @include mdc-elevation(3);
 
   .navbar-brand {

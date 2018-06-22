@@ -8,13 +8,13 @@
             <div class="card">
                 <div class="card-header">
                     {{ Html::link(route('profile.edit.form'), t('home.EditProfile'), [
-                        'class' => 'btn btn-primary mr-2'
+                        'class' => 'mdc-button'
                     ]) }}
                     {{ Html::link(route('profile.password.form'), t('home.ChangePassword'), [
-                        'class' => 'btn btn-primary mr-2'
+                        'class' => 'mdc-button'
                     ]) }}
                     {{ Html::link(route('profile.email.form'), t('home.ChangeEmail'), [
-                        'class' => 'btn btn-primary'
+                        'class' => 'mdc-button'
                     ]) }}
                 </div>
 

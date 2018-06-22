@@ -30,6 +30,7 @@ footer {
   position: relative;
   z-index: 0;
   padding: 2rem 0;
+  margin-bottom: 3rem;
 
   &:after {
     content: ' ';
@@ -51,6 +52,7 @@ footer {
 
 .top-content {
   .header-line {
+    margin-bottom: 0;
     padding-bottom: 7rem;
   }
 

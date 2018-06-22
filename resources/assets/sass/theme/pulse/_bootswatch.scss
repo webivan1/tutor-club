@@ -131,12 +131,13 @@
 .list-group {
 
   &-item {
-    color: rgba(255, 255, 255, 0.8);
+    color: $primary;
 
     &.active,
     &:hover,
     &:focus {
-      color: #fff;
+      color: darken($primary, 10%);
+      background: $list-group-hover-bg;
     }
 
     &.active {

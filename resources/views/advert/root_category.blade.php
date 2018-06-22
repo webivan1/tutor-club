@@ -1,11 +1,6 @@
 @extends('layouts.cabinet')
 
 @section('title', t('Create new ad'))
-@section('not-drawers', true)
-
-@section('nav-left')
-    {{ Html::link(route('cabinet.advert.index'), t('home.listOwnAdverts'), ['class' => 'list-group-item']) }}
-@endsection
 
 @section('content')
     <h1 class="page-header">

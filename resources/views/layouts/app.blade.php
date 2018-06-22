@@ -31,7 +31,9 @@
                     ></search-category-component>
                 </div>
 
-                @include('layouts._nav_right')
+                @include('layouts._nav_right', [
+                    'theme' => 'light'
+                ])
             </div>
         </div>
     </nav>
