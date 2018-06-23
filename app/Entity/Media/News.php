@@ -23,6 +23,22 @@ class News extends Model
     public const STATUS_ACTIVE = 'active';
     public const STATUS_DISABLED = 'disabled';
 
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function($news) {
+
+            // удаляем картинку физически
+            if(!empty($news->image->file_path)) {
+                $f = \Storage::disk('public');
+                $f->delete($news->image->file_path);
+            }
+
+            // удаляем картинку из связанной таблицы files
+            $news->image()->delete();
+        });
+    }
+
     /**
      * @return bool
      */

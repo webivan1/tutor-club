@@ -55,9 +55,11 @@ class NewsController extends Controller
             $this->uploadImage($request->file('photo'), 'images/upload')
         );
 
-        if (!empty($file->id)) {
-            News::create(array_merge($request->all(), ['file_id' => $file->id]));
+        if (empty($file->id)) {
+            return back()->with('error', 'Не удалось сохранить файл!');
         }
+
+        News::create(array_merge($request->all(), ['file_id' => $file->id]));
 
         return redirect()->route('cabinet.admin.media.news.index')
             ->with('success', 'Новость успешно добавлена!');
