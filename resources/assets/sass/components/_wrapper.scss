@@ -37,8 +37,8 @@ footer {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: lighten($info, 10%);
-    opacity: 0.7;
+    background: #7950f2; //material-color('indigo', '700');
+    opacity: 0.85;
     z-index: 0;
     top: 0;
     left: 0;

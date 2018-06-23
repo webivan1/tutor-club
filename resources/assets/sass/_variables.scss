@@ -19,14 +19,14 @@ $green: material-color('green');
 $teal: material-color('teal');
 $cyan: material-color('cyan');
 
-$primary: material-color('blue', '400');
-$secondary: $gray-500;
+$primary: material-color('light-blue', '300');
+$secondary: $teal;
 $success: $green;
-$info: $purple;
+$info: #7950f2;
 $warning: $orange;
 $danger: $red;
 $light: $gray-200 !default;
-$dark: $gray-900 !default;
+$dark: $gray-700 !default;
 
 //$mdc-theme-primary: $info;
 //$mdc-theme-secondary: $secondary;
@@ -39,12 +39,13 @@ $breadcrumb-padding-x: 0;
 
 $header-line-bottom: 3.346rem;
 
-$font-family-base: 'Roboto Condensed', sans-serif;
+$font-family-base: 'Roboto Condensed', 'Roboto', sans-serif;
 
 $dropdown-border-width: 0;
 
 $body-bg: #fafafa;
-$font-size-base: 1.1rem;
+$font-size-base: 1.07rem;
+$font-weight-base: 440;
 
 // List group
 
@@ -56,3 +57,6 @@ $list-group-active-color: $primary;
 $list-group-active-bg: $list-group-bg;
 
 $list-group-disabled-color: $gray-400;
+
+$navbar-light-color: material-color('grey', 100);
+$navbar-nav-link-padding-x: 1.2rem;

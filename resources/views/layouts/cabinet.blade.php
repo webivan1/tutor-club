@@ -43,8 +43,10 @@
 
     <main>
         <div class="container pt-3 pb-3">
-            @section('breadcrumbs', Breadcrumbs::render())
-            @yield('breadcrumbs')
+            <div class="mb-3">
+                @section('breadcrumbs', Breadcrumbs::render())
+                @yield('breadcrumbs')
+            </div>
 
             @include('errors.flash_message')
             @include ('errors.list')

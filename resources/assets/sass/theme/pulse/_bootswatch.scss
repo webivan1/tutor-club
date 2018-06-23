@@ -131,25 +131,27 @@
 .list-group {
 
   &-item {
-    color: $primary;
+    &[href] {
+      color: $primary;
 
-    &.active,
-    &:hover,
-    &:focus {
-      color: darken($primary, 10%);
-      background: $list-group-hover-bg;
-    }
-
-    &.active {
-      font-weight: bold;
-
-      &:hover {
-        background-color: $list-group-hover-bg;
+      &.active,
+      &:hover,
+      &:focus {
+        color: darken($primary, 10%);
+        background: $list-group-hover-bg;
       }
-    }
 
-    &.disabled:hover {
-      color: $list-group-disabled-color;
+      &.active {
+        font-weight: bold;
+
+        &:hover {
+          background-color: $list-group-hover-bg;
+        }
+      }
+
+      &.disabled:hover {
+        color: $list-group-disabled-color;
+      }
     }
   }
 }

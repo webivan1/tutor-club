@@ -2,6 +2,10 @@ select.form-control:not([size]):not([multiple]), select.custom-file-control:not(
 
 }
 
+label {
+  font-size: small;
+}
+
 .checkbox {
   small {
     display: inline-block;

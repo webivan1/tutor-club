@@ -5,11 +5,28 @@
 
   .navbar-brand {
     font-size: 2rem;
-    color: $primary;
+    margin-right: 2rem;
+  }
 
-    &:first-letter {
-      font-weight: bolder;
-      color: $red;
+  &.navbar-light {
+    .navbar-brand {
+      color: $navbar-light-color;
+
+      &:first-letter {
+        font-weight: bolder;
+        color: $info;
+      }
+    }
+  }
+
+  &.navbar-dark {
+    .navbar-brand {
+      color: $navbar-dark-color;
+
+      &:first-letter {
+        font-weight: bolder;
+        color: material-color('lime', '200');
+      }
     }
   }
 }
