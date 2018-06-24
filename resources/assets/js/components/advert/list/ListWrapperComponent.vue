@@ -20,14 +20,12 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card mb-3 bg-info text-white">
-                <div class="card-body text-center">
-                    <advert-sort
-                        :sort="sort"
-                        :loader="loader"
-                        v-on:action-sort="setSort"
-                    ></advert-sort>
-                </div>
+            <div class="mb-3">
+                <advert-sort
+                    :sort="sort"
+                    :loader="loader"
+                    v-on:action-sort="setSort"
+                ></advert-sort>
             </div>
 
             <div class="card">

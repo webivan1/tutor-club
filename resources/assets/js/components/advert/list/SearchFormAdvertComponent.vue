@@ -9,8 +9,11 @@
             <form @submit="submit" class="my-0 py-0">
                 <div class="card-body">
                     <div class="form-group">
+                        <label>
+                            {{ messages.writeFromPrice }}
+                        </label>
                         <div class="row mx-0">
-                            <div class="col-2 px-0">
+                            <div class="col-4 px-0">
                                 <select @change="changeCurrency" class="form-control" v-model="form.priceType">
                                     <option
                                         v-for="(value, key) in data.types"
@@ -24,7 +27,7 @@
                                 <input
                                     type="text"
                                     v-model="form.priceFrom"
-                                    class="form-control"
+                                    class="form-control border-left-0"
                                     :placeholder="prices ? prices.min + ' - ' + prices.max : ''"
                                 />
                             </div>
@@ -88,7 +91,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-raised btn-warning btn-block">
+                    <button class="mdc-button mdc-button--raised btn-block">
                         {{ messages.Search }}
                     </button>
                 </div>
@@ -107,7 +110,7 @@
         form: {
           priceType: 'usd',
           priceFrom: null,
-          gender: null,
+          gender: '',
           search: null,
           attributes: {}
         },

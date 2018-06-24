@@ -1,0 +1,23 @@
+@each $color-name, $values in $material-colors {
+  .text-#{$color-name} {
+    color: map_get($values, '500') !important;
+  }
+  .bg-#{$color-name} {
+    background: map_get($values, '500') !important;
+  }
+  .border-#{$color-name} {
+    border-color: map_get($values, '500') !important;
+  }
+
+  @each $variant, $color in $values {
+    .text-#{$color-name}-#{$variant} {
+      color: $color !important;
+    }
+    .bg-#{$color-name}-#{$variant} {
+      background: $color !important;
+    }
+    .border-#{$color-name}-#{$variant} {
+      border-color: $color !important;
+    }
+  }
+}

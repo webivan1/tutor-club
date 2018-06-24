@@ -1,35 +1,70 @@
 .chat {
-  position: fixed;
-  width: 400px;
-  right: 1rem;
+  right: 0;
   bottom: 0;
+  position: fixed;
   z-index: 1000;
+  width: 350px;
 
-  &.active {
-    z-index: 1051;
-
-    .card-body {
-      max-height: 250px;
-      overflow-y: auto;
-    }
-
-    .card-header {
-      border-radius: 0;
-    }
+  @media (max-width: 400px) {
+    width: 100%;
   }
 
-  .card-body.loader {
-    overflow: hidden !important;
+  .card {
+    border: none;
   }
 
   .card-header {
-    padding: 0.75rem 1.25rem;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    @extend .bg-blue;
+    color: lighten(material-color('blue'), 50%);
+
+    a {
+      color: lighten(material-color('blue'), 50%);
+    }
   }
+
+  &.active {
+    height: 100%;
+
+    .card {
+      height: 100vh;
+    }
+  }
+
+  @include mdc-elevation(2);
 }
 
-.chat-area-field {
-  font-size: 12px;
-  line-height: 15px;
-}
+//.chat {
+//  position: fixed;
+//  width: 400px;
+//  right: 1rem;
+//  bottom: 0;
+//  z-index: 1000;
+//
+//  &.active {
+//    z-index: 1051;
+//
+//    .card-body {
+//      max-height: 250px;
+//      overflow-y: auto;
+//    }
+//
+//    .card-header {
+//      border-radius: 0;
+//    }
+//  }
+//
+//  .card-body.loader {
+//    overflow: hidden !important;
+//  }
+//
+//  .card-header {
+//    padding: 0.75rem 1.25rem;
+//    border-bottom-left-radius: 0;
+//    border-bottom-right-radius: 0;
+//  }
+//}
+//
+//.chat-area-field {
+//  font-size: 12px;
+//  line-height: 15px;
+//}

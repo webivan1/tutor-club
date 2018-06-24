@@ -1,28 +1,37 @@
+//.form-control-search {
+//  width: 100%;
+//  padding: 1rem;
+//  border-radius: 5rem;
+//  border: none;
+//
+//  &:focus {
+//    outline: none;
+//  }
+//}
+//
+//.search-container {
+//  .dropdown-menu, .dropdown-item {
+//    min-width: 100%;
+//  }
+//
+//  .dropdown-menu {
+//    max-height: 20rem;
+//    overflow-y: auto;
+//  }
+//}
+//
+//.close-search-form {
+//  position: absolute;
+//  right: 1rem;
+//  top: 1rem;
+//  z-index: 1001;
+//}
+
 .form-control-search {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 5rem;
-  border: none;
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.search-container {
-  .dropdown-menu, .dropdown-item {
-    min-width: 100%;
-  }
-
-  .dropdown-menu {
-    max-height: 20rem;
-    overflow-y: auto;
-  }
-}
-
-.close-search-form {
   position: absolute;
-  right: 1rem;
-  top: 1rem;
-  z-index: 1001;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  padding: 1rem 0;
+  z-index: 2;
 }

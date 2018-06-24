@@ -1,5 +1,62 @@
+$gray-100: material-color('grey', '100');
+$gray-200: material-color('grey', '200');
+$gray-300: material-color('grey', '300');
+$gray-400: material-color('grey', '400');
+$gray-500: material-color('grey', '500');
+$gray-600: material-color('grey', '600');
+$gray-700: material-color('grey', '700');
+$gray-800: material-color('grey', '800');
+$gray-900: material-color('grey', '900');
+
+$blue: material-color('blue');
+$indigo: material-color('indigo');
+$purple: material-color('purple');
+$pink: material-color('pink');
+$red: material-color('red');
+$orange: material-color('orange');
+$yellow: material-color('yellow');
+$green: material-color('green');
+$teal: material-color('teal');
+$cyan: material-color('cyan');
+
+$primary: material-color('light-blue', '300');
+$secondary: $teal;
+$success: $green;
+$info: #7950f2;
+$warning: $orange;
+$danger: $red;
+$light: $gray-200 !default;
+$dark: $gray-700 !default;
+
+//$mdc-theme-primary: $info;
+//$mdc-theme-secondary: $secondary;
+//$mdc-theme-on-primary: material-color('purple', '100');
+//$mdc-theme-on-secondary: material-color('grey', '100');
+
 // breadcrumbs
 $breadcrumb-bg: none;
 $breadcrumb-padding-x: 0;
 
 $header-line-bottom: 3.346rem;
+
+$font-family-base: 'Roboto Condensed', 'Roboto', sans-serif;
+
+$dropdown-border-width: 0;
+
+$body-bg: #fafafa;
+$font-size-base: 1rem;
+$font-weight-base: 440;
+
+// List group
+
+$list-group-bg: white;
+$list-group-border-color: $gray-100;
+
+$list-group-hover-bg: $gray-200;
+$list-group-active-color: $primary;
+$list-group-active-bg: $list-group-bg;
+
+$list-group-disabled-color: $gray-400;
+
+$navbar-light-color: material-color('grey', 100);
+$navbar-nav-link-padding-x: 1.2rem;

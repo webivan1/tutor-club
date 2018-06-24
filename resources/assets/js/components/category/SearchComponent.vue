@@ -1,33 +1,30 @@
 <template>
-    <div v-bind:class="{ dropdown: true, 'search-container': true, show: items.length }">
-        <input
-            class="form-control-search bg-white"
-            type="text"
-            v-model="search"
-            v-bind:placeholder="content.placeholder"
-            @keydown="change()"
-        />
+    <div>
+        <a href="javascript:void(0)" class="fs-24 text-blue-200" @click="formShow = !formShow">
+            <i v-if="!formShow" class="fas fa-search"></i>
+            <i class="fas fa-times" v-else></i>
+        </a>
 
-        <div v-if="(items.length && search.length >= 2) || errors" class="close-search-form">
-            <a href="javascript:void(0)" class="text-danger" @click="closeDropdown()">
-                <i class="material-icons">close</i>
-            </a>
-        </div>
+        <div v-if="formShow" class="form-control-search bg-grey-900">
+            <div class="container position-relative">
+                <form class="dropdown px-0 py-0 my-0 mx-0" :class="{ show: items.length }">
+                    <input
+                        class="form-control form-control-lg"
+                        type="text"
+                        v-model="search"
+                        v-bind:placeholder="content.placeholder"
+                        @keydown="change()"
+                    />
+                </form>
 
-        <div v-if="errors">
-            <div class="dropdown-menu show">
-                <div class="alert alert-danger mb-0">
-                    {{ errors }}
+                <div v-if="items.length && search.length >= 2" class="dropdown-menu" :class="{ show: items.length }">
+                    <a
+                        v-for="item in items"
+                        class="dropdown-item"
+                        :href="item.slug"
+                    >{{ item.name }}</a>
                 </div>
             </div>
-        </div>
-
-        <div v-if="items.length && search.length >= 2" class="dropdown-menu show">
-            <a
-                v-for="item in items"
-                class="dropdown-item"
-                :href="item.slug"
-            >{{ item.name }}</a>
         </div>
     </div>
 </template>
@@ -38,6 +35,7 @@
       mounted() {},
       data() {
         return {
+          formShow: false,
           content: typeof this.messages === 'string'
             ? JSON.parse(this.messages)
             : {},

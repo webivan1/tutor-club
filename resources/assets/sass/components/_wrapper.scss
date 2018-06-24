@@ -8,6 +8,10 @@ body {
   flex: 1;
 }
 
+.vh-100 {
+  height: 100vh;
+}
+
 .bmd-layout-container {
   min-height: 100vh;
 }
@@ -19,24 +23,42 @@ footer {
 }
 
 .header-line {
-  //display: flex;
-  //flex-direction: column;
-  //align-items: center !important;
-  min-height: 16rem;
-  @extend .pt-2;
-  padding-bottom: $header-line-bottom + 1rem;
   background-image: url("/images/bg.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  position: relative;
+  z-index: 0;
+  padding: 2rem 0;
+  margin-bottom: 3rem;
 
-  //.container {
-  //  flex: 0 0 100%;
-  //}
+  &:after {
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #7950f2; //material-color('indigo', '700');
+    opacity: 0.85;
+    z-index: 0;
+    top: 0;
+    left: 0;
+  }
+
+  * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
-.main-container {
-  margin-top: -#{$header-line-bottom};
+.top-content {
+  .header-line {
+    margin-bottom: 0;
+    padding-bottom: 7rem;
+  }
+
+  + .main-container {
+    margin-top: -5rem;
+  }
 }
 
 .py-3-no-empty:not(:empty) {
@@ -109,16 +131,26 @@ footer {
 }
 
 .col-inline {
+  position: relative;
+
   [class*="col"] {
     display: inline !important;
   }
 }
 
 .border-line-bottom {
-  border-bottom: 1px dotted $gray-300;
   overflow: hidden;
-  display: block;
-  height: 1rem;
+
+  &:after {
+    //display: block;
+    //height: $font-size-base;
+    content: ' ';
+    position: absolute;
+    top: 100%;
+    border-bottom: 1px dotted #{$gray-200};
+    width: 100%;
+    margin-top: -#{$line-height-base - $font-size-base};
+  }
 }
 
 .card-columns.card-offers {
@@ -163,4 +195,19 @@ footer {
 
 .max-w200 {
   max-width: 200px;
+}
+
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+  height: 100% !important;
+
+  > .flex-auto-height {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+.c-p {
+  cursor: pointer;
 }

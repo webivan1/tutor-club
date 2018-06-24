@@ -1,0 +1,4 @@
+.card {
+  @include mdc-elevation(1);
+  border: none;
+}

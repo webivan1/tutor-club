@@ -6,26 +6,23 @@
             v-on:open-dialog="checkDialog"
         ></notify>
 
-        <div :class="{ chat: true, active: buttonToggle }">
-            <div class="card flex-container">
-                <div class="card-header" v-if="!loader">
-                    <a class="float-right" href="javascript:void(0)" @click="toggle()">
+        <div class="chat" :class="{ active: buttonToggle }">
+            <div class="card flex-vertical">
+                <div class="card-header" v-if="!loader" @click="toggle()">
+                    <a class="float-right" href="javascript:void(0)">
                         <span v-if="buttonToggle === false">
-                            {{ data.messages.open }}
+                            <i class="fas fa-angle-up"></i>
                         </span>
-                        <span v-if="buttonToggle === true">
-                            {{ data.messages.close }}
+                        <span v-else :title="data.messages.close">
+                            <i class="fas fa-times"></i>
                         </span>
                     </a>
-                    <a href="javascript:void(0)" @click="closeMessage" class="float-right mr-2" v-if="buttonToggle && isMessages() && dialog">
-                        {{ data.messages.PrevToDialogs }}
-                    </a>
-                    {{ data.messages.heading }}
+                    <i :title="data.messages.heading" class="fas fa-comments"></i>
                 </div>
                 <div class="card-header" v-else>
-                    <div class="ld ld-ring ld-spin-fast float-right fs-1 text-info"></div>
+                    <div class="ld ld-ring ld-spin-fast float-right fs-1 text-yellow"></div>
                 </div>
-                <div v-if="buttonToggle && isDialogs()">
+                <div v-if="buttonToggle && isDialogs()" class="flex-auto-height">
                     <dialogs
                         v-on:check-dialog="checkDialog"
                         v-on:next-page-dialog="dialogNextPage"
@@ -36,8 +33,9 @@
                         :searchLoader="searchLoader"
                     ></dialogs>
                 </div>
-                <div v-if="buttonToggle && isMessages() && dialog">
+                <div v-if="buttonToggle && isMessages() && dialog" class="flex-auto-height">
                     <messages
+                        ref="messages"
                         :data="data"
                         :list="messages"
                         :loader="loaderMessage"
@@ -203,6 +201,8 @@
             typeof callback === 'function' ? callback() : null;
 
             ee.on('dialog.open', data => {
+              this.buttonToggle === false ? this.toggle() : null;
+
               // loader
               if (this.loaderMessage === true) {
                 return false;
@@ -212,7 +212,6 @@
                 return false;
               }
 
-              this.buttonToggle === false ? this.toggle() : null;
               this.dialogs.data.map(item => {
                 if (parseInt(item.id) === parseInt(data.id)) {
                   this.checkDialog(item);
@@ -257,6 +256,9 @@
 
       addMessage(message) {
         this.messages.data.push(message);
+//        setTimeout(_ => {
+//          this.$refs.messages.scrollToBottom();
+//        });
       },
 
       nextPageMessages(pageUrl) {

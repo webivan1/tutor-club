@@ -24,40 +24,46 @@
                 </div>
             </div>
 
-            <a :href="'/offer/' + item.id" class="btn btn-info">{{ messages.ReadMore }}</a>
-
-            <b-btn v-b-tooltip.hover :title="messages.ReadDescription" variant="info" @click="showModal">
-                <i class="material-icons">description</i>
-            </b-btn>
+            <div class="mt-1">
+                <a class="text-success" :href="'/offer/' + item.id">{{ messages.ReadMore }}</a>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button
+                type="button"
+                @click="showModal"
+                v-b-tooltip.hover
+                :title="messages.ReadDescription"
+                class="mdc-button mdc-button--outlined"
+            >
+                <i class="fas fa-info-circle"></i>
+            </button>
 
             <add-dialog
                 :user="item.user.id"
                 :title="item.title"
                 :data-json="{}"
             ></add-dialog>
-
-            <b-modal ref="modelMoreRef" hide-footer :title="messages.DescriptionOffer">
-                <div v-html="item.description"></div>
-
-                <div v-if="item.files && item.files.length > 0">
-                    <b-carousel
-                        id="carousel1"
-                        controls
-                        indicators
-                        :interval="0"
-                    >
-                        <!-- Slides with image only -->
-                        <div v-for="img in item.files">
-                            <b-carousel-slide
-                                :img-src="img.file_path">
-                            </b-carousel-slide>
-                        </div>
-                    </b-carousel>
-                </div>
-            </b-modal>
-
-            <!--<pre>{{ item }}</pre>-->
         </div>
+
+        <b-modal ref="modelMoreRef" hide-footer :title="messages.DescriptionOffer">
+            <div v-html="item.description"></div>
+
+            <div class="mt-2" v-if="item.files && item.files.length > 0">
+                <b-carousel
+                    id="carousel1"
+                    controls
+                    indicators
+                    :interval="0"
+                >
+                    <div v-for="img in item.files">
+                        <b-carousel-slide
+                            :img-src="img.file_path">
+                        </b-carousel-slide>
+                    </div>
+                </b-carousel>
+            </div>
+        </b-modal>
     </div>
 </template>
 
