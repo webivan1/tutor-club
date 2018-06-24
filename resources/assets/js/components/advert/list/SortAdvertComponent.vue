@@ -3,7 +3,7 @@
         <div v-if="sort && sort.length > 0">
             <b-dropdown class="my-0" variant="link" no-caret>
                 <template slot="button-content">
-                    <span class="text-white">{{ activeOrder ? activeOrder.label : 'Choose' }}</span>
+                    <i class="fas fa-sort"></i> {{ activeOrder ? activeOrder.label : 'Choose' }}
                 </template>
                 <div v-for="item in sort">
                     <b-dropdown-item @click="onSort(item)">
