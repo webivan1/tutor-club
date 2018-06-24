@@ -15,7 +15,7 @@ class TblNewsCategory extends Migration
     {
         Schema::create('news_category', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('slug', 200)->unique();
+            $table->string('slug', 150)->unique();
             $table->string('title', 50)->nullable();
             $table->string('description', 50)->nullable();
             $table->string('heading', 50)->nullable();

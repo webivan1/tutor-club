@@ -16,7 +16,7 @@ class CreateNews extends Migration
         Schema::create('news', function (Blueprint $table) {
             $table->increments('id');
             $table->string('heading', 200)->nullable();
-            $table->string('slug', 200)->unique();
+            $table->string('slug', 150)->unique();
             $table->integer('category_id')->index();
             $table->text('content')->nullable();
             $table->integer('file_id')->index();
