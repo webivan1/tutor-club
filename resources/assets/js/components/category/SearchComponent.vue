@@ -1,36 +1,4 @@
 <template>
-    <!--div v-bind:class="{ dropdown: true, 'search-container': true, show: items.length }">
-        <input
-            class="form-control-search bg-white"
-            type="text"
-            v-model="search"
-            v-bind:placeholder="content.placeholder"
-            @keydown="change()"
-        />
-
-        <div v-if="(items.length && search.length >= 2) || errors" class="close-search-form">
-            <a href="javascript:void(0)" class="text-danger" @click="closeDropdown()">
-                <i class="material-icons">close</i>
-            </a>
-        </div>
-
-        <div v-if="errors">
-            <div class="dropdown-menu show">
-                <div class="alert alert-danger mb-0">
-                    {{ errors }}
-                </div>
-            </div>
-        </div>
-
-        <div v-if="items.length && search.length >= 2" class="dropdown-menu show">
-            <a
-                v-for="item in items"
-                class="dropdown-item"
-                :href="item.slug"
-            >{{ item.name }}</a>
-        </div>
-    </div-->
-
     <div>
         <a href="javascript:void(0)" class="fs-24 text-blue-200" @click="formShow = !formShow">
             <i v-if="!formShow" class="fas fa-search"></i>

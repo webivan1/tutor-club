@@ -82351,38 +82351,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['messages'],
@@ -82862,6 +82830,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['lang', 'messages', 'loaderList'],
@@ -82978,8 +82950,16 @@ var render = function() {
                   { staticClass: "card-body" },
                   [
                     _c("div", { staticClass: "form-group" }, [
+                      _c("label", [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.messages.writeFromPrice) +
+                            "\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
                       _c("div", { staticClass: "row mx-0" }, [
-                        _c("div", { staticClass: "col-2 px-0" }, [
+                        _c("div", { staticClass: "col-4 px-0" }, [
                           _c(
                             "select",
                             {
@@ -83016,19 +82996,28 @@ var render = function() {
                                 ]
                               }
                             },
-                            _vm._l(_vm.data.types, function(value, key) {
-                              return _c(
+                            [
+                              _c(
                                 "option",
-                                { domProps: { value: key } },
-                                [
-                                  _vm._v(
-                                    "\n                                    " +
-                                      _vm._s(value) +
-                                      "\n                                "
-                                  )
-                                ]
-                              )
-                            })
+                                { attrs: { selected: "", value: "" } },
+                                [_vm._v(_vm._s(_vm.messages.Choose))]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.data.types, function(value, key) {
+                                return _c(
+                                  "option",
+                                  { domProps: { value: key } },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(value) +
+                                        "\n                                "
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
                           )
                         ]),
                         _vm._v(" "),
@@ -83117,7 +83106,9 @@ var render = function() {
                           }
                         },
                         [
-                          _c("option", { attrs: { value: "" } }),
+                          _c("option", { attrs: { selected: "", value: "" } }, [
+                            _vm._v(_vm._s(_vm.messages.Choose))
+                          ]),
                           _vm._v(" "),
                           _vm._l(_vm.data.genders, function(value, key) {
                             return _c("option", { domProps: { value: key } }, [

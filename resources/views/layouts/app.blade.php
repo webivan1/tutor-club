@@ -48,7 +48,7 @@
             <div class="header-line">
                 <div class="container">
                     <div class="row justify-content-center">
-                        <div class="@section('width-content') col-md-10 @show">
+                        <div class="col-md-12">
                             <div class="breadcrumb-color-white">
                                 @section('breadcrumbs')
                                     {{ Breadcrumbs::render() }}
@@ -67,7 +67,7 @@
         <div class="main-container">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="@section('width-content') col-md-10 @show">
+                    <div class="@section('width-content') col-md-12 @show">
                         @yield('content')
                     </div>
                 </div>

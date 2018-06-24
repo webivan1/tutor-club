@@ -42,7 +42,9 @@
             'PlaceholderFindTeacher' => t('Name, email or phone'),
             'ReadDescription' => t('Read the description'),
             'ReadMore' => t('Read more'),
-            'DescriptionOffer' => t('Offer Description')
+            'DescriptionOffer' => t('Offer Description'),
+            'writeFromPrice' => t('Write from price'),
+            'Choose' => t('Choose')
         ]) }}"
     ></advert-list-component>
 

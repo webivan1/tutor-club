@@ -995,7 +995,7 @@ section {
 body {
   margin: 0;
   font-family: "Roboto Condensed", "Roboto", sans-serif;
-  font-size: 1.07rem;
+  font-size: 1rem;
   font-weight: 440;
   line-height: 1.5;
   color: #616161;
@@ -1321,36 +1321,36 @@ h6,
 
 h1,
 .h1 {
-  font-size: 2.675rem;
+  font-size: 2.5rem;
 }
 
 h2,
 .h2 {
-  font-size: 2.14rem;
+  font-size: 2rem;
 }
 
 h3,
 .h3 {
-  font-size: 1.8725rem;
+  font-size: 1.75rem;
 }
 
 h4,
 .h4 {
-  font-size: 1.605rem;
+  font-size: 1.5rem;
 }
 
 h5,
 .h5 {
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
 }
 
 h6,
 .h6 {
-  font-size: 1.07rem;
+  font-size: 1rem;
 }
 
 .lead {
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
   font-weight: 300;
 }
 
@@ -1422,7 +1422,7 @@ mark,
 
 .blockquote {
   margin-bottom: 1rem;
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
 }
 
 .blockquote-footer {
@@ -3142,7 +3142,7 @@ pre code {
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
-  font-size: 1.07rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: #616161;
   background-color: #fff;
@@ -3196,7 +3196,7 @@ pre code {
 }
 
 select.form-control:not([size]):not([multiple]) {
-  height: calc(2.355rem + 2px);
+  height: calc(2.25rem + 2px);
 }
 
 select.form-control:focus::-ms-value {
@@ -3221,14 +3221,14 @@ select.form-control:focus::-ms-value {
 .col-form-label-lg {
   padding-top: calc(0.5rem + 1px);
   padding-bottom: calc(0.5rem + 1px);
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
   line-height: 1.5;
 }
 
 .col-form-label-sm {
   padding-top: calc(0.25rem + 1px);
   padding-bottom: calc(0.25rem + 1px);
-  font-size: 0.93625rem;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 
@@ -3267,7 +3267,7 @@ select.form-control:focus::-ms-value {
 .input-group-sm > .input-group-prepend > .btn,
 .input-group-sm > .input-group-append > .btn {
   padding: 0.25rem 0.5rem;
-  font-size: 0.93625rem;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 
@@ -3277,7 +3277,7 @@ select.form-control-sm:not([size]):not([multiple]),
 .input-group-sm > .input-group-append > select.input-group-text:not([size]):not([multiple]),
 .input-group-sm > .input-group-prepend > select.btn:not([size]):not([multiple]),
 .input-group-sm > .input-group-append > select.btn:not([size]):not([multiple]) {
-  height: calc(1.904375rem + 2px);
+  height: calc(1.8125rem + 2px);
 }
 
 .form-control-lg,
@@ -3287,7 +3287,7 @@ select.form-control-sm:not([size]):not([multiple]),
 .input-group-lg > .input-group-prepend > .btn,
 .input-group-lg > .input-group-append > .btn {
   padding: 0.5rem 1rem;
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
   line-height: 1.5;
 }
 
@@ -3297,7 +3297,7 @@ select.form-control-lg:not([size]):not([multiple]),
 .input-group-lg > .input-group-append > select.input-group-text:not([size]):not([multiple]),
 .input-group-lg > .input-group-prepend > select.btn:not([size]):not([multiple]),
 .input-group-lg > .input-group-append > select.btn:not([size]):not([multiple]) {
-  height: calc(3.00625rem + 2px);
+  height: calc(2.875rem + 2px);
 }
 
 .form-group {
@@ -3706,7 +3706,7 @@ select.form-control-lg:not([size]):not([multiple]),
           user-select: none;
   border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
-  font-size: 1.07rem;
+  font-size: 1rem;
   line-height: 1.5;
   border-radius: 0;
   -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
@@ -4415,7 +4415,7 @@ fieldset:disabled a.btn {
 .btn-lg,
 .btn-group-lg > .btn {
   padding: 0.5rem 1rem;
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
   line-height: 1.5;
   border-radius: 0;
 }
@@ -4423,7 +4423,7 @@ fieldset:disabled a.btn {
 .btn-sm,
 .btn-group-sm > .btn {
   padding: 0.25rem 0.5rem;
-  font-size: 0.93625rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   border-radius: 0;
 }
@@ -4509,7 +4509,7 @@ tbody.collapse.show {
   min-width: 10rem;
   padding: 0.5rem 0;
   margin: 0.125rem 0 0;
-  font-size: 1.07rem;
+  font-size: 1rem;
   color: #616161;
   text-align: left;
   list-style: none;
@@ -4651,7 +4651,7 @@ tbody.collapse.show {
   display: block;
   padding: 0.5rem 1.5rem;
   margin-bottom: 0;
-  font-size: 0.93625rem;
+  font-size: 0.875rem;
   color: #757575;
   white-space: nowrap;
 }
@@ -4870,7 +4870,7 @@ tbody.collapse.show {
           align-items: center;
   padding: 0.375rem 0.75rem;
   margin-bottom: 0;
-  font-size: 1.07rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   color: #616161;
@@ -5004,7 +5004,7 @@ tbody.collapse.show {
 .custom-select {
   display: inline-block;
   width: 100%;
-  height: calc(2.355rem + 2px);
+  height: calc(2.25rem + 2px);
   padding: 0.375rem 1.75rem 0.375rem 0.75rem;
   line-height: 1.5;
   color: #616161;
@@ -5047,14 +5047,14 @@ tbody.collapse.show {
 }
 
 .custom-select-sm {
-  height: calc(1.904375rem + 2px);
+  height: calc(1.8125rem + 2px);
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
   font-size: 75%;
 }
 
 .custom-select-lg {
-  height: calc(3.00625rem + 2px);
+  height: calc(2.875rem + 2px);
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
   font-size: 125%;
@@ -5064,7 +5064,7 @@ tbody.collapse.show {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: calc(2.355rem + 2px);
+  height: calc(2.25rem + 2px);
   margin-bottom: 0;
 }
 
@@ -5072,7 +5072,7 @@ tbody.collapse.show {
   position: relative;
   z-index: 2;
   width: 100%;
-  height: calc(2.355rem + 2px);
+  height: calc(2.25rem + 2px);
   margin: 0;
   opacity: 0;
 }
@@ -5097,7 +5097,7 @@ tbody.collapse.show {
   right: 0;
   left: 0;
   z-index: 1;
-  height: calc(2.355rem + 2px);
+  height: calc(2.25rem + 2px);
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
   color: #616161;
@@ -5112,7 +5112,7 @@ tbody.collapse.show {
   bottom: 0;
   z-index: 3;
   display: block;
-  height: calc(calc(2.355rem + 2px) - 1px * 2);
+  height: calc(calc(2.25rem + 2px) - 1px * 2);
   padding: 0.375rem 0.75rem;
   line-height: 1.5;
   color: #616161;
@@ -5243,10 +5243,10 @@ tbody.collapse.show {
 
 .navbar-brand {
   display: inline-block;
-  padding-top: 0.299375rem;
-  padding-bottom: 0.299375rem;
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
   margin-right: 1rem;
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
   line-height: inherit;
   white-space: nowrap;
 }
@@ -5298,7 +5298,7 @@ tbody.collapse.show {
 
 .navbar-toggler {
   padding: 0.25rem 0.75rem;
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
   line-height: 1;
   background-color: transparent;
   border: 1px solid transparent;
@@ -6024,13 +6024,13 @@ tbody.collapse.show {
 
 .pagination-lg .page-link {
   padding: 0.75rem 1.5rem;
-  font-size: 1.3375rem;
+  font-size: 1.25rem;
   line-height: 1.5;
 }
 
 .pagination-sm .page-link {
   padding: 0.25rem 0.5rem;
-  font-size: 0.93625rem;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 
@@ -6188,7 +6188,7 @@ tbody.collapse.show {
 }
 
 .alert-dismissible {
-  padding-right: 4.105rem;
+  padding-right: 4rem;
 }
 
 .alert-dismissible .close {
@@ -6337,7 +6337,7 @@ tbody.collapse.show {
   display: flex;
   height: 1rem;
   overflow: hidden;
-  font-size: 0.8025rem;
+  font-size: 0.75rem;
   background-color: #e0e0e0;
 }
 
@@ -6597,7 +6597,7 @@ tbody.collapse.show {
 
 .close {
   float: right;
-  font-size: 1.605rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
   color: #000;
@@ -6812,7 +6812,7 @@ button.close {
   word-spacing: normal;
   white-space: normal;
   line-break: auto;
-  font-size: 0.93625rem;
+  font-size: 0.875rem;
   word-wrap: break-word;
   opacity: 0;
 }
@@ -6936,7 +6936,7 @@ button.close {
   word-spacing: normal;
   white-space: normal;
   line-break: auto;
-  font-size: 0.93625rem;
+  font-size: 0.875rem;
   word-wrap: break-word;
   background-color: #fff;
   background-clip: padding-box;
@@ -7097,7 +7097,7 @@ button.close {
 .popover-header {
   padding: 0.5rem 0.75rem;
   margin-bottom: 0;
-  font-size: 1.07rem;
+  font-size: 1rem;
   color: inherit;
   background-color: #f7f7f7;
   border-bottom: 1px solid #ebebeb;
@@ -12036,7 +12036,7 @@ footer {
   top: 100%;
   border-bottom: 1px dotted #eeeeee;
   width: 100%;
-  margin-top: -0.43rem;
+  margin-top: -0.5rem;
 }
 
 @media (max-width: 575.98px) {

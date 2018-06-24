@@ -9,9 +9,13 @@
             <form @submit="submit" class="my-0 py-0">
                 <div class="card-body">
                     <div class="form-group">
+                        <label>
+                            {{ messages.writeFromPrice }}
+                        </label>
                         <div class="row mx-0">
-                            <div class="col-2 px-0">
+                            <div class="col-4 px-0">
                                 <select @change="changeCurrency" class="form-control" v-model="form.priceType">
+                                    <option selected value="">{{ messages.Choose }}</option>
                                     <option
                                         v-for="(value, key) in data.types"
                                         v-bind:value="key"
@@ -36,7 +40,7 @@
                             {{ messages.SelectGender }}
                         </label>
                         <select v-model="form.gender" class="form-control" id="select-gender">
-                            <option value=""></option>
+                            <option selected value="">{{ messages.Choose }}</option>
                             <option v-for="(value, key) in data.genders" :value="key">
                                 {{ value }}
                             </option>
