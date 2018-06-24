@@ -95,11 +95,13 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
     @endif
 
     <div class="row">
-        <div class="col-md-auto">
-            {{ Html::image(Storage::url($profile->image->getPreset('200x250')) . '?t=' . time(), t('Avatar'), [
-                'class' => 'img-thumbnail max-w200',
-            ]) }}
-        </div>
+        @if ($profile->user->image)
+            <div class="col-md-auto">
+                {{ Html::image(Storage::url($profile->user->image->getPreset('200x250')) . '?t=' . time(), t('Avatar'), [
+                    'class' => 'img-thumbnail max-w200',
+                ]) }}
+            </div>
+        @endif
         <div class="col">
             <div class="card">
                 <ul class="list-group">

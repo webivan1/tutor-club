@@ -45,7 +45,7 @@ class UpdateRequest extends FormRequest
                 'string',
                 Rule::in(array_keys((new TutorProfile)->genders()))
             ],
-            'photo' => 'mimes:jpeg,jpg,gif,png|max:10000',
+            //'photo' => 'mimes:jpeg,jpg,gif,png|max:10000',
         ];
 
         foreach (\LaravelLocalization::getSupportedLanguagesKeys() as $lang) {

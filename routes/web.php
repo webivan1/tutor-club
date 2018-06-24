@@ -108,6 +108,7 @@ Route::group(
                 Route::group(['prefix' => '/edit', 'as' => 'edit.'], function () {
                     Route::get('/', 'EditController@index')->name('form');
                     Route::post('/', 'EditController@change');
+                    Route::get('/delete-image', 'EditController@deleteImage')->name('delete.image');
                 });
 
                 Route::group(

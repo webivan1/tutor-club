@@ -22,7 +22,7 @@ use App\Entity\TutorProfile;
             'method' => !$model->id ? 'POST' : 'PUT',
             'url' => route('profile.tutor.form'),
             'class' => 'col-md-7',
-            'enctype' => 'multipart/form-data'
+            //'enctype' => 'multipart/form-data'
         ]) }}
 
             <div class="card">
@@ -66,28 +66,6 @@ use App\Entity\TutorProfile;
                             </span>
                         @endif
                     </div>
-
-                    <div class="form-group">
-                        @if ($model->id && $model->image)
-                            <div class="mb-2">
-                                {{ Html::image(Storage::url($model->image->getPreset('200x250')) . '?t=' . time(), 'Аватар', [
-                                    'class' => 'img-thumbnail'
-                                ]) }}
-                            </div>
-                        @endif
-
-                        {{ Form::label('photo', t('Avatar'), ['class' => 'bmd-label-floating']) }}
-                        {{ Form::file('photo', [
-                            'class' => 'form-control ' . (!$errors->has('photo') ?: ' is-invalid'),
-                            'value' => !$model->image ?: $model->image->file_path
-                        ]) }}
-                        @if ($errors->has('photo'))
-                            <span class="invalid-feedback">
-                                <strong>{{ $errors->first('photo') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-
                 </div>
             </div>
 

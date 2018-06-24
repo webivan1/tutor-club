@@ -24,7 +24,8 @@ class EditUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:3|max:200'
+            'name' => 'required|string|min:3|max:200',
+            'photo' => 'mimes:jpeg,jpg,gif,png|max:10000'
         ];
     }
 }

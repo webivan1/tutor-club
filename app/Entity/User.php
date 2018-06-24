@@ -72,6 +72,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Relation with file
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function image()
+    {
+        return $this->belongsTo(Files::class, 'file_id', 'id');
+    }
+
+    /**
      * Get the class name for polymorphic relations.
      *
      * @return string

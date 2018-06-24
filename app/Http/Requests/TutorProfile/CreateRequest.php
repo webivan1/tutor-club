@@ -45,7 +45,7 @@ class CreateRequest extends FormRequest
                 'string',
                 Rule::in(array_keys((new TutorProfile)->genders()))
             ],
-            'photo' => 'required|mimes:jpeg,jpg,gif,png|max:10000'
+            //'photo' => 'required|mimes:jpeg,jpg,gif,png|max:10000'
         ];
 
         foreach (\LaravelLocalization::getSupportedLanguagesKeys() as $lang) {

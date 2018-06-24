@@ -245,14 +245,6 @@ class TutorProfile extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function image()
-    {
-        return $this->hasOne(Files::class, 'id', 'file_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');

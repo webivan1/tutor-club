@@ -117,13 +117,6 @@
         prices: null
       }
     },
-    watch: {
-      loader() {
-        setTimeout(_=> {
-          $('.js-form').bootstrapMaterialDesign();
-        }, 100);
-      }
-    },
     methods: {
       formInit() {
         if (this.loader === false) {

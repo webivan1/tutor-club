@@ -21,11 +21,6 @@ class FormService
     {
         $this->registerEvent();
 
-        /** @var Files $file */
-        $file = $this->createFile(
-            $this->uploadImage($request->file('photo'), 'images/upload')
-        );
-
         if (empty($file)) {
             throw new \DomainException(t('home.errorUploadedFilesTutorForm'));
         }
@@ -34,8 +29,7 @@ class FormService
         $profile = $this->updateOrCreateProfile(
             $request->input('country_code'),
             $request->input('phone'),
-            $request->input('gender'),
-            $file->id
+            $request->input('gender')
         );
 
         if (empty($profile)) {
@@ -58,18 +52,6 @@ class FormService
 
         if (!$profile = TutorProfile::findModel()) {
             throw new \DomainException(t('home.ErrorUndefinedTutorProfile'));
-        }
-
-        if ($request->hasFile('photo')) {
-            // delete old photo
-            !$profile->image ?: $profile->image->delete();
-
-            // create new photo
-            $file = $this->createFile(
-                $this->uploadImage($request->file('photo'), 'images/upload')
-            );
-
-            $profile->file_id = $file->id;
         }
 
         $profile->update($request->only('country_code', 'phone', 'gender'));
@@ -96,59 +78,19 @@ class FormService
     }
 
     /**
-     * @param UploadedFile $file
-     * @param string $path
-     * @param null|string $filename
-     * @return false|UploadedFile|string
-     */
-    public function uploadImage(UploadedFile $file, string $path, ?string $filename = null)
-    {
-        // save image
-        $pathLocalFile = !$filename
-            ? \Storage::disk('public')->putFile($path, $file)
-            : \Storage::disk('public')->putFileAs($path, $file, $filename);
-
-        ImagickJob::dispatch($pathLocalFile, [
-            '200x250', '300x350', '350', '400'
-        ]);
-
-//        $fileLocalObject = new UploadedFile(public_path($pathLocalFile), basename($pathLocalFile));
-//
-//        $pathStorage = !$filename ? $fileLocalObject->store($path) : $fileLocalObject->storeAs($path, $filename);
-//
-//        \Storage::disk('public')->delete($pathLocalFile);
-
-        return $pathLocalFile;
-    }
-
-    /**
-     * @param string $file
-     * @return Model
-     */
-    public function createFile(string $file): Model
-    {
-        return Files::create([
-            'filename' => basename($file),
-            'file_path' => '/' . $file
-        ]);
-    }
-
-    /**
      * @param string $country_code
      * @param string $phone
      * @param string $gender
-     * @param int $file_id
      * @return Model
      */
-    public function updateOrCreateProfile(string $country_code, string $phone, string $gender, int $file_id): Model
+    public function updateOrCreateProfile(string $country_code, string $phone, string $gender): Model
     {
         return TutorProfile::updateOrCreate([
             'user_id' => \Auth::id()
         ], [
             'country_code' => $country_code,
             'phone' => $phone,
-            'gender' => $gender,
-            'file_id' => $file_id,
+            'gender' => $gender
         ]);
     }
 
@@ -177,6 +119,7 @@ class FormService
     /**
      * @param string $content
      * @return string
+     * @ToDo clear()
      */
     private function filterContent(string $content): string
     {

@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  $('body').bootstrapMaterialDesign();
-
   $('[data-clone-container]').on('click', function () {
     var nameContainer = $(this).data('clone-container');
     var container = $(nameContainer);
