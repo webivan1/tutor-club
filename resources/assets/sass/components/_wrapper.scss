@@ -147,7 +147,7 @@ footer {
     content: ' ';
     position: absolute;
     top: 100%;
-    border-bottom: 1px dotted #{$gray-200};
+    border-bottom: 1px dotted #{$gray-300};
     width: 100%;
     margin-top: -#{$line-height-base - $font-size-base};
   }

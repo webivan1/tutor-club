@@ -62,7 +62,7 @@ class AdvertPublicList extends Advert
 
         $sort = $this->sortAdvertModels();
 
-        $keyCache = md5('ListAdverts-v7-' . serialize($this->model->buildQuery()));
+        $keyCache = md5('ListAdverts-v8-' . serialize($this->model->buildQuery()));
 
         return $this->sortPrices(
             \Cache::remember($keyCache, 30, function () use ($pageSize, $page, $sort) {
@@ -125,46 +125,10 @@ class AdvertPublicList extends Advert
             $ids = $this->model->queryIds();
             $result = self::whereIn('id', $ids)
                 ->select(['id', 'user_id', 'profile_id', 'title', 'description'])
-                ->with([
-                    'files',
-                    'profile' => function ($builder) {
-                        $builder->select(['id', 'gender', 'file_id'])
-                            ->with(['image' => function ($builder) {
-                                $builder->select(['id', 'file_path']);
-                            }]);
-                    }
-                ])
+                ->with(['files', 'avatar'])
                 ->orderBy(new Expression('FIELD(id,' . implode(',', $ids) . ')'))
                 ->get()
-                ->map(function (Advert $item) {
-                    $item = $item->toArray();
-
-                    if (!empty($item['files'])) {
-                        foreach ($item['files'] as &$file) {
-                            $file['file_path'] = (new Preset($file['file_path']))
-                                ->presetFilename('350');
-                        }
-                    }
-
-                    foreach ($this->model->querySource() as $source) {
-                        if ($source['id'] == $item['id']) {
-                            $item['prices'] = $source['prices'];
-                            $item['user'] = $source['user'];
-                            break;
-                        }
-                    }
-
-                    foreach ($item['prices'] ?? [] as $key => $price) {
-                        $item['prices'][$key]['category']['name'] = t($item['prices'][$key]['category']['name']);
-                        $item['prices'][$key]['price_type_origin'] = $item['prices'][$key]['price_type'];
-                        $item['prices'][$key]['price_type'] = AdvertPrice::types()[$item['prices'][$key]['price_type']];
-                    }
-
-                    // Filter HTML
-                    $item['description'] = clean($item['description']);
-
-                    return $item;
-                })
+                ->map([$this, 'mappingArray'])
                 ->toArray();
         }
 
@@ -175,6 +139,42 @@ class AdvertPublicList extends Advert
             'currentPage' => $currentPage,
             'sort' => $sort->urlAttributes()
         ];
+    }
+
+    public function mappingArray(Advert $item)
+    {
+        $item = $item->toArray();
+
+        if (!empty($item['avatar'])) {
+            $item['avatar'] = (new Preset($item['avatar']['file_path']))
+                ->presetFilename('200x200');
+        }
+
+        if (!empty($item['files'])) {
+            foreach ($item['files'] as &$file) {
+                $file['file_path'] = (new Preset($file['file_path']))
+                    ->presetFilename('350');
+            }
+        }
+
+        foreach ($this->model->querySource() as $source) {
+            if ($source['id'] == $item['id']) {
+                $item['prices'] = $source['prices'];
+                $item['user'] = $source['user'];
+                break;
+            }
+        }
+
+        foreach ($item['prices'] ?? [] as $key => $price) {
+            $item['prices'][$key]['category']['name'] = t($item['prices'][$key]['category']['name']);
+            $item['prices'][$key]['price_type_origin'] = $item['prices'][$key]['price_type'];
+            $item['prices'][$key]['price_type'] = AdvertPrice::types()[$item['prices'][$key]['price_type']];
+        }
+
+        // Filter HTML
+        $item['description'] = clean($item['description']);
+
+        return $item;
     }
 
     /**

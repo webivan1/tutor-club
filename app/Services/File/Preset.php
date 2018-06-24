@@ -35,12 +35,13 @@ class Preset
 
     /**
      * @param string $presetName
-     * @return string
+     * @return string|null
      */
-    public function presetFilename(string $presetName): string
+    public function presetFilename(string $presetName): ?string
     {
         $filename = $presetName . '_' . basename($this->path);
-        return dirname($this->path) . '/' . $filename;
+        $file = dirname($this->path) . '/' . $filename;
+        return is_file('.' . $file) ? $file : (is_file('.' . $this->path) ? $this->path : null);
     }
 
     /**

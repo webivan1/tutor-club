@@ -3,7 +3,7 @@
         <div v-if="loader" class="ld ld-ring ld-spin-fast text-center text-info"></div>
         <div v-else-if="models && models.length > 0" class="mb-4">
             <div class="card-columns card-offers">
-                <div class="card" v-for="item in models">
+                <div class="card bg-grey-100" v-for="item in models">
                     <item-advert :messages="messages" :item="item"></item-advert>
                 </div>
             </div>

@@ -3,30 +3,25 @@
 @section('title', t($category->title))
 @section('description', t($category->description))
 @section('width-content', 'col-md-12')
+@section('h1', t($category->name))
 
 @section('content')
-    <div class="card mb-5">
-        <div class="card-body">
-            <h1>{{ t($category->name) }}</h1>
-        </div>
-    </div>
-
     @if(!empty($childCategories))
-        <div class="row mb-3">
+        <div class="row mb-5">
             @foreach (chunk_column($childCategories, 3) as $categoryGroup)
                 <div class="col-md-4">
-                    @foreach ($categoryGroup as $item)
-                        <div class="mb-2">
-                            <a href="{{ route('category.show', $item['slug']) }}">
-                            <span class="text-muted">
-                                {{ t($item['name']) }}
-                            </span>
-                                <small class="text-muted">
-                                    {{ $item['total_adverts'] > 0 ? $item['total_adverts'] : '' }}
-                                </small>
-                            </a>
+                    <div class="card bg-info">
+                        <div class="list-group">
+                            @foreach ($categoryGroup as $item)
+                                <a class="list-group-item text-white" href="{{ route('category.show', $item['slug']) }}">
+                                    {{ t($item['name']) }}
+                                    <small>
+                                        {{ $item['total_adverts'] > 0 ? $item['total_adverts'] : '' }}
+                                    </small>
+                                </a>
+                            @endforeach
                         </div>
-                    @endforeach
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -44,7 +39,8 @@
             'ReadMore' => t('Read more'),
             'DescriptionOffer' => t('Offer Description'),
             'writeFromPrice' => t('Write from price'),
-            'Choose' => t('Choose')
+            'Choose' => t('Choose'),
+            'Min' => t('Minutes')
         ]) }}"
     ></advert-list-component>
 

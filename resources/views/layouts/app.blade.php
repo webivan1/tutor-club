@@ -56,7 +56,7 @@
                             </div>
 
                             @hasSection('h1')
-                                <h1 class="text-white">@yield('h1')</h1>
+                                <h1 class="text-white @hasSection('breadcrumbs') mt-3 @endif">@yield('h1')</h1>
                             @endif
                         </div>
                     </div>
@@ -78,8 +78,8 @@
             <chat
                 user="{{ \Auth::id() }}"
                 data-json='{{ json_encode([
-                'prependUrl' => route('home'),
-                'messages' => [
+                    'prependUrl' => route('home'),
+                    'messages' => [
                         'heading' => t('Chat'),
                         'open' => t('Open'),
                         'close' => t('Close'),

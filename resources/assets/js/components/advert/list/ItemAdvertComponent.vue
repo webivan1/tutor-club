@@ -1,10 +1,11 @@
 <template>
     <div>
-        <a :href="'/offer/' + item.id" target="_blank">
-            <div class="crop-image crop-image-250">
-                <img class="card-img-top" :src="item.profile.image.file_path" :alt="item.user.name" />
-            </div>
-        </a>
+        <div v-if="item.avatar" class="card-body pb-0">
+            <a :href="'/offer/' + item.id" target="_blank" class="card-avatar" v-bind:style="{
+                backgroundImage: 'url(' + item.avatar + ')'
+            }"></a>
+        </div>
+
         <div class="card-body">
             <h5 class="card-title">
                 <span class="d-block text-crop">{{ item.title }}</span>
@@ -19,7 +20,13 @@
                     </div>
                     <div class="col px-0 border-line-bottom"></div>
                     <div class="col-auto px-0">
-                        <b>{{ price.price_type }}</b> {{ price.price_from }} {{ price.minutes ? '/ ' + price.minutes : '' }}
+                        {{ price.price_type }}
+                        <b>{{ price.price_from }}</b>
+                        <span
+                            v-b-tooltip.hover
+                            :title="messages.Min"
+                            v-if="price.minutes"
+                        > / {{ price.minutes }} <i class="far fa-clock"></i></span>
                     </div>
                 </div>
             </div>

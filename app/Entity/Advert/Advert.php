@@ -217,6 +217,15 @@ class Advert extends Model implements ModelSearch
     }
 
     /**
+     * @return mixed
+     */
+    public function avatar()
+    {
+        return $this->hasOne(Files::class, 'source_id', 'user_id')
+            ->where('source', 'user');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function category()

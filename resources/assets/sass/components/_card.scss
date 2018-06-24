@@ -1,4 +1,42 @@
 .card {
   @include mdc-elevation(1);
   border: none;
+
+  .card-avatar {
+    display: block;
+    margin: 0 auto;
+    height: 200px;
+    border-radius: 3px;
+    @include mdc-elevation(1);
+
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .list-group {
+    &-item {
+      border-left: 0;
+      border-right: 0;
+      background: none;
+      border-color: rgba(0, 0, 0, 0.05);
+
+      &[href] {
+        &:hover,
+        &:focus,
+        &:active,
+        &:disabled {
+          background: rgba(0, 0, 0, 0.05);
+        }
+      }
+
+      &:first-child {
+        border-top: 0;
+      }
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+  }
 }
