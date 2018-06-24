@@ -201,6 +201,8 @@
             typeof callback === 'function' ? callback() : null;
 
             ee.on('dialog.open', data => {
+              this.buttonToggle === false ? this.toggle() : null;
+
               // loader
               if (this.loaderMessage === true) {
                 return false;
@@ -210,7 +212,6 @@
                 return false;
               }
 
-              this.buttonToggle === false ? this.toggle() : null;
               this.dialogs.data.map(item => {
                 if (parseInt(item.id) === parseInt(data.id)) {
                   this.checkDialog(item);

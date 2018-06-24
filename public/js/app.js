@@ -83596,6 +83596,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['item', 'messages'],
@@ -83617,23 +83623,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("a", { attrs: { href: "/offer/" + _vm.item.id, target: "_blank" } }, [
-      _c("div", { staticClass: "crop-image crop-image-250" }, [
-        _c("img", {
-          staticClass: "card-img-top",
-          attrs: {
-            src: _vm.item.profile.image.file_path,
-            alt: _vm.item.user.name
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "card-body" },
-      [
+  return _c(
+    "div",
+    [
+      _c("a", { attrs: { href: "/offer/" + _vm.item.id, target: "_blank" } }, [
+        _c("div", { staticClass: "crop-image crop-image-250" }, [
+          _c("img", {
+            staticClass: "card-img-top",
+            attrs: {
+              src: _vm.item.profile.image.file_path,
+              alt: _vm.item.user.name
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
         _c("h5", { staticClass: "card-title" }, [
           _c("span", { staticClass: "d-block text-crop" }, [
             _vm._v(_vm._s(_vm.item.title))
@@ -83687,86 +83692,95 @@ var render = function() {
           })
         ),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-info",
-            attrs: { href: "/offer/" + _vm.item.id }
-          },
-          [_vm._v(_vm._s(_vm.messages.ReadMore))]
-        ),
-        _vm._v(" "),
-        _c(
-          "b-btn",
-          {
-            directives: [
-              {
-                name: "b-tooltip",
-                rawName: "v-b-tooltip.hover",
-                modifiers: { hover: true }
-              }
-            ],
-            attrs: { title: _vm.messages.ReadDescription, variant: "info" },
-            on: { click: _vm.showModal }
-          },
-          [_c("i", { staticClass: "material-icons" }, [_vm._v("description")])]
-        ),
-        _vm._v(" "),
-        _c("add-dialog", {
-          attrs: {
-            user: _vm.item.user.id,
-            title: _vm.item.title,
-            "data-json": {}
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "b-modal",
-          {
-            ref: "modelMoreRef",
-            attrs: { "hide-footer": "", title: _vm.messages.DescriptionOffer }
-          },
-          [
-            _c("div", {
-              domProps: { innerHTML: _vm._s(_vm.item.description) }
-            }),
-            _vm._v(" "),
-            _vm.item.files && _vm.item.files.length > 0
-              ? _c(
-                  "div",
-                  [
-                    _c(
-                      "b-carousel",
-                      {
-                        attrs: {
-                          id: "carousel1",
-                          controls: "",
-                          indicators: "",
-                          interval: 0
-                        }
-                      },
-                      _vm._l(_vm.item.files, function(img) {
-                        return _c(
-                          "div",
-                          [
-                            _c("b-carousel-slide", {
-                              attrs: { "img-src": img.file_path }
-                            })
-                          ],
-                          1
-                        )
-                      })
-                    )
-                  ],
-                  1
-                )
-              : _vm._e()
-          ]
-        )
-      ],
-      1
-    )
-  ])
+        _c("div", { staticClass: "mt-1" }, [
+          _c(
+            "a",
+            {
+              staticClass: "text-success",
+              attrs: { href: "/offer/" + _vm.item.id }
+            },
+            [_vm._v(_vm._s(_vm.messages.ReadMore))]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "card-footer" },
+        [
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "b-tooltip",
+                  rawName: "v-b-tooltip.hover",
+                  modifiers: { hover: true }
+                }
+              ],
+              staticClass: "mdc-button mdc-button--outlined",
+              attrs: { type: "button", title: _vm.messages.ReadDescription },
+              on: { click: _vm.showModal }
+            },
+            [_c("i", { staticClass: "fas fa-info-circle" })]
+          ),
+          _vm._v(" "),
+          _c("add-dialog", {
+            attrs: {
+              user: _vm.item.user.id,
+              title: _vm.item.title,
+              "data-json": {}
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "modelMoreRef",
+          attrs: { "hide-footer": "", title: _vm.messages.DescriptionOffer }
+        },
+        [
+          _c("div", { domProps: { innerHTML: _vm._s(_vm.item.description) } }),
+          _vm._v(" "),
+          _vm.item.files && _vm.item.files.length > 0
+            ? _c(
+                "div",
+                { staticClass: "mt-2" },
+                [
+                  _c(
+                    "b-carousel",
+                    {
+                      attrs: {
+                        id: "carousel1",
+                        controls: "",
+                        indicators: "",
+                        interval: 0
+                      }
+                    },
+                    _vm._l(_vm.item.files, function(img) {
+                      return _c(
+                        "div",
+                        [
+                          _c("b-carousel-slide", {
+                            attrs: { "img-src": img.file_path }
+                          })
+                        ],
+                        1
+                      )
+                    })
+                  )
+                ],
+                1
+              )
+            : _vm._e()
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -84364,6 +84378,8 @@ var SHOW_MESSAGES = 'messages';
         typeof callback === 'function' ? callback() : null;
 
         ee.on('dialog.open', function (data) {
+          _this3.buttonToggle === false ? _this3.toggle() : null;
+
           // loader
           if (_this3.loaderMessage === true) {
             return false;
@@ -84373,7 +84389,6 @@ var SHOW_MESSAGES = 'messages';
             return false;
           }
 
-          _this3.buttonToggle === false ? _this3.toggle() : null;
           _this3.dialogs.data.map(function (item) {
             if (parseInt(item.id) === parseInt(data.id)) {
               _this3.checkDialog(item);
@@ -85923,7 +85938,8 @@ var render = function() {
                       modifiers: { hover: true }
                     }
                   ],
-                  staticClass: "btn btn-raised btn-success",
+                  staticClass:
+                    "mdc-button border-green text-green mdc-button--outlined",
                   attrs: {
                     title: _vm.message("buttonOpenDialog", "Open dialog"),
                     type: "button"
@@ -85945,7 +85961,8 @@ var render = function() {
                           modifiers: { hover: true }
                         }
                       ],
-                      staticClass: "btn btn-raised btn-success",
+                      staticClass:
+                        "mdc-button border-green text-green mdc-button--outlined",
                       attrs: {
                         title: _vm.message(
                           "writeToTutor",

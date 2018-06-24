@@ -131,16 +131,26 @@ footer {
 }
 
 .col-inline {
+  position: relative;
+
   [class*="col"] {
     display: inline !important;
   }
 }
 
 .border-line-bottom {
-  border-bottom: 1px dotted material-color('grey', '300');
   overflow: hidden;
-  display: block;
-  height: 1rem;
+
+  &:after {
+    //display: block;
+    //height: $font-size-base;
+    content: ' ';
+    position: absolute;
+    top: 100%;
+    border-bottom: 1px dotted #{$gray-200};
+    width: 100%;
+    margin-top: -#{$line-height-base - $font-size-base};
+  }
 }
 
 .card-columns.card-offers {

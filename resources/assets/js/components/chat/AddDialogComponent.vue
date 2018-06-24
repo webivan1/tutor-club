@@ -8,7 +8,7 @@
                 v-b-tooltip.hover
                 :title="message('buttonOpenDialog', 'Open dialog')"
                 type="button"
-                class="btn btn-raised btn-success"
+                class="mdc-button border-green text-green mdc-button--outlined"
             ><i class="fas fa-comment-alt"></i></button>
 
             <span v-else>
@@ -17,7 +17,7 @@
                     v-b-tooltip.hover
                     :title="message('writeToTutor', 'To write to the tutor')"
                     type="button"
-                    class="btn btn-raised btn-success"
+                    class="mdc-button border-green text-green mdc-button--outlined"
                 ><i class="fas fa-comment-alt"></i></button>
 
                 <b-modal ref="myModalRef" hide-footer :title="message('sendToMessage', 'Send a message')">

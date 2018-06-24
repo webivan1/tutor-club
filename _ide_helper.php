@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.6.17 on 2018-05-25 12:13:40.
+ * Generated for Laravel 5.6.26 on 2018-06-23 22:37:30.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1248,7 +1248,7 @@ namespace Illuminate\Support\Facades {
          * Set the shared instance of the container.
          *
          * @param \Illuminate\Contracts\Container\Container|null $container
-         * @return static 
+         * @return \Illuminate\Contracts\Container\Container|static 
          * @static 
          */ 
         public static function setInstance($container = null)
@@ -1745,13 +1745,13 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
-         * Invalid other sessions for the current user.
+         * Invalidate other sessions for the current user.
          * 
          * The application must be using the AuthenticateSession middleware.
          *
          * @param string $password
          * @param string $attribute
-         * @return $this 
+         * @return null|bool 
          * @static 
          */ 
         public static function logoutOtherDevices($password, $attribute = 'password')
@@ -1929,6 +1929,17 @@ namespace Illuminate\Support\Facades {
         public static function authenticate()
         {
             return \Illuminate\Auth\SessionGuard::authenticate();
+        }
+        
+        /**
+         * Determine if the guard has a user instance.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasUser()
+        {
+            return \Illuminate\Auth\SessionGuard::hasUser();
         }
         
         /**
@@ -3375,7 +3386,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param mixed $payload
          * @param bool $unserialize
-         * @return string 
+         * @return mixed 
          * @throws \Illuminate\Contracts\Encryption\DecryptException
          * @static 
          */ 
@@ -7698,6 +7709,18 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
+         * 
+         *
+         * @internal 
+         * @static 
+         */ 
+        public static function setSessionFactory($factory)
+        {
+            //Method inherited from \Symfony\Component\HttpFoundation\Request            
+            return \Illuminate\Http\Request::setSessionFactory($factory);
+        }
+        
+        /**
          * Returns the client IP addresses.
          * 
          * In the returned array the most trusted IP address is first, and the
@@ -8062,7 +8085,7 @@ namespace Illuminate\Support\Facades {
          * Gets the mime type associated with the format.
          *
          * @param string $format The format
-         * @return string The associated mime type (null if not found)
+         * @return string|null The associated mime type (null if not found)
          * @static 
          */ 
         public static function getMimeType($format)
@@ -8651,7 +8674,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Determine if the request contains any of the given inputs.
          *
-         * @param string|array $key
+         * @param string|array $keys
          * @return bool 
          * @static 
          */ 
@@ -9948,6 +9971,17 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
+         * Drop all views from the database.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function dropAllViews()
+        {
+            \Illuminate\Database\Schema\MySqlBuilder::dropAllViews();
+        }
+        
+        /**
          * Set the default string length for migrations.
          *
          * @param int $length
@@ -10800,12 +10834,12 @@ namespace Illuminate\Support\Facades {
          *
          * @param string $name
          * @param mixed $disk
-         * @return void 
+         * @return $this 
          * @static 
          */ 
         public static function set($name, $disk)
         {
-            \Illuminate\Filesystem\FilesystemManager::set($name, $disk);
+            return \Illuminate\Filesystem\FilesystemManager::set($name, $disk);
         }
         
         /**
@@ -10828,6 +10862,18 @@ namespace Illuminate\Support\Facades {
         public static function getDefaultCloudDriver()
         {
             return \Illuminate\Filesystem\FilesystemManager::getDefaultCloudDriver();
+        }
+        
+        /**
+         * Unset the given disk instances.
+         *
+         * @param array|string $disk
+         * @return $this 
+         * @static 
+         */ 
+        public static function forgetDisk($disk)
+        {
+            return \Illuminate\Filesystem\FilesystemManager::forgetDisk($disk);
         }
         
         /**
@@ -12711,6 +12757,20 @@ namespace Collective\Html {
         }
         
         /**
+         * Create a range input field.
+         *
+         * @param string $name
+         * @param string $value
+         * @param array $options
+         * @return \Illuminate\Support\HtmlString 
+         * @static 
+         */ 
+        public static function range($name, $value = null, $options = array())
+        {
+            return \Collective\Html\FormBuilder::range($name, $value, $options);
+        }
+        
+        /**
          * Create a hidden input field.
          *
          * @param string $name
@@ -12848,6 +12908,20 @@ namespace Collective\Html {
         public static function url($name, $value = null, $options = array())
         {
             return \Collective\Html\FormBuilder::url($name, $value, $options);
+        }
+        
+        /**
+         * Create a week input field.
+         *
+         * @param string $name
+         * @param string $value
+         * @param array $options
+         * @return \Illuminate\Support\HtmlString 
+         * @static 
+         */ 
+        public static function week($name, $value = null, $options = array())
+        {
+            return \Collective\Html\FormBuilder::week($name, $value, $options);
         }
         
         /**
@@ -13015,6 +13089,20 @@ namespace Collective\Html {
         }
         
         /**
+         * Create a month input field.
+         *
+         * @param string $name
+         * @param string $value
+         * @param array $options
+         * @return \Illuminate\Support\HtmlString 
+         * @static 
+         */ 
+        public static function month($name, $value = null, $options = array())
+        {
+            return \Collective\Html\FormBuilder::month($name, $value, $options);
+        }
+        
+        /**
          * Create a color input field.
          *
          * @param string $name
@@ -13078,6 +13166,17 @@ namespace Collective\Html {
         public static function getValueAttribute($name, $value = null)
         {
             return \Collective\Html\FormBuilder::getValueAttribute($name, $value);
+        }
+        
+        /**
+         * Take Request in fill process
+         *
+         * @param bool $consider
+         * @static 
+         */ 
+        public static function considerRequest($consider = true)
+        {
+            return \Collective\Html\FormBuilder::considerRequest($consider);
         }
         
         /**
@@ -14893,6 +14992,25 @@ namespace DaveJamesMiller\Breadcrumbs\Facades {
          *     used.
          * @static 
          */ 
+        public static function for($name, $callback)
+        {
+            \DaveJamesMiller\Breadcrumbs\BreadcrumbsManager::for($name, $callback);
+        }
+        
+        /**
+         * Register a breadcrumb-generating callback for a page.
+         * 
+         * For backwards-compatibility with v5.0.0 and below.
+         *
+         * @see self::for()
+         * @param string $name The name of the page.
+         * @param callable $callback The callback, which should accept a Generator instance as the first parameter and may
+         *     accept additional parameters.
+         * @return void 
+         * @throws \DaveJamesMiller\Breadcrumbs\Exceptions\DuplicateBreadcrumbException If the given name has already been
+         *     used.
+         * @static 
+         */ 
         public static function register($name, $callback)
         {
             \DaveJamesMiller\Breadcrumbs\BreadcrumbsManager::register($name, $callback);
@@ -15315,7 +15433,7 @@ namespace  {
              * Add a basic where clause to the query.
              *
              * @param string|array|\Closure $column
-             * @param string $operator
+             * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
              * @return $this 
@@ -15330,7 +15448,7 @@ namespace  {
              * Add an "or where" clause to the query.
              *
              * @param \Closure|array|string $column
-             * @param string $operator
+             * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Eloquent\Builder|static 
              * @static 
@@ -16515,11 +16633,11 @@ namespace  {
              *
              * @param string $column
              * @param string $operator
-             * @param string $value
+             * @param mixed $value
              * @return \Illuminate\Database\Query\Builder|static 
              * @static 
              */ 
-            public static function orWhereDate($column, $operator, $value)
+            public static function orWhereDate($column, $operator, $value = null)
             {    
                 return \Illuminate\Database\Query\Builder::orWhereDate($column, $operator, $value);
             }
@@ -16773,6 +16891,61 @@ namespace  {
             }
          
             /**
+             * Add a "where JSON contains" clause to the query.
+             *
+             * @param string $column
+             * @param mixed $value
+             * @param string $boolean
+             * @param bool $not
+             * @return $this 
+             * @static 
+             */ 
+            public static function whereJsonContains($column, $value, $boolean = 'and', $not = false)
+            {    
+                return \Illuminate\Database\Query\Builder::whereJsonContains($column, $value, $boolean, $not);
+            }
+         
+            /**
+             * Add a "or where JSON contains" clause to the query.
+             *
+             * @param string $column
+             * @param mixed $value
+             * @return $this 
+             * @static 
+             */ 
+            public static function orWhereJsonContains($column, $value)
+            {    
+                return \Illuminate\Database\Query\Builder::orWhereJsonContains($column, $value);
+            }
+         
+            /**
+             * Add a "where JSON not contains" clause to the query.
+             *
+             * @param string $column
+             * @param mixed $value
+             * @param string $boolean
+             * @return $this 
+             * @static 
+             */ 
+            public static function whereJsonDoesntContain($column, $value, $boolean = 'and')
+            {    
+                return \Illuminate\Database\Query\Builder::whereJsonDoesntContain($column, $value, $boolean);
+            }
+         
+            /**
+             * Add a "or where JSON not contains" clause to the query.
+             *
+             * @param string $column
+             * @param mixed $value
+             * @return $this 
+             * @static 
+             */ 
+            public static function orWhereJsonDoesntContain($column, $value)
+            {    
+                return \Illuminate\Database\Query\Builder::orWhereJsonDoesntContain($column, $value);
+            }
+         
+            /**
              * Handles dynamic "where" clauses to the query.
              *
              * @param string $method
@@ -16992,7 +17165,7 @@ namespace  {
              * Constrain the query to the next "page" of results after a given ID.
              *
              * @param int $perPage
-             * @param int $lastId
+             * @param int|null $lastId
              * @param string $column
              * @return \Illuminate\Database\Query\Builder|static 
              * @static 
@@ -17904,7 +18077,7 @@ if (! function_exists('class_basename')) {
 
 if (! function_exists('class_uses_recursive')) {
     /**
-     * Returns all traits used by a class, its subclasses and trait of their traits.
+     * Returns all traits used by a class, its parent classes and trait of their traits.
      *
      * @param  object|string  $class
      * @return array
@@ -18067,8 +18240,6 @@ if (! function_exists('dd')) {
      */
     function dd(...$args)
     {
-        http_response_code(500);
-
         foreach ($args as $x) {
             (new Dumper)->dump($x);
         }
