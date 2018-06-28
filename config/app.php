@@ -165,7 +165,8 @@ return [
         App\Providers\SmsServiceProvider::class,
         App\Providers\CacheFlusherProvider::class,
         App\Providers\SearchServiceProvider::class,
-        App\Providers\SubdomainServiceProvider::class
+        App\Providers\SubdomainServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class
     ],
 
     /*

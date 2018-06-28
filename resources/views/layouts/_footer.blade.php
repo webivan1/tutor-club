@@ -12,6 +12,7 @@
                         <a class="nav-link px-0 py-0 text-capitalize" href="#">{{ t('Privacy policy') }}</a>
                     </li>
                 </ul>
+                @include('layouts._news-category')
             </div>
         </div>
     </div>

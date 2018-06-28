@@ -39,6 +39,10 @@ Route::group(
         Route::post('/category/{category_slug}/list', 'Advert\ListController@list')
             ->where('category_slug', '[a-z0-9\-]+');
 
+        Route::get('/media/{category}', 'Media\CategoryController@index')
+            ->where('category', '[a-z0-9\-]+')
+            ->name('media.show');
+
         Route::group(['prefix' => '/auth', 'namespace' => 'Auth'], function () {
             Route::group(['middleware' => ['guest']], function () {
                 // Registration routes
