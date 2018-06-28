@@ -1,0 +1,19 @@
+Страница репетитора
+
+/profile/{id}
+
+users + tutor_profile + comments? + adverts + schedule? + lessons?
+
+### Расписание
+
+id, free_time, tutor_id, active (boolean = true)
+
+### Отзывы (Только для преподавателей)
+
+- Урок прошел и юзер оставляет коммент
+- Комменты выводятся в разных местах (у адвертов, у преподавателя)
+
+Пагинация (Показать ещё), сортировка (По дате, по рейтингу, по популярности)
+
+- Comments
+    id, user_id, classroom_id, lesson_id (Тема урока - Английский разговорный курс за 2000 / ч.), status, message, created_at, updated_at, rating, vote_up, vote_down

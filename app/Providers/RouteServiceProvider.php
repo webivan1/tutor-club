@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Entity\Category;
-use App\Entity\Chat\Dialogs;
-use App\Entity\Classroom\Classroom;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -27,44 +24,6 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        \Route::bind('category_slug', function ($value) {
-            return Category::where('slug', $value)->firstOrFail();
-        });
-
-        \Route::bind('accessDialog', function ($value) {
-            if (!(new Dialogs())->isAccess(intval($value), \Auth::id())) {
-                abort(404);
-            }
-
-            return intval($value);
-        });
-
-        \Route::bind('sendMessageDialog', function ($value) {
-            try {
-                if (!$source = (new Dialogs())->isSendMessage(intval($value), \Auth::id())) {
-                    throw new \DomainException(t('You do not have rights to write in this dialog'));
-                }
-            } catch (\DomainException $e) {
-                abort(404, $e->getMessage());
-            }
-
-            return $source;
-        });
-
-        \Route::bind('room', function ($value) {
-            /** @var Classroom $model */
-            $model = Classroom::findOrFail(intval($value));
-
-            if (!$model->isAccessUser(\Auth::id())) {
-                abort(404, t('You have not access'));
-            }
-
-            // relation call
-            $model->tutor;
-
-            return $model;
-        });
     }
 
     /**
