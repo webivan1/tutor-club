@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\TestPeer2Peer;
-use App\Events\TestPeerConnect;
-use Illuminate\Http\Request;
-
 class HomeController extends Controller
 {
     /**
