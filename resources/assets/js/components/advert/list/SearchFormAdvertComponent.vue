@@ -70,13 +70,18 @@
                             </select>
                         </div>
                         <div v-if="attr.type === 'checkbox'" class="checkbox">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    v-model="form.attributes[attr.id]"
-                                    value="1"
-                                /> <small>{{ attr.label }}</small>
-                            </label>
+                            <checkbox
+                                :name="'field-' + attr.id"
+                                :label="attr.label"
+                                v-model="form.attributes[attr.id]"
+                            ></checkbox>
+                            <!--<label>-->
+                                <!--<input-->
+                                    <!--type="checkbox"-->
+                                    <!--v-model="form.attributes[attr.id]"-->
+                                    <!--value="1"-->
+                                <!--/> <small>{{ attr.label }}</small>-->
+                            <!--</label>-->
                         </div>
                         <div v-if="attr.type === 'number' || attr.type === 'float'" class="form-group">
                             <label class="bmd-label-static">

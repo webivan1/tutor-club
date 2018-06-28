@@ -14,10 +14,10 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col border-line-bottom"></div>
+        <div class="px-0 pr-2 col border-line-bottom"></div>
         <div class="col-auto">
-            <h4><b class="text-muted">{{ t('Or') }}</b></h4>
+            <h4 class="my-0"><b class="text-muted">{{ t('Or') }}</b></h4>
         </div>
-        <div class="col border-line-bottom"></div>
+        <div class="px-0 pl-2 col border-line-bottom"></div>
     </div>
 </div>

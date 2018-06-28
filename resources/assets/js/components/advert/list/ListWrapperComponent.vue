@@ -8,7 +8,7 @@
                 :models="models"
             ></advert-list>
 
-            <div :class="{ 'loader': loader === true }">
+            <div v-if="total > models.length" :class="{ 'loader': loader === true }">
                 <b-pagination
                     v-if="total > 0"
                     align="center"
@@ -20,6 +20,12 @@
             </div>
         </div>
         <div class="col-md-3">
+            <div v-if="total > 0" class="list-group mb-3">
+                <div class="list-group-item">
+                    Total: <b>{{ total }}</b>
+                </div>
+            </div>
+
             <div class="mb-3">
                 <advert-sort
                     :sort="sort"
