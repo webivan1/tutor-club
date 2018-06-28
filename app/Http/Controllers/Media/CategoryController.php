@@ -16,9 +16,6 @@ class CategoryController extends Controller
      */
     public function index(Category $category)
     {
-        //var_dump($category);
-        $category =$category->first();
-
         return view('media.category.index', compact('category'));
     }
 }
