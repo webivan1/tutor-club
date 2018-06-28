@@ -166,7 +166,8 @@ return [
         App\Providers\CacheFlusherProvider::class,
         App\Providers\SearchServiceProvider::class,
         App\Providers\SubdomainServiceProvider::class,
-        App\Providers\ComposerServiceProvider::class
+        App\Providers\ComposerServiceProvider::class,
+        App\Providers\BindingRouteServiceProvider::class,
     ],
 
     /*

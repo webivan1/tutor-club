@@ -37,14 +37,14 @@
                                 @endif
                             </div>
 
-                            <div class="checkbox">
-                                <label>
-                                    {{ Form::checkbox('remember', old('remember')) }} {{ t('home.labelRememberMe') }}
-                                </label>
-                            </div>
+                            <checkbox
+                                name="remember"
+                                label="{{ t('home.labelRememberMe') }}"
+                                checked="{{ old('remember', 0) }}"
+                            ></checkbox>
 
                             <div class="text-right">
-                                <button type="submit" class="btn btn-raised btn-primary">
+                                <button type="submit" class="mdc-button mdc-button--raised">
                                     {{ t('Login') }}
                                 </button>
                             </div>

@@ -1,16 +1,13 @@
 <template>
     <div :class="{ 'loader': loader === true }">
-        <div v-if="sort && sort.length > 0">
-            <b-dropdown class="my-0" variant="link" no-caret>
-                <template slot="button-content">
-                    <i class="fas fa-sort"></i> {{ activeOrder ? activeOrder.label : 'Choose' }}
-                </template>
-                <div v-for="item in sort">
-                    <b-dropdown-item @click="onSort(item)">
-                        {{ item.label }}
-                    </b-dropdown-item>
-                </div>
-            </b-dropdown>
+        <div class="card bg-grey-700 text-white" v-if="sort && sort.length > 0">
+            <div class="list-group">
+                <a v-for="item in sort" @click="onSort(item)" href="javascript:void(0)" :class="{ active: item.active }" class="text-white list-group-item">
+                    {{ item.label }}
+                    <i class="fas fa-sort-amount-up text-orange" v-if="item.order === 'asc'"></i>
+                    <i class="fas fa-sort-amount-down text-orange" v-else-if="item.order === 'desc'"></i>
+                </a>
+            </div>
         </div>
     </div>
 </template>

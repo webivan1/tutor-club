@@ -286,5 +286,8 @@ Route::group(
             Route::get('/{room}/message', 'MessagesController@index');
             Route::post('/{room}/message', 'MessagesController@store');
         });
+
+        Route::get('/tutor/{tutorProfile}', 'Tutor\TutorController@index')
+            ->name('tutor.view');
     }
 );
