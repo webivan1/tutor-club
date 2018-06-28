@@ -147,7 +147,7 @@ class AdvertPublicList extends Advert
 
         if (!empty($item['avatar'])) {
             $item['avatar'] = (new Preset($item['avatar']['file_path']))
-                ->presetFilename('200x200');
+                ->presetFilename('400');
         }
 
         if (!empty($item['files'])) {

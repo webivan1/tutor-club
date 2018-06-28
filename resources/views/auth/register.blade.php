@@ -60,7 +60,7 @@
                             </div>
 
                             <div class="text-right">
-                                <button type="submit" class="btn btn-raised btn-primary">
+                                <button type="submit" class="mdc-button mdc-button--raised">
                                     {{ t('Register') }}
                                 </button>
                             </div>
