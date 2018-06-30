@@ -82,4 +82,22 @@ class News extends Model
     {
         return $this->hasOne(Files::class, 'id', 'file_id');
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo('App\Entity\Media\Category');
+    }
 }

@@ -19,6 +19,12 @@
                 <th>
                     {!! $sort->link('heading') !!}
                 </th>
+                <th>
+                    {!! $sort->link('published_at') !!}
+                </th>
+                <th>
+                    {!! $sort->link('status') !!}
+                </th>
                 <th>Управление</th>
             </tr>
             </thead>
@@ -27,6 +33,8 @@
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->heading }}</td>
+                    <td>{{ $item->published_at }}</td>
+                    <td>{{ $item->status }}</td>
                     <td width="200">
                         <a href="{{ route('cabinet.admin.media.news.edit', $item) }}" class="btn btn-sm btn-info pull-left" style="margin-right: 3px;">
                             Edit

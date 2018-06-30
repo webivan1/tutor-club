@@ -7,3 +7,8 @@ Breadcrumbs::register('media.show', function (Crumbs $breadcrumbs, \App\Entity\M
     $breadcrumbs->push(t($category->title));
 });
 
+Breadcrumbs::register('media.material.show', function (Crumbs $breadcrumbs, \App\Entity\Media\News $news) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(t($news->category->title), route('media.show', $news->category->slug));
+    $breadcrumbs->push(t($news->title));
+});

@@ -43,6 +43,11 @@ Route::group(
             ->where('category', '[a-z0-9\-]+')
             ->name('media.show');
 
+        Route::get('/media/material/{news}', 'Media\NewsController@index')
+            ->where('news', '[a-z0-9\-]+')
+            ->name('media.material.show');
+
+
         Route::group(['prefix' => '/auth', 'namespace' => 'Auth'], function () {
             Route::group(['middleware' => ['guest']], function () {
                 // Registration routes

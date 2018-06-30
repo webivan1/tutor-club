@@ -56,6 +56,16 @@ class News extends Base
                 'asc' => ['n.heading' => Sort::SORT_ASC],
                 'desc' => ['n.heading' => Sort::SORT_DESC],
                 'label' => 'Заголовок'
+            ],
+            'published_at' => [
+                'asc' => ['n.published_at' => Sort::SORT_ASC],
+                'desc' => ['n.published_at' => Sort::SORT_DESC],
+                'label' => 'Дата публикации'
+            ],
+            'status' => [
+                'asc' => ['n.status' => Sort::SORT_ASC],
+                'desc' => ['n.status' => Sort::SORT_DESC],
+                'label' => 'Статус'
             ]
         ];
     }

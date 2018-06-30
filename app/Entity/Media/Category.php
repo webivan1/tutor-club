@@ -57,4 +57,12 @@ class Category extends Model
     {
         return 'slug';
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function news()
+    {
+        return $this->hasMany('App\Entity\Media\News', 'category_id', 'id');
+    }
 }
