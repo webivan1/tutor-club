@@ -49,6 +49,9 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-md-12">
+                            @include('errors.flash_message')
+                            @include ('errors.list')
+
                             <div class="breadcrumb-color-white">
                                 @section('breadcrumbs')
                                     {{ Breadcrumbs::render() }}

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\NewsCategoryComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,9 +16,7 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         // Using class based composers...
-        View::composer(
-            'layouts._news-category', 'App\Http\ViewComposers\NewsCategoryComposer'
-        );
+        View::composer('layouts._news-category', NewsCategoryComposer::class);
     }
 
     /**

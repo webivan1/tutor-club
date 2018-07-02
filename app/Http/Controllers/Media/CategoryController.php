@@ -17,18 +17,9 @@ class CategoryController extends Controller
      */
     public function index(Category $category)
     {
-        if ($category->status != Category::STATUS_ACTIVE) {
-            abort(404);
-        }
+        $category->isActive() ?: abort(404);
 
-        $news = $category
-            ->news()
-            ->where([
-                'status' => News::STATUS_ACTIVE,
-                'lang' => 'ru'])
-            //->where('published_at', '<', Now())
-            ->orderBy('published_at', 'desc')
-            ->paginate(3);
+        $news = $category->news()->listData()->paginate(6);
 
         return view('media.category.index', compact('category', 'news'));
     }

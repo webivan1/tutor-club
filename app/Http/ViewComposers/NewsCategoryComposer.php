@@ -8,13 +8,15 @@ use Illuminate\View\View;
 
 class NewsCategoryComposer
 {
-    protected $categoryList;
+    /**
+     * @var Category
+     */
+    private $categoryList;
 
     /**
      * Create a new composer.
      *
      * @param  Category  $category
-     * @return void
      */
     public function __construct(Category $category)
     {
@@ -29,6 +31,6 @@ class NewsCategoryComposer
      */
     public function compose(View $view)
     {
-        $view->with('data', $this->categoryList->where('status', $this->categoryList::STATUS_ACTIVE)->get());
+        $view->with('data', $this->categoryList->where('status', Category::STATUS_ACTIVE)->get());
     }
 }
