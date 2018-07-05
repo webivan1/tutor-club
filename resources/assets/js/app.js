@@ -10,6 +10,7 @@ require('./jquery/main');
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueTimeago from 'vue-timeago'
+import datePicker from 'vue-bootstrap-datetimepicker'
 
 import { OnlineUsers } from './custom/OnlineUsers'
 
@@ -18,6 +19,20 @@ import { OnlineUsers } from './custom/OnlineUsers'
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
+  icons: {
+    time: 'far fa-clock',
+    date: 'far fa-calendar',
+    up: 'fas fa-arrow-up',
+    down: 'fas fa-arrow-down',
+    previous: 'fas fa-chevron-left',
+    next: 'fas fa-chevron-right',
+    today: 'fas fa-calendar-check',
+    clear: 'far fa-trash-alt',
+    close: 'far fa-times-circle'
+  }
+});
 
 Object.assign(window, {
   onlineUser: new OnlineUsers()
@@ -33,6 +48,7 @@ try {
       'en': require('date-fns/locale/en'),
     }
   });
+  Vue.use(datePicker);
 
   Vue.component('advert-form-component', require('./components/advert/FormWrapper.vue'));
   Vue.component('search-category-component', require('./components/category/SearchComponent.vue'));

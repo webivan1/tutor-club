@@ -82,6 +82,15 @@ class User extends Authenticatable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tutor()
+    {
+        return $this->belongsTo(TutorProfile::class, 'id', 'user_id')
+            ->where('status', TutorProfile::STATUS_ACTIVE);
+    }
+
+    /**
      * Get the class name for polymorphic relations.
      *
      * @return string

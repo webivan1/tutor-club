@@ -112,6 +112,8 @@ class DialogsSearch extends Dialogs
             }));
 
             $item['user'] = $item['users'][0];
+
+            unset($item['users']);
         }
 
         $item['max_updated_at'] = null;
