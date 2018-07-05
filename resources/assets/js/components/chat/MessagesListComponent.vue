@@ -1,5 +1,7 @@
 <template>
     <div class="flex-vertical">
+        <classroom-register ref="registerClassroom"></classroom-register>
+
         <div class="py-1 px-1 bg-grey-100">
             <a href="javascript:void(0)" @click="close()" class="btn btn-sm btn-block btn-link">
                 <i class="fas fa-angle-double-left"></i>
@@ -18,8 +20,13 @@
                 <div class="input-group">
                     <input v-model="messageField" required @keydown="Keydown" type="text" class="form-control" placeholder="Write message..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button">
+                        <button class="btn btn-primary">
                             <i class="fas fa-share-square"></i>
+                        </button>
+                    </div>
+                    <div class="input-group-append">
+                        <button @click="showModalRegisterClassroom" class="btn btn-info" type="button">
+                            <i class="far fa-calendar-check"></i>
                         </button>
                     </div>
                 </div>
@@ -92,6 +99,10 @@
       console.log(this.list);
     },
     methods: {
+      showModalRegisterClassroom() {
+        this.$refs.registerClassroom.showModal();
+      },
+
       nextPageLoad() {
         if (this.nextPage) {
           this.$emit('next-page', this.nextPage);

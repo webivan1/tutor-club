@@ -1812,7 +1812,7 @@ body {
   margin: 0;
   font-family: "Roboto Condensed", "Roboto", sans-serif;
   font-size: 1rem;
-  font-weight: 440;
+  font-weight: 500;
   line-height: 1.5;
   color: #616161;
   text-align: left;
@@ -25076,6 +25076,7 @@ footer {
 .navbar .navbar-brand {
   font-size: 2rem;
   margin-right: 2rem;
+  font-weight: bold;
 }
 
 .navbar.navbar-light .navbar-brand {

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Media;
 
 use App\Entity\Media\Category;
-use App\Entity\Media\News;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller

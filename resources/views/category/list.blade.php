@@ -1,16 +1,17 @@
 <?php
 
 $themes = [
-    ['bg-dark', 'text-white'],
-    ['bg-danger', 'text-white'],
-    ['bg-primary', 'text-white'],
-    ['bg-info', 'text-white'],
-    ['bg-warning', 'text-grey-900'],
-    ['bg-secondary', 'text-white'],
-    ['bg-success', 'text-white'],
-    ['bg-lime', 'text-grey-900'],
-    ['bg-light-green', 'text-grey-900'],
-    ['bg-light-blue', 'text-white']
+    //['bg-dark', 'text-white'],
+    //['bg-danger', 'text-white'],
+    //['bg-primary', 'text-white'],
+    //['bg-info', 'text-white'],
+    //['bg-warning', 'text-grey-900'],
+    //['bg-secondary', 'text-white'],
+    //['bg-success', 'text-white'],
+    //['bg-lime', 'text-grey-900'],
+    //['bg-light-green', 'text-grey-900'],
+    //['bg-light-blue', 'text-white']
+    ['', '']
 ];
 
 ?>
