@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal ref="modal" hide-footer title="Регистрация урока">
+        <b-modal v-on:show="isShowModal" ref="modal" hide-footer title="Регистрация урока">
 
             <h4 class="text-center text-info mb-1">
                 <b>{{ startedAt }}</b>
@@ -22,9 +22,12 @@
   import moment from 'moment'
 
   export default {
-    props: ['user', 'tutor', 'dialog'],
+    props: ['user', 'tutor', 'advert'],
     data() {
       return {
+        list: [],
+        lang: 'en',
+        loader: true,
         startedAt: null,
         video: true,
         subject: null,
@@ -36,14 +39,20 @@
       };
     },
     created() {
-
+      this.lang = document.querySelector('html').getAttribute('lang');
     },
     methods: {
+      isShowModal() {
+        this.getAdvert();
+      },
+      getAdvert() {
+        axios.post(`/${this.lang}/tutor/${this.tutor}`);
+      },
       showModal () {
-        this.$refs.modal.show()
+        this.$refs.modal.show();
       },
       hideModal () {
-        this.$refs.modal.hide()
+        this.$refs.modal.hide();
       }
     }
   }

@@ -77,6 +77,7 @@
       },
     },
     created() {
+      console.log('DIALOG', this.dialog);
       this.nextPage = this.list.next_page_url;
     },
     mounted() {

@@ -98793,6 +98793,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
     }
   },
   created: function created() {
+    console.log('DIALOG', this.dialog);
     this.nextPage = this.list.next_page_url;
   },
   mounted: function mounted() {
@@ -108608,9 +108609,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user', 'tutor', 'dialog'],
+  props: ['user', 'tutor', 'advert'],
   data: function data() {
     return {
+      list: [],
+      lang: 'en',
+      loader: true,
       startedAt: null,
       video: true,
       subject: null,
@@ -108621,9 +108625,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     };
   },
-  created: function created() {},
+  created: function created() {
+    this.lang = document.querySelector('html').getAttribute('lang');
+  },
 
   methods: {
+    isShowModal: function isShowModal() {
+      this.getAdvert();
+    },
+    getAdvert: function getAdvert() {
+      axios.post('/' + this.lang + '/tutor/' + this.tutor);
+    },
     showModal: function showModal() {
       this.$refs.modal.show();
     },
@@ -108648,7 +108660,8 @@ var render = function() {
         "b-modal",
         {
           ref: "modal",
-          attrs: { "hide-footer": "", title: "Регистрация урока" }
+          attrs: { "hide-footer": "", title: "Регистрация урока" },
+          on: { show: _vm.isShowModal }
         },
         [
           _c("h4", { staticClass: "text-center text-info mb-1" }, [

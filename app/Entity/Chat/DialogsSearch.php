@@ -8,6 +8,7 @@
 
 namespace App\Entity\Chat;
 
+use App\Entity\TutorProfile;
 use App\Services\ElasticSearch\ElasticSearchModel;
 use App\Services\ElasticSearch\ElasticSearchService;
 use Illuminate\Database\Query\Expression;
@@ -106,14 +107,21 @@ class DialogsSearch extends Dialogs
             // Не прочитанные сообщения
             $item['message_no_read'] = $this->getNotReadMessages($item['id'], $userId);
 
-            // Убираем своего юзера из списка
-            $item['users'] = array_values(array_filter($item['users'], function ($user) use ($userId) {
-                return (int) $user['user_id'] !== (int) $userId;
-            }));
+            $item['users'] = array_map(function ($user) {
+                $user['tutor'] = TutorProfile::select(['id'])
+                    ->where('user_id', $user['id'])
+                    ->where('status', TutorProfile::STATUS_ACTIVE)
+                    ->first();
 
-            $item['user'] = $item['users'][0];
+                return $user;
+            }, $item['users']);
 
-            unset($item['users']);
+            foreach ($item['users'] as $user) {
+                if ((int) $user['user_id'] !== (int) $userId) {
+                    $item['user'] = $user;
+                    break;
+                }
+            }
         }
 
         $item['max_updated_at'] = null;
