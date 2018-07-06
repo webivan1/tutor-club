@@ -1,6 +1,13 @@
 <template>
     <div class="flex-vertical">
-        <classroom-register ref="registerClassroom"></classroom-register>
+        <div v-if="isActiveButtonCreateLesson">
+            <classroom-register
+                ref="registerClassroom"
+                :dialog="dialog"
+                :from="user"
+                :tutor="tutor"
+            ></classroom-register>
+        </div>
 
         <div class="py-1 px-1 bg-grey-100">
             <a href="javascript:void(0)" @click="close()" class="btn btn-sm btn-block btn-link">
@@ -11,6 +18,15 @@
             <div class="ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"></div>
         </div>
         <div ref="mw" class="card-body flex-auto-height py-0" v-if="!loader">
+            <div class="text-center pt-1 pb-1" v-if="nextPage">
+                <div v-if="loaderMore">
+                    <div class="ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"></div>
+                </div>
+                <div v-else>
+                    <button @click="nextPageLoad" class="btn btn-sm btn-info">load more</button>
+                </div>
+            </div>
+
             <div v-for="item in list.data">
                 <message :item="item"></message>
             </div>
@@ -24,7 +40,7 @@
                             <i class="fas fa-share-square"></i>
                         </button>
                     </div>
-                    <div class="input-group-append">
+                    <div v-if="isActiveButtonCreateLesson" class="input-group-append">
                         <button @click="showModalRegisterClassroom" class="btn btn-info" type="button">
                             <i class="far fa-calendar-check"></i>
                         </button>
@@ -42,19 +58,24 @@
   Vue.component('message', MessageItem);
 
   export default {
-    props: ['list', 'loader', 'dialog'],
+    props: ['list', 'loader', 'dialog', 'user'],
     data() {
       return {
         messageField: '',
         loaderSend: false,
+        loaderMore: false,
         prependUrl: '',
         upScroll: false,
         nextPage: null,
+        tutor: null,
+        isActiveButtonCreateLesson: false
       }
     },
     watch: {
       'list': {
         handler: function (data) {
+          this.loaderMore = false;
+
           if (this.upScroll === false) {
             setTimeout(_ => {
               this.scrollToBottom();
@@ -75,10 +96,25 @@
         },
         deep: true
       },
+      'tutor': {
+        handler: function (data) {
+          this.isActiveButtonCreateLesson = true;
+        },
+        deep: true
+      }
     },
     created() {
-      console.log('DIALOG', this.dialog);
       this.nextPage = this.list.next_page_url;
+
+      if (this.dialog.user.tutor) {
+        this.tutor = this.dialog.user.tutor;
+      } else {
+        this.dialog.users.forEach(user => {
+          if (parseInt(user.id) === parseInt(this.user) && user.tutor) {
+            this.tutor = user;
+          }
+        });
+      }
     },
     mounted() {
       this.prependUrl = document.querySelector('body').getAttribute('data-url');
@@ -87,9 +123,9 @@
         this.$refs.mw.onscroll = e => {
           this.upScroll = true;
 
-          if (this.$refs.mw.scrollTop === 0) {
-            this.nextPageLoad();
-          }
+//          if (this.$refs.mw.scrollTop === 0) {
+//            this.nextPageLoad();
+//          }
 
           if (this.$refs.mw.scrollTop === this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight) {
             this.upScroll = false;
@@ -105,6 +141,8 @@
       },
 
       nextPageLoad() {
+        this.loaderMore = true;
+
         if (this.nextPage) {
           this.$emit('next-page', this.nextPage);
         }
@@ -148,7 +186,7 @@
             this.loaderSend = false;
             console.log(err);
           });
-      }
+      },
     }
   }
 </script>

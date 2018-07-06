@@ -47,7 +47,6 @@ Route::group(
             ->where('news', '[a-z0-9\-]+')
             ->name('media.material.show');
 
-
         Route::group(['prefix' => '/auth', 'namespace' => 'Auth'], function () {
             Route::group(['middleware' => ['guest']], function () {
                 // Registration routes
@@ -292,7 +291,13 @@ Route::group(
             Route::post('/{room}/message', 'MessagesController@store');
         });
 
-        Route::get('/tutor/{tutorProfile}', 'Tutor\TutorController@index')
-            ->name('tutor.view');
+        Route::group([
+            'prefix' => 'tutor',
+            'namespace' => 'Tutor',
+            'as' => 'tutor.',
+        ], function () {
+            Route::get('/{tutorProfile}', 'TutorController@index')->name('view');
+            Route::post('/list-prices', 'TutorController@prices')->middleware(['auth']);
+        });
     }
 );

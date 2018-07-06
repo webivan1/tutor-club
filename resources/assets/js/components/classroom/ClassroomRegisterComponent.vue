@@ -8,6 +8,13 @@
 
             <date-picker v-model="startedAt" :config="options"></date-picker>
 
+            <div class="text-center py-2" v-if="loaderPrices">
+                <div class="ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"></div>
+            </div>
+            <div v-else>
+                ... OK ...
+            </div>
+
             <div class="form-group">
                 <label>Тема урока</label>
                 <textarea v-model="subject" class="form-control"></textarea>
@@ -22,12 +29,12 @@
   import moment from 'moment'
 
   export default {
-    props: ['user', 'tutor', 'advert'],
+    props: ['dialog', 'from', 'tutor', 'advert'],
     data() {
       return {
         list: [],
-        lang: 'en',
-        loader: true,
+        prependUrl: null,
+        loaderPrices: true,
         startedAt: null,
         video: true,
         subject: null,
@@ -39,18 +46,29 @@
       };
     },
     created() {
-      this.lang = document.querySelector('html').getAttribute('lang');
+      this.prependUrl = document.body.getAttribute('data-url');
     },
     methods: {
       isShowModal() {
         this.getAdvert();
       },
+
       getAdvert() {
-        axios.post(`/${this.lang}/tutor/${this.tutor}`);
+        axios.post(`${this.prependUrl}/tutor/list-prices`, {
+          tutor: this.tutor.tutor.id,
+          advert: this.advert
+        })
+          .then(response => {
+            this.loaderPrices = false;
+            console.log(response);
+          })
+          .catch(err => console.error(err));
       },
+
       showModal () {
         this.$refs.modal.show();
       },
+
       hideModal () {
         this.$refs.modal.hide();
       }

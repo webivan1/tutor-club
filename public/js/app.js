@@ -98042,6 +98042,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
 
 
 
@@ -98746,6 +98747,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -98753,14 +98770,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPORTED_MODULE_1__MessageItemComponent_vue___default.a);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['list', 'loader', 'dialog'],
+  props: ['list', 'loader', 'dialog', 'user'],
   data: function data() {
     return {
       messageField: '',
       loaderSend: false,
+      loaderMore: false,
       prependUrl: '',
       upScroll: false,
-      nextPage: null
+      nextPage: null,
+      tutor: null,
+      isActiveButtonCreateLesson: false
     };
   },
 
@@ -98790,27 +98810,44 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
         }
       },
       deep: true
+    },
+    'tutor': {
+      handler: function handler(data) {
+        this.isActiveButtonCreateLesson = true;
+      },
+      deep: true
     }
   },
   created: function created() {
-    console.log('DIALOG', this.dialog);
+    var _this3 = this;
+
     this.nextPage = this.list.next_page_url;
+
+    if (this.dialog.user.tutor) {
+      this.tutor = this.dialog.user.tutor;
+    } else {
+      this.dialog.users.forEach(function (user) {
+        if (parseInt(user.id) === parseInt(_this3.user) && user.tutor) {
+          _this3.tutor = user;
+        }
+      });
+    }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.prependUrl = document.querySelector('body').getAttribute('data-url');
 
     if (this.$refs.mw) {
       this.$refs.mw.onscroll = function (e) {
-        _this3.upScroll = true;
+        _this4.upScroll = true;
 
-        if (_this3.$refs.mw.scrollTop === 0) {
-          _this3.nextPageLoad();
-        }
+        //          if (this.$refs.mw.scrollTop === 0) {
+        //            this.nextPageLoad();
+        //          }
 
-        if (_this3.$refs.mw.scrollTop === _this3.$refs.mw.scrollHeight + _this3.$refs.mw.clientHeight) {
-          _this3.upScroll = false;
+        if (_this4.$refs.mw.scrollTop === _this4.$refs.mw.scrollHeight + _this4.$refs.mw.clientHeight) {
+          _this4.upScroll = false;
         }
       };
     }
@@ -98823,6 +98860,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       this.$refs.registerClassroom.showModal();
     },
     nextPageLoad: function nextPageLoad() {
+      this.loaderMore = true;
+
       if (this.nextPage) {
         this.$emit('next-page', this.nextPage);
       }
@@ -98844,7 +98883,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       }
     },
     sendMessage: function sendMessage() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.loaderSend === true) {
         return false;
@@ -98855,11 +98894,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       axios.put(this.prependUrl + '/chat/messages/' + this.dialog.id, {
         message: this.messageField
       }).then(function (response) {
-        _this4.$emit('new-message', response.data);
-        _this4.messageField = '';
-        _this4.loaderSend = false;
+        _this5.$emit('new-message', response.data);
+        _this5.messageField = '';
+        _this5.loaderSend = false;
       }).catch(function (err) {
-        _this4.loaderSend = false;
+        _this5.loaderSend = false;
         console.log(err);
       });
     }
@@ -99067,112 +99106,145 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "flex-vertical" },
-    [
-      _c("classroom-register", { ref: "registerClassroom" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "py-1 px-1 bg-grey-100" }, [
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-sm btn-block btn-link",
-            attrs: { href: "javascript:void(0)" },
-            on: {
-              click: function($event) {
-                _vm.close()
-              }
-            }
-          },
-          [_c("i", { staticClass: "fas fa-angle-double-left" })]
-        )
-      ]),
-      _vm._v(" "),
-      _vm.loader
-        ? _c("div", { staticClass: "px-1 py-1 text-center" }, [
-            _c("div", {
-              staticClass: "ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"
+  return _c("div", { staticClass: "flex-vertical" }, [
+    _vm.isActiveButtonCreateLesson
+      ? _c(
+          "div",
+          [
+            _c("classroom-register", {
+              ref: "registerClassroom",
+              attrs: { dialog: _vm.dialog, from: _vm.user, tutor: _vm.tutor }
             })
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      !_vm.loader
-        ? _c(
-            "div",
-            { ref: "mw", staticClass: "card-body flex-auto-height py-0" },
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "py-1 px-1 bg-grey-100" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-sm btn-block btn-link",
+          attrs: { href: "javascript:void(0)" },
+          on: {
+            click: function($event) {
+              _vm.close()
+            }
+          }
+        },
+        [_c("i", { staticClass: "fas fa-angle-double-left" })]
+      )
+    ]),
+    _vm._v(" "),
+    _vm.loader
+      ? _c("div", { staticClass: "px-1 py-1 text-center" }, [
+          _c("div", {
+            staticClass: "ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"
+          })
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.loader
+      ? _c(
+          "div",
+          { ref: "mw", staticClass: "card-body flex-auto-height py-0" },
+          [
+            _vm.nextPage
+              ? _c("div", { staticClass: "text-center pt-1 pb-1" }, [
+                  _vm.loaderMore
+                    ? _c("div", [
+                        _c("div", {
+                          staticClass:
+                            "ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"
+                        })
+                      ])
+                    : _c("div", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-sm btn-info",
+                            on: { click: _vm.nextPageLoad }
+                          },
+                          [_vm._v("load more")]
+                        )
+                      ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _vm._l(_vm.list.data, function(item) {
               return _c("div", [_c("message", { attrs: { item: item } })], 1)
             })
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      !_vm.loader
-        ? _c("div", [
-            _c(
-              "form",
-              {
-                staticClass: "mx-0 my-0",
-                class: { loader: _vm.loaderSend },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.sendMessage($event)
-                  }
+          ],
+          2
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.loader
+      ? _c("div", [
+          _c(
+            "form",
+            {
+              staticClass: "mx-0 my-0",
+              class: { loader: _vm.loaderSend },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.sendMessage($event)
                 }
-              },
-              [
-                _c("div", { staticClass: "input-group" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.messageField,
-                        expression: "messageField"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      required: "",
-                      type: "text",
-                      placeholder: "Write message...",
-                      "aria-label": "Recipient's username",
-                      "aria-describedby": "basic-addon2"
-                    },
-                    domProps: { value: _vm.messageField },
-                    on: {
-                      keydown: _vm.Keydown,
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.messageField = $event.target.value
-                      }
+              }
+            },
+            [
+              _c("div", { staticClass: "input-group" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.messageField,
+                      expression: "messageField"
                     }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-group-append" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-info",
-                        attrs: { type: "button" },
-                        on: { click: _vm.showModalRegisterClassroom }
-                      },
-                      [_c("i", { staticClass: "far fa-calendar-check" })]
-                    )
-                  ])
-                ])
-              ]
-            )
-          ])
-        : _vm._e()
-    ],
-    1
-  )
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    required: "",
+                    type: "text",
+                    placeholder: "Write message...",
+                    "aria-label": "Recipient's username",
+                    "aria-describedby": "basic-addon2"
+                  },
+                  domProps: { value: _vm.messageField },
+                  on: {
+                    keydown: _vm.Keydown,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.messageField = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm._m(0),
+                _vm._v(" "),
+                _vm.isActiveButtonCreateLesson
+                  ? _c("div", { staticClass: "input-group-append" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-info",
+                          attrs: { type: "button" },
+                          on: { click: _vm.showModalRegisterClassroom }
+                        },
+                        [_c("i", { staticClass: "far fa-calendar-check" })]
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            ]
+          )
+        ])
+      : _vm._e()
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -99556,7 +99628,8 @@ var render = function() {
                       data: _vm.data,
                       list: _vm.messages,
                       loader: _vm.loaderMessage,
-                      dialog: _vm.dialog
+                      dialog: _vm.dialog,
+                      user: _vm.user
                     },
                     on: {
                       close: _vm.closeMessage,
@@ -108605,16 +108678,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user', 'tutor', 'advert'],
+  props: ['dialog', 'from', 'tutor', 'advert'],
   data: function data() {
     return {
       list: [],
-      lang: 'en',
-      loader: true,
+      prependUrl: null,
+      loaderPrices: true,
       startedAt: null,
       video: true,
       subject: null,
@@ -108626,7 +108706,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     };
   },
   created: function created() {
-    this.lang = document.querySelector('html').getAttribute('lang');
+    this.prependUrl = document.body.getAttribute('data-url');
   },
 
   methods: {
@@ -108634,7 +108714,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.getAdvert();
     },
     getAdvert: function getAdvert() {
-      axios.post('/' + this.lang + '/tutor/' + this.tutor);
+      var _this = this;
+
+      axios.post(this.prependUrl + '/tutor/list-prices', {
+        tutor: this.tutor.tutor.id,
+        advert: this.advert
+      }).then(function (response) {
+        _this.loaderPrices = false;
+        console.log(response);
+      }).catch(function (err) {
+        return console.error(err);
+      });
     },
     showModal: function showModal() {
       this.$refs.modal.show();
@@ -108678,6 +108768,15 @@ var render = function() {
               expression: "startedAt"
             }
           }),
+          _vm._v(" "),
+          _vm.loaderPrices
+            ? _c("div", { staticClass: "text-center py-2" }, [
+                _c("div", {
+                  staticClass:
+                    "ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"
+                })
+              ])
+            : _c("div", [_vm._v("\n            ... OK ...\n        ")]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", [_vm._v("Тема урока")]),

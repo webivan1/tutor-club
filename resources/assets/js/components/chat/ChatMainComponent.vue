@@ -40,6 +40,7 @@
                         :list="messages"
                         :loader="loaderMessage"
                         :dialog="dialog"
+                        :user="user"
                         v-on:close="closeMessage"
                         v-on:new-message="addMessage"
                         v-on:next-page="nextPageMessages"
