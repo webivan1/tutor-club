@@ -1,26 +1,34 @@
 <template>
     <div>
         <b-modal v-on:show="isShowModal" ref="modal" hide-footer title="Регистрация урока">
+            <form @submit.prevent="register">
+                <div class="text-center py-2" v-if="loaderPrices">
+                    <div class="ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"></div>
+                </div>
+                <div v-else>
+                    <div class="form-group">
+                        <label>Выберите курс урока</label>
+                        <select v-model="advertPrice" class="form-control">
+                            <option v-for="item in list" :value="item">
+                                {{ item.name }} | {{ item.price_from }} {{ item.price_type }} | {{ item.minutes }} min
+                            </option>
+                        </select>
+                    </div>
+                </div>
 
-            <h4 class="text-center text-info mb-1">
-                <b>{{ startedAt }}</b>
-            </h4>
+                <div class="form-group">
+                    <label>Выбрать дату начала урока</label>
+                    <date-picker v-model="startedAt" :config="options"></date-picker>
+                </div>
 
-            <date-picker v-model="startedAt" :config="options"></date-picker>
+                <checkbox v-model="video" label="Видиотрансляция" :checked="1"></checkbox>
 
-            <div class="text-center py-2" v-if="loaderPrices">
-                <div class="ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"></div>
-            </div>
-            <div v-else>
-                ... OK ...
-            </div>
-
-            <div class="form-group">
-                <label>Тема урока</label>
-                <textarea v-model="subject" class="form-control"></textarea>
-            </div>
-
-            <b-btn class="mt-3" variant="outline-danger" block @click="hideModal">Close Me</b-btn>
+                <div class="text-right">
+                    <button class="btn btn-info">
+                        lesson is register
+                    </button>
+                </div>
+            </form>
         </b-modal>
     </div>
 </template>
@@ -32,15 +40,17 @@
     props: ['dialog', 'from', 'tutor', 'advert'],
     data() {
       return {
+        defaultList: [],
         list: [],
         prependUrl: null,
         loaderPrices: true,
         startedAt: null,
+        advertPrice: null,
         video: true,
         subject: null,
         options: {
           minDate: moment(),
-          inline: true,
+          //inline: true,
           format: 'YYYY-MM-DD HH:mm'
         }
       };
@@ -55,14 +65,22 @@
 
       getAdvert() {
         axios.post(`${this.prependUrl}/tutor/list-prices`, {
-          tutor: this.tutor.tutor.id,
+          tutor: this.tutor.id,
           advert: this.advert
         })
           .then(response => {
+            this.defaultList = [...response.data];
+            this.list = response.data;
             this.loaderPrices = false;
-            console.log(response);
           })
           .catch(err => console.error(err));
+      },
+
+      register() {
+        let post = {
+          video: this.video,
+
+        };
       },
 
       showModal () {

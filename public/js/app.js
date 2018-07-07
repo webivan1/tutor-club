@@ -98789,6 +98789,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       handler: function handler(data) {
         var _this = this;
 
+        this.loaderMore = false;
+
         if (this.upScroll === false) {
           setTimeout(function (_) {
             _this.scrollToBottom();
@@ -98828,7 +98830,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
     } else {
       this.dialog.users.forEach(function (user) {
         if (parseInt(user.id) === parseInt(_this3.user) && user.tutor) {
-          _this3.tutor = user;
+          _this3.tutor = user.tutor;
         }
       });
     }
@@ -106827,9 +106829,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     onChange: function onChange(event) {
-      if (this.value) {
-        this.$emit('input', event.target.value);
-      }
+      this.$emit('input', event.target.checked);
     }
   }
 });
@@ -108658,6 +108658,16 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -108692,15 +108702,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: ['dialog', 'from', 'tutor', 'advert'],
   data: function data() {
     return {
+      defaultList: [],
       list: [],
       prependUrl: null,
       loaderPrices: true,
       startedAt: null,
+      advertPrice: null,
       video: true,
       subject: null,
       options: {
         minDate: __WEBPACK_IMPORTED_MODULE_0_moment___default()(),
-        inline: true,
+        //inline: true,
         format: 'YYYY-MM-DD HH:mm'
       }
     };
@@ -108717,14 +108729,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       axios.post(this.prependUrl + '/tutor/list-prices', {
-        tutor: this.tutor.tutor.id,
+        tutor: this.tutor.id,
         advert: this.advert
       }).then(function (response) {
+        _this.defaultList = [].concat(_toConsumableArray(response.data));
+        _this.list = response.data;
         _this.loaderPrices = false;
-        console.log(response);
       }).catch(function (err) {
         return console.error(err);
       });
+    },
+    register: function register() {
+      var post = {
+        video: this.video
+
+      };
     },
     showModal: function showModal() {
       this.$refs.modal.show();
@@ -108754,66 +108773,117 @@ var render = function() {
           on: { show: _vm.isShowModal }
         },
         [
-          _c("h4", { staticClass: "text-center text-info mb-1" }, [
-            _c("b", [_vm._v(_vm._s(_vm.startedAt))])
-          ]),
-          _vm._v(" "),
-          _c("date-picker", {
-            attrs: { config: _vm.options },
-            model: {
-              value: _vm.startedAt,
-              callback: function($$v) {
-                _vm.startedAt = $$v
-              },
-              expression: "startedAt"
-            }
-          }),
-          _vm._v(" "),
-          _vm.loaderPrices
-            ? _c("div", { staticClass: "text-center py-2" }, [
-                _c("div", {
-                  staticClass:
-                    "ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"
-                })
-              ])
-            : _c("div", [_vm._v("\n            ... OK ...\n        ")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", [_vm._v("Тема урока")]),
-            _vm._v(" "),
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.subject,
-                  expression: "subject"
-                }
-              ],
-              staticClass: "form-control",
-              domProps: { value: _vm.subject },
+          _c(
+            "form",
+            {
               on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.subject = $event.target.value
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.register($event)
                 }
               }
-            })
-          ]),
-          _vm._v(" "),
-          _c(
-            "b-btn",
-            {
-              staticClass: "mt-3",
-              attrs: { variant: "outline-danger", block: "" },
-              on: { click: _vm.hideModal }
             },
-            [_vm._v("Close Me")]
+            [
+              _vm.loaderPrices
+                ? _c("div", { staticClass: "text-center py-2" }, [
+                    _c("div", {
+                      staticClass:
+                        "ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"
+                    })
+                  ])
+                : _c("div", [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Выберите курс урока")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.advertPrice,
+                              expression: "advertPrice"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.advertPrice = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        _vm._l(_vm.list, function(item) {
+                          return _c("option", { domProps: { value: item } }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(item.name) +
+                                " | " +
+                                _vm._s(item.price_from) +
+                                " " +
+                                _vm._s(item.price_type) +
+                                " | " +
+                                _vm._s(item.minutes) +
+                                " min\n                        "
+                            )
+                          ])
+                        })
+                      )
+                    ])
+                  ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", [_vm._v("Выбрать дату начала урока")]),
+                  _vm._v(" "),
+                  _c("date-picker", {
+                    attrs: { config: _vm.options },
+                    model: {
+                      value: _vm.startedAt,
+                      callback: function($$v) {
+                        _vm.startedAt = $$v
+                      },
+                      expression: "startedAt"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("checkbox", {
+                attrs: { label: "Видиотрансляция", checked: 1 },
+                model: {
+                  value: _vm.video,
+                  callback: function($$v) {
+                    _vm.video = $$v
+                  },
+                  expression: "video"
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "text-right" }, [
+                _c("button", { staticClass: "btn btn-info" }, [
+                  _vm._v(
+                    "\n                    lesson is register\n                "
+                  )
+                ])
+              ])
+            ],
+            1
           )
-        ],
-        1
+        ]
       )
     ],
     1

@@ -111,7 +111,7 @@
       } else {
         this.dialog.users.forEach(user => {
           if (parseInt(user.id) === parseInt(this.user) && user.tutor) {
-            this.tutor = user;
+            this.tutor = user.tutor;
           }
         });
       }

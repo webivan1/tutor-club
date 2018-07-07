@@ -51,9 +51,7 @@
     },
     methods: {
       onChange(event) {
-        if (this.value) {
-          this.$emit('input', event.target.value);
-        }
+        this.$emit('input', event.target.checked);
       }
     }
   }
