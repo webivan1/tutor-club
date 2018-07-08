@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Events\Profile\TutorProfileEvent;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property integer $user_id
+ */
 class TutorProfile extends Model
 {
     /**

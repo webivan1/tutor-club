@@ -17,6 +17,7 @@ use Carbon\Carbon;
  * @property boolean $video
  * @property boolean $audio
  * @property integer $duration
+ * @property integer $advert_prices_id
  */
 class Classroom extends Model
 {
@@ -29,7 +30,8 @@ class Classroom extends Model
      * @var array
      */
     public $fillable = [
-        'subject', 'status', 'closed_at', 'started_at', 'duration', 'video', 'audio', 'comment'
+        'subject', 'status', 'closed_at', 'started_at',
+        'duration', 'video', 'audio', 'comment', 'advert_prices_id'
     ];
 
     /**
@@ -57,6 +59,14 @@ class Classroom extends Model
     public function users()
     {
         return $this->hasMany(ClassroomUser::class, 'classroom_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(ClassroomUser::class, 'classroom_id', 'id');
     }
 
     /**
@@ -122,5 +132,25 @@ class Classroom extends Model
     public function isAccessUser(int $userId): bool
     {
         return $this->users()->where('user_id', $userId)->exists();
+    }
+
+    /**
+     * Create new classroom
+     *
+     * @param string $theme
+     * @param int $advertCategoryId
+     * @param string $publishedAt
+     * @param bool $video
+     * @return Classroom
+     */
+    public static function new(string $theme, int $advertCategoryId, string $publishedAt, bool $video): self
+    {
+        return self::create([
+            'subject' => $theme,
+            'advert_prices_id' => $advertCategoryId,
+            'started_at' => $publishedAt,
+            'video' => $video,
+            'status' => self::STATUS_PENDING
+        ]);
     }
 }

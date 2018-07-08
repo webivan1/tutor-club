@@ -98780,6 +98780,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       upScroll: false,
       nextPage: null,
       tutor: null,
+      users: [],
       isActiveButtonCreateLesson: false
     };
   },
@@ -98821,43 +98822,51 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
     }
   },
   created: function created() {
-    var _this3 = this;
-
     this.nextPage = this.list.next_page_url;
-
-    if (this.dialog.user.tutor) {
-      this.tutor = this.dialog.user.tutor;
-    } else {
-      this.dialog.users.forEach(function (user) {
-        if (parseInt(user.id) === parseInt(_this3.user) && user.tutor) {
-          _this3.tutor = user.tutor;
-        }
-      });
-    }
+    this.showButtonRegisterLesson();
+    this.allUsers();
   },
   mounted: function mounted() {
-    var _this4 = this;
-
     this.prependUrl = document.querySelector('body').getAttribute('data-url');
-
-    if (this.$refs.mw) {
-      this.$refs.mw.onscroll = function (e) {
-        _this4.upScroll = true;
-
-        //          if (this.$refs.mw.scrollTop === 0) {
-        //            this.nextPageLoad();
-        //          }
-
-        if (_this4.$refs.mw.scrollTop === _this4.$refs.mw.scrollHeight + _this4.$refs.mw.clientHeight) {
-          _this4.upScroll = false;
-        }
-      };
-    }
-
-    console.log(this.list);
+    this.registerEventScroll();
   },
 
   methods: {
+    allUsers: function allUsers() {
+      var _this3 = this;
+
+      this.dialog.users.forEach(function (user) {
+        if (parseInt(user.user_id) !== parseInt(_this3.user)) {
+          _this3.users.push(parseInt(user.user_id));
+        }
+      });
+    },
+    showButtonRegisterLesson: function showButtonRegisterLesson() {
+      var _this4 = this;
+
+      if (this.dialog.user.tutor) {
+        this.tutor = this.dialog.user.tutor;
+      } else {
+        this.dialog.users.forEach(function (user) {
+          if (parseInt(user.user_id) === parseInt(_this4.user) && user.tutor) {
+            _this4.tutor = user.tutor;
+          }
+        });
+      }
+    },
+    registerEventScroll: function registerEventScroll() {
+      var _this5 = this;
+
+      if (this.$refs.mw) {
+        this.$refs.mw.onscroll = function (e) {
+          _this5.upScroll = true;
+
+          if (_this5.$refs.mw.scrollTop === _this5.$refs.mw.scrollHeight + _this5.$refs.mw.clientHeight) {
+            _this5.upScroll = false;
+          }
+        };
+      }
+    },
     showModalRegisterClassroom: function showModalRegisterClassroom() {
       this.$refs.registerClassroom.showModal();
     },
@@ -98885,7 +98894,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       }
     },
     sendMessage: function sendMessage() {
-      var _this5 = this;
+      var _this6 = this;
 
       if (this.loaderSend === true) {
         return false;
@@ -98896,11 +98905,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('message', __WEBPACK_IMPOR
       axios.put(this.prependUrl + '/chat/messages/' + this.dialog.id, {
         message: this.messageField
       }).then(function (response) {
-        _this5.$emit('new-message', response.data);
-        _this5.messageField = '';
-        _this5.loaderSend = false;
+        _this6.$emit('new-message', response.data);
+        _this6.messageField = '';
+        _this6.loaderSend = false;
       }).catch(function (err) {
-        _this5.loaderSend = false;
+        _this6.loaderSend = false;
         console.log(err);
       });
     }
@@ -99115,7 +99124,7 @@ var render = function() {
           [
             _c("classroom-register", {
               ref: "registerClassroom",
-              attrs: { dialog: _vm.dialog, from: _vm.user, tutor: _vm.tutor }
+              attrs: { to: _vm.users, from: _vm.user, tutor: _vm.tutor }
             })
           ],
           1
@@ -99233,7 +99242,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-info",
+                          staticClass: "btn btn-danger",
                           attrs: { type: "button" },
                           on: { click: _vm.showModalRegisterClassroom }
                         },
@@ -108695,17 +108704,24 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['dialog', 'from', 'tutor', 'advert'],
+  props: ['to', 'from', 'tutor', 'advert'],
   data: function data() {
     return {
       defaultList: [],
       list: [],
       prependUrl: null,
       loaderPrices: true,
+      loaderSend: false,
+      error: null,
       startedAt: null,
       advertPrice: null,
       video: true,
@@ -108740,10 +108756,30 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
     },
     register: function register() {
-      var post = {
-        video: this.video
+      var _this2 = this;
 
+      this.loaderSend = true;
+
+      var post = {
+        video: this.video,
+        from: this.from,
+        to: this.to,
+        tutor: this.tutor.id,
+        published_at: this.startedAt,
+        theme: {
+          id: this.advertPrice.id,
+          name: this.advertPrice.name
+        }
       };
+
+      axios.post(this.prependUrl + '/classroom/register', post).then(function (response) {
+        console.log(response);
+        _this2.error = null;
+        _this2.loaderSend = false;
+      }).catch(function (err) {
+        _this2.error = err.message;
+        _this2.loaderSend = false;
+      });
     },
     showModal: function showModal() {
       this.$refs.modal.show();
@@ -108873,12 +108909,43 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
+              _vm.error
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "text-danger",
+                        attrs: { href: "javascript:void(0)" },
+                        on: {
+                          click: function($event) {
+                            _vm.error = null
+                          }
+                        }
+                      },
+                      [_vm._v("close")]
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.error) +
+                        "\n            "
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "text-right" }, [
-                _c("button", { staticClass: "btn btn-info" }, [
-                  _vm._v(
-                    "\n                    lesson is register\n                "
-                  )
-                ])
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-info",
+                    attrs: { disabled: _vm.loaderSend }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    lesson is register\n                "
+                    )
+                  ]
+                )
               ])
             ],
             1

@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Entity\User;
 
-class AddColumnUsers2 extends Migration
+class AddColClassroomUser extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +13,8 @@ class AddColumnUsers2 extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('status', 16)->default(User::STATUS_WAIT)->index();
-            $table->string('verify_token')->nullable();
+        Schema::table('classroom_users', function (Blueprint $table) {
+            $table->string('status', 16)->default('disabled')->index();
         });
     }
 
@@ -27,8 +25,8 @@ class AddColumnUsers2 extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['status', 'verify_token']);
+        Schema::table('classroom_users', function (Blueprint $table) {
+            $table->removeColumn('status');
         });
     }
 }

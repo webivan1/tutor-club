@@ -19,12 +19,12 @@ class ClassroomMessage extends Model
     /**
      * @var string
      */
-    protected $table = 'classroom_messages';
+    public $table = 'classroom_messages';
 
     /**
      * @var array
      */
-    protected $fillable = ['classroom_id', 'user_id', 'message'];
+    public $fillable = ['classroom_id', 'user_id', 'message'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

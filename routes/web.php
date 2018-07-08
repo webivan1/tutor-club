@@ -284,11 +284,10 @@ Route::group(
             'as' => 'classroom.',
             'middleware' => ['auth']
         ], function () {
-            Route::get('/{room}', 'DefaultController@index')
-                ->name('home');
-
+            Route::get('/{room}', 'DefaultController@index')->name('home');
             Route::get('/{room}/message', 'MessagesController@index');
             Route::post('/{room}/message', 'MessagesController@store');
+            Route::post('/register', 'RegisterController@index');
         });
 
         Route::group([

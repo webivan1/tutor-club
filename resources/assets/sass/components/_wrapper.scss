@@ -2,6 +2,7 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  color: $secondary;
 }
 
 .app-content {
@@ -37,8 +38,8 @@ footer {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #7950f2; //material-color('indigo', '700');
-    opacity: 0.85;
+    background: $primary-inverse;
+    opacity: 0.9;
     z-index: 0;
     top: 0;
     left: 0;

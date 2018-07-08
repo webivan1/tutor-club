@@ -13,23 +13,27 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $tutor
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property string $status
  */
 class ClassroomUser extends Model
 {
+    const STATUS_DISABLED = 'disabled';
+    const STATUS_ACTIVE = 'active';
+
     /**
      * @var string
      */
-    protected $table = 'classroom_users';
+    public $table = 'classroom_users';
 
     /**
      * @var array
      */
-    protected $fillable = ['classroom_id', 'user_id', 'tutor'];
+    public $fillable = ['classroom_id', 'user_id', 'tutor', 'status'];
 
     /**
      * @var array
      */
-    protected $casts = [
+    public $casts = [
         'tutor' => 'boolean'
     ];
 
@@ -57,5 +61,19 @@ class ClassroomUser extends Model
         return (bool) $this->tutor === true;
     }
 
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return (bool) $this->status === self::STATUS_ACTIVE;
+    }
 
+    /**
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return (bool) $this->status === self::STATUS_DISABLED;
+    }
 }

@@ -3,7 +3,7 @@
         <div v-if="isActiveButtonCreateLesson">
             <classroom-register
                 ref="registerClassroom"
-                :dialog="dialog"
+                :to="users"
                 :from="user"
                 :tutor="tutor"
             ></classroom-register>
@@ -41,7 +41,7 @@
                         </button>
                     </div>
                     <div v-if="isActiveButtonCreateLesson" class="input-group-append">
-                        <button @click="showModalRegisterClassroom" class="btn btn-info" type="button">
+                        <button @click="showModalRegisterClassroom" class="btn btn-danger" type="button">
                             <i class="far fa-calendar-check"></i>
                         </button>
                     </div>
@@ -68,6 +68,7 @@
         upScroll: false,
         nextPage: null,
         tutor: null,
+        users: [],
         isActiveButtonCreateLesson: false
       }
     },
@@ -105,37 +106,46 @@
     },
     created() {
       this.nextPage = this.list.next_page_url;
-
-      if (this.dialog.user.tutor) {
-        this.tutor = this.dialog.user.tutor;
-      } else {
-        this.dialog.users.forEach(user => {
-          if (parseInt(user.id) === parseInt(this.user) && user.tutor) {
-            this.tutor = user.tutor;
-          }
-        });
-      }
+      this.showButtonRegisterLesson();
+      this.allUsers();
     },
     mounted() {
       this.prependUrl = document.querySelector('body').getAttribute('data-url');
-
-      if (this.$refs.mw) {
-        this.$refs.mw.onscroll = e => {
-          this.upScroll = true;
-
-//          if (this.$refs.mw.scrollTop === 0) {
-//            this.nextPageLoad();
-//          }
-
-          if (this.$refs.mw.scrollTop === this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight) {
-            this.upScroll = false;
-          }
-        };
-      }
-
-      console.log(this.list);
+      this.registerEventScroll();
     },
     methods: {
+      allUsers() {
+        this.dialog.users.forEach(user => {
+          if (parseInt(user.user_id) !== parseInt(this.user)) {
+            this.users.push(parseInt(user.user_id));
+          }
+        });
+      },
+
+      showButtonRegisterLesson() {
+        if (this.dialog.user.tutor) {
+          this.tutor = this.dialog.user.tutor;
+        } else {
+          this.dialog.users.forEach(user => {
+            if (parseInt(user.user_id) === parseInt(this.user) && user.tutor) {
+              this.tutor = user.tutor;
+            }
+          });
+        }
+      },
+
+      registerEventScroll() {
+        if (this.$refs.mw) {
+          this.$refs.mw.onscroll = e => {
+            this.upScroll = true;
+
+            if (this.$refs.mw.scrollTop === this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight) {
+              this.upScroll = false;
+            }
+          };
+        }
+      },
+
       showModalRegisterClassroom() {
         this.$refs.registerClassroom.showModal();
       },

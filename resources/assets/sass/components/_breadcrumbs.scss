@@ -1,5 +1,11 @@
 .breadcrumb {
   margin-bottom: 0;
+
+  &-item {
+    &.active {
+      color: $secondary;
+    }
+  }
 }
 
 .breadcrumb-item {

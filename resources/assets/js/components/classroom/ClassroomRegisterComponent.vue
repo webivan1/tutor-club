@@ -23,8 +23,13 @@
 
                 <checkbox v-model="video" label="Видиотрансляция" :checked="1"></checkbox>
 
+                <div v-if="error" class="alert alert-danger">
+                    <a class="text-danger" href="javascript:void(0)" @click="error = null">close</a><br />
+                    {{ error }}
+                </div>
+
                 <div class="text-right">
-                    <button class="btn btn-info">
+                    <button :disabled="loaderSend" class="btn btn-info">
                         lesson is register
                     </button>
                 </div>
@@ -37,13 +42,15 @@
   import moment from 'moment'
 
   export default {
-    props: ['dialog', 'from', 'tutor', 'advert'],
+    props: ['to', 'from', 'tutor', 'advert'],
     data() {
       return {
         defaultList: [],
         list: [],
         prependUrl: null,
         loaderPrices: true,
+        loaderSend: false,
+        error: null,
         startedAt: null,
         advertPrice: null,
         video: true,
@@ -77,10 +84,30 @@
       },
 
       register() {
+        this.loaderSend = true;
+
         let post = {
           video: this.video,
-
+          from: this.from,
+          to: this.to,
+          tutor: this.tutor.id,
+          published_at: this.startedAt,
+          theme: {
+            id: this.advertPrice.id,
+            name: this.advertPrice.name
+          },
         };
+
+        axios.post(`${this.prependUrl}/classroom/register`, post)
+          .then(response => {
+            console.log(response);
+            this.error = null;
+            this.loaderSend = false;
+          })
+          .catch(err => {
+            this.error = err.message;
+            this.loaderSend = false;
+          });
       },
 
       showModal () {

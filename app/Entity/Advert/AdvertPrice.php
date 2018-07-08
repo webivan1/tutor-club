@@ -6,6 +6,7 @@ use App\Entity\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Collection;
 
 /**
  * @property integer $id
@@ -117,10 +118,17 @@ class AdvertPrice extends Model
         });
     }
 
+    /**
+     * All prices by tutor and advert
+     *
+     * @param int $tutor
+     * @param int|null $advert
+     * @return Collection
+     */
     public static function allByTutorAndAdvert(int $tutor, ?int $advert)
     {
         $query = self::from('advert_prices AS p')
-            ->select(['p.price_from', 'p.price_type', 'p.minutes', 'c.name'])
+            ->select(['p.id', 'p.price_from', 'p.price_type', 'p.minutes', 'c.name'])
             ->join('category AS c', 'c.id', 'p.category_id')
             ->join('adverts AS a', function (JoinClause $join) use ($tutor) {
                 $join->on('a.id', 'p.advert_id');

@@ -22,12 +22,9 @@
 
   &.navbar-dark {
     .navbar-brand {
-      color: $navbar-dark-color;
+      color: white;
 
-      &:first-letter {
-        font-weight: bolder;
-        color: material-color('lime', '200');
-      }
+      &:first-letter { }
     }
   }
 }

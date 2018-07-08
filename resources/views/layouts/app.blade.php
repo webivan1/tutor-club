@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('body')
-    <nav class="navbar navbar-expand-md navbar-light bg-white position-relative">
+    <nav class="navbar navbar-expand-md bg-primary navbar-dark position-relative"> <!-- navbar-light bg-white -->
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
                 {{ config('app.name') }}
@@ -36,7 +36,7 @@
                 </div>
 
                 @include('layouts._nav_right', [
-                    'theme' => 'light'
+                    'theme' => 'dark'
                 ])
             </div>
         </div>
@@ -52,14 +52,14 @@
                             @include('errors.flash_message')
                             @include ('errors.list')
 
-                            <div class="breadcrumb-color-white">
+                            <div>
                                 @section('breadcrumbs')
                                     {{ Breadcrumbs::render() }}
                                 @show
                             </div>
 
                             @hasSection('h1')
-                                <h1 class="text-white @hasSection('breadcrumbs') mt-3 @endif">@yield('h1')</h1>
+                                <h1 class="text-secondary @hasSection('breadcrumbs') mt-3 @endif">@yield('h1')</h1>
                             @endif
                         </div>
                     </div>
