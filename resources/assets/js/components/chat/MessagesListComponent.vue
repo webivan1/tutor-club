@@ -28,7 +28,8 @@
             </div>
 
             <div v-for="item in list.data">
-                <message :item="item"></message>
+                <message v-if="!item.classroom" :item="item"></message>
+                <message-invite v-else :item="item"></message-invite>
             </div>
         </div>
         <div v-if="!loader">
@@ -54,10 +55,13 @@
 <script>
   import Vue from 'vue'
   import MessageItem from './MessageItemComponent.vue'
-
-  Vue.component('message', MessageItem);
+  import MessageInviteLessonComponent from './MessageInviteLessonComponent.vue';
 
   export default {
+    components: {
+      'message-invite': MessageInviteLessonComponent,
+      'message': MessageItem
+    },
     props: ['list', 'loader', 'dialog', 'user'],
     data() {
       return {

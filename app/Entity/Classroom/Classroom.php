@@ -2,6 +2,7 @@
 
 namespace App\Entity\Classroom;
 
+use App\Entity\Advert\AdvertPrice;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -18,6 +19,10 @@ use Carbon\Carbon;
  * @property boolean $audio
  * @property integer $duration
  * @property integer $advert_prices_id
+ * @property float $price
+ * @property integer $minutes
+ * @property integer $tutor_id
+ * @property string $price_type
  */
 class Classroom extends Model
 {
@@ -31,7 +36,8 @@ class Classroom extends Model
      */
     public $fillable = [
         'subject', 'status', 'closed_at', 'started_at',
-        'duration', 'video', 'audio', 'comment', 'advert_prices_id'
+        'duration', 'video', 'audio', 'comment', 'advert_prices_id',
+        'tutor_id', 'minutes', 'price', 'price_type'
     ];
 
     /**
@@ -40,8 +46,18 @@ class Classroom extends Model
     public $casts = [
         'video' => 'boolean',
         'audio' => 'boolean',
-        'closed_at' => 'date',
-        'started_at' => 'date'
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'closed_at',
+        'started_at'
     ];
 
     // Статус по дефолту
@@ -137,17 +153,20 @@ class Classroom extends Model
     /**
      * Create new classroom
      *
-     * @param string $theme
-     * @param int $advertCategoryId
+     * @param AdvertPrice $theme
      * @param string $publishedAt
      * @param bool $video
      * @return Classroom
      */
-    public static function new(string $theme, int $advertCategoryId, string $publishedAt, bool $video): self
+    public static function new(AdvertPrice $theme, string $publishedAt, bool $video): self
     {
         return self::create([
-            'subject' => $theme,
-            'advert_prices_id' => $advertCategoryId,
+            'subject' => t($theme->category->name),
+            'advert_prices_id' => $theme->id,
+            'price' => $theme->price_from,
+            'price_type' => $theme->price_type,
+            'tutor_id' => $theme->advert->profile_id,
+            'minutes' => $theme->minutes,
             'started_at' => $publishedAt,
             'video' => $video,
             'status' => self::STATUS_PENDING

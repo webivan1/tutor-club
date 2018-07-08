@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-modal v-on:show="isShowModal" ref="modal" hide-footer title="Регистрация урока">
-            <form @submit.prevent="register">
+            <form v-if="!successSend" @submit.prevent="register">
                 <div class="text-center py-2" v-if="loaderPrices">
                     <div class="ld ld-ring ld-spin-fast fs-1 text-orange mx-auto"></div>
                 </div>
@@ -13,18 +13,26 @@
                                 {{ item.name }} | {{ item.price_from }} {{ item.price_type }} | {{ item.minutes }} min
                             </option>
                         </select>
+                        <small v-if="error && errors['theme.id']" class="text-danger d-block" v-for="err in errors['theme.id']">
+                            {{ err }}
+                        </small>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Выбрать дату начала урока</label>
                     <date-picker v-model="startedAt" :config="options"></date-picker>
+                    <small v-if="error && errors['published_at']" class="text-danger d-block" v-for="err in errors['published_at']">
+                        {{ err }}
+                    </small>
                 </div>
 
                 <checkbox v-model="video" label="Видиотрансляция" :checked="1"></checkbox>
 
                 <div v-if="error !== null" class="alert alert-danger">
-                    <a class="text-danger" href="javascript:void(0)" @click="error = null">close</a><br />
+                    <a class="pull-right text-danger" href="javascript:void(0)" @click="error = null">
+                        <i class="fas fa-times"></i>
+                    </a>
                     {{ error }}
                 </div>
 
@@ -34,6 +42,15 @@
                     </button>
                 </div>
             </form>
+            <div v-else>
+                <div class="alert alert-success">
+                    {{ successMessage }}
+                </div>
+
+                <div class="text-center pt-2">
+                    <button class="btn btn-success" @click="hideModal">Close</button>
+                </div>
+            </div>
         </b-modal>
     </div>
 </template>
@@ -45,6 +62,8 @@
     props: ['to', 'from', 'tutor', 'advert'],
     data() {
       return {
+        successSend: false,
+        successMessage: null,
         defaultList: [],
         list: [],
         prependUrl: null,
@@ -100,23 +119,29 @@
         };
 
         axios.post(`${this.prependUrl}/classroom/register`, post)
-          .then((response, error) => {
-            console.log(response, error);
+          .then(response => {
+            this.successSend = true;
+            this.successMessage = response.data.message;
             this.error = null;
             this.loaderSend = false;
           })
-          .catch(err => {
-            console.log(err);
-//            this.error = err.message;
-//            this.loaderSend = false;
+          .catch(error => {
+            // validation error
+            if (error.status === 422) {
+              this.error = error.data.message;
+              this.errors = error.data.errors;
+              this.loaderSend = false;
+            } else {
+              console.error(error);
+            }
           });
       },
 
-      showModal () {
+      showModal() {
         this.$refs.modal.show();
       },
 
-      hideModal () {
+      hideModal() {
         this.$refs.modal.hide();
       }
     }

@@ -13,42 +13,55 @@ use App\Entity\Classroom\ClassroomUser;
 use App\Entity\TutorProfile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Classroom\RegisterRequest;
+use App\UseCases\Chat\SendInviteLesson;
+use App\UseCases\Classroom\Register;
+use Illuminate\Http\Response;
 
 class RegisterController extends Controller
 {
+    /**
+     * @var Register
+     */
+    private $register;
+
+    /**
+     * @var SendInviteLesson
+     */
+    private $inviteLesson;
+
+    /**
+     * RegisterController constructor.
+     * @param Register $register
+     * @param SendInviteLesson $inviteLesson
+     */
+    public function __construct(Register $register, SendInviteLesson $inviteLesson)
+    {
+        $this->register = $register;
+        $this->inviteLesson = $inviteLesson;
+    }
+
+    /**
+     * @param RegisterRequest $request
+     * @return Response|array
+     */
     public function index(RegisterRequest $request)
     {
-
-
-//        $classroom->user()->create([
-//            'user_id' => \Auth::id(),
-//            'tutor' => (int) \Auth::id() === (int) $tutor->user_id,
-//            'status' => ClassroomUser::STATUS_ACTIVE,
-//        ]);
-
-        \DB::transaction(function () use ($request) {
-            $classroom = Classroom::new(
-                $request->input('theme.name'),
-                $request->input('theme.id'),
-                date('Y-m-d H:i:s', strtotime($request->input('published_at'))),
-                (bool) $request->input('video')
+        try {
+            $classroom = $this->register->run(
+                (int) $request->input('theme.id'),
+                (int) $request->input('tutor'),
+                (string) $request->input('published_at'),
+                (bool) $request->input('video'),
+                (array) $request->input('to')
             );
 
-            $tutor = TutorProfile::find((int) $request->input('tutor'))->firstOrFail();
-
-            $classroom->user()->create([
-                'user_id' => \Auth::id(),
-                'tutor' => (int) $tutor->user_id === (int) \Auth::id(),
-                'status' => ClassroomUser::STATUS_ACTIVE
-            ]);
-
-            foreach ($request->input('to') as $userId) {
-                $classroom->user()->create([
-                    'user_id' => $userId,
-                    'tutor' => (int) $userId === (int) $tutor->user_id,
-                    'status' => ClassroomUser::STATUS_DISABLED,
-                ]);
+            if (!$this->inviteLesson->run(\Auth::id(), $classroom)) {
+                info('Не кому отправлять уведомления #' . $classroom->id);
             }
-        });
+        } catch (\DomainException $e) {
+            return response($e->getMessage(), 400);
+        }
+
+        return ['message' => t('You registered lesson')];
     }
 }

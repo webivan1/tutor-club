@@ -23,9 +23,9 @@ class CreateDialogService
      * @param string $message
      * @param int $fromId
      * @param int $toId
-     * @return void
+     * @return Dialogs
      */
-    public function run(string $title, string $message, int $fromId, int $toId): void
+    public function run(string $title, string $message, int $fromId, int $toId): Dialogs
     {
         $isNewDialog = false;
 
@@ -35,15 +35,17 @@ class CreateDialogService
         }
 
         $this->createMessage($dialog, $message, $fromId, $isNewDialog);
+
+        return $dialog;
     }
 
     /**
      * Проверка существования диалога
      *
-     * @param $users
+     * @param array $users
      * @return Dialogs|null
      */
-    public function exist($users): ?Dialogs
+    public function exist(array $users): ?Dialogs
     {
         $usersId = array_unique(array_values($users));
 

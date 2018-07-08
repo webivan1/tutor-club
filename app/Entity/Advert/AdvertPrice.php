@@ -17,6 +17,9 @@ use Illuminate\Support\Collection;
  * @property float $price_to
  * @property integer $minutes
  * @property string $price_type
+ *
+ * @property Category $category
+ * @property Advert $advert
  */
 class AdvertPrice extends Model
 {
@@ -94,6 +97,14 @@ class AdvertPrice extends Model
     public function category()
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function advert()
+    {
+        return $this->belongsTo(Advert::class, 'advert_id', 'id');
     }
 
     /**

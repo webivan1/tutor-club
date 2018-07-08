@@ -2,6 +2,7 @@
 
 namespace App\Entity\Chat;
 
+use App\Entity\Classroom\Classroom;
 use App\Entity\User;
 use App\Events\Chat\CreateMessage;
 use App\Events\Chat\MessageEvent;
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Messages extends Model
 {
+    const QUEUE_NAME = 'messages';
+
     /**
      * @var string
      */
@@ -20,7 +23,7 @@ class Messages extends Model
     /**
      * @var array
      */
-    public $fillable = ['message', 'dialog_id', 'user_id', 'created_at'];
+    public $fillable = ['message', 'dialog_id', 'user_id', 'created_at', 'classroom_id'];
 
     /**
      * {@inheritdoc}
@@ -38,6 +41,14 @@ class Messages extends Model
     public function dialog()
     {
         return $this->belongsTo(Dialogs::class, 'dialog_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
     }
 
     /**
@@ -83,6 +94,26 @@ class Messages extends Model
     }
 
     /**
+     * Create new invite lesson
+     *
+     * @param int $dialogId
+     * @param int $userId
+     * @param Classroom $classroom
+     * @return Messages
+     */
+    public static function newInvite(int $dialogId, int $userId, Classroom $classroom): Messages
+    {
+        $message = "{$classroom->subject} <b>{$classroom->price} {$classroom->price_type}</b> / <b>{$classroom->minutes}</b> min";
+
+        return self::create([
+            'message' => $message,
+            'dialog_id' => $dialogId,
+            'user_id' => $userId,
+            'classroom_id' => $classroom->id
+        ]);
+    }
+
+    /**
      * Query builder for chat
      *
      * @param Builder $builder
@@ -98,6 +129,9 @@ class Messages extends Model
         return $builder->with([
             'user' => function ($builder) {
                 $builder->select(['id', 'name']);
+            },
+            'classroom' => function ($builder) {
+                $builder->select(['id', 'status', 'started_at', 'subject', 'price', 'minutes']);
             }
         ])->orderByDesc('created_at');
     }
@@ -176,7 +210,7 @@ class Messages extends Model
 
         // Отправляем всем в чат
         event(
-            (new SendMessageArray($messageResult, $users))->onQueue('messages')
+            (new SendMessageArray($messageResult, $users))->onQueue(self::QUEUE_NAME)
         );
 
         // Создаем в базе

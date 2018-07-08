@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColClassroomAndChat extends Migration
+class AddColClassroomPriceType extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,7 @@ class AddColClassroomAndChat extends Migration
     public function up()
     {
         Schema::table('classroom', function (Blueprint $table) {
-            $table->integer('advert_prices_id')->index();
-        });
-
-        Schema::table('messages', function (Blueprint $table) {
-            $table->integer('classroom_id')->nullable()->on('classroom')->references('id')->onDelete('SET NULL');
+            $table->string('price_type', 20);
         });
     }
 
@@ -30,11 +26,7 @@ class AddColClassroomAndChat extends Migration
     public function down()
     {
         Schema::table('classroom', function (Blueprint $table) {
-            $table->dropColumn('advert_prices_id');
-        });
-
-        Schema::table('messages', function (Blueprint $table) {
-            $table->dropColumn('classroom_id');
+            $table->dropColumn('price_type');
         });
     }
 }

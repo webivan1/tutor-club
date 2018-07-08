@@ -34,6 +34,8 @@ if (token) {
     if (error.response.status === 419) {
       window.location.reload();
     }
+
+    return Promise.reject(error.response);
   });
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');

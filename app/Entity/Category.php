@@ -14,6 +14,8 @@ use Illuminate\Database\Query\JoinClause;
 use Kalnoy\Nestedset\NodeTrait;
 
 /**
+ * @property string $name
+ *
  * @method static childAll()
  * @method joinChild()
  * @method joinAdvertItems()
