@@ -40,8 +40,9 @@ class FileImagick
     public function generate(): void
     {
         foreach ($this->presetConfig as $preset) {
-            $sizeImage = explode('x', $preset);
             $image = new \Imagick(public_path($this->preset->getPath()));
+
+            $sizeImage = explode('x', $preset);
 
             if (count($sizeImage) > 1) {
                 $image->cropThumbnailImage(...$sizeImage);
@@ -50,7 +51,7 @@ class FileImagick
                 $image->thumbnailImage($sizeImage[0], 0);
             }
 
-            $image->writeImage(public_path($this->preset->presetFilename($preset)));
+            $image->writeImage(public_path($this->preset->presetFilenameNotExist($preset)));
             $image->destroy();
         }
     }

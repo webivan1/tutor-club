@@ -26,7 +26,7 @@ class AddColClassroomUser extends Migration
     public function down()
     {
         Schema::table('classroom_users', function (Blueprint $table) {
-            $table->removeColumn('status');
+            $table->dropColumn('status');
         });
     }
 }

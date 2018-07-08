@@ -39,9 +39,7 @@ trait AccessRolesTrait
      */
     protected function findRoleMaxLevelByUser(): ?Model
     {
-        return \Cache::remember('user-roles-' . \Auth::id(), 10, function () {
-            return $this->roles()->orderBy('level')->first();
-        });
+        return $this->roles()->orderBy('level')->first();
     }
 
     /**

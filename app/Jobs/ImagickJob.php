@@ -15,6 +15,13 @@ class ImagickJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * Кол-во попыток
+     *
+     * @var integer
+     */
+    public $tries = 1;
+
+    /**
      * @var string
      */
     private $path;
@@ -42,10 +49,14 @@ class ImagickJob implements ShouldQueue
      */
     public function handle()
     {
-        $imagick = new FileImagick(
-            new Preset($this->path), $this->presets
-        );
+        try {
+            $imagick = new FileImagick(
+                new Preset($this->path), $this->presets
+            );
 
-        $imagick->generate();
+            $imagick->generate();
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+        }
     }
 }

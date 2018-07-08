@@ -39,9 +39,20 @@ class Preset
      */
     public function presetFilename(string $presetName): ?string
     {
-        $filename = $presetName . '_' . basename($this->path);
-        $file = dirname($this->path) . '/' . $filename;
+        $file = $this->presetFilenameNotExist($presetName);
         return is_file('.' . $file) ? $file : (is_file('.' . $this->path) ? $this->path : null);
+    }
+
+    /**
+     * Generate preset filename
+     *
+     * @param string $presetName
+     * @return string
+     */
+    public function presetFilenameNotExist(string $presetName): string
+    {
+        $filename = $presetName . '_' . basename($this->path);
+        return dirname($this->path) . '/' . $filename;
     }
 
     /**

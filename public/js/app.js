@@ -108722,6 +108722,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       loaderPrices: true,
       loaderSend: false,
       error: null,
+      errors: [],
       startedAt: null,
       advertPrice: null,
       video: true,
@@ -108764,21 +108765,22 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         video: this.video,
         from: this.from,
         to: this.to,
-        tutor: this.tutor.id,
+        tutor: this.tutor.id || null,
         published_at: this.startedAt,
-        theme: {
+        theme: this.advertPrice ? {
           id: this.advertPrice.id,
           name: this.advertPrice.name
-        }
+        } : null
       };
 
-      axios.post(this.prependUrl + '/classroom/register', post).then(function (response) {
-        console.log(response);
+      axios.post(this.prependUrl + '/classroom/register', post).then(function (response, error) {
+        console.log(response, error);
         _this2.error = null;
         _this2.loaderSend = false;
       }).catch(function (err) {
-        _this2.error = err.message;
-        _this2.loaderSend = false;
+        console.log(err);
+        //            this.error = err.message;
+        //            this.loaderSend = false;
       });
     },
     showModal: function showModal() {
@@ -108909,7 +108911,7 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _vm.error
+              _vm.error !== null
                 ? _c("div", { staticClass: "alert alert-danger" }, [
                     _c(
                       "a",

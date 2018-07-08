@@ -23,7 +23,7 @@
 
                 <checkbox v-model="video" label="Видиотрансляция" :checked="1"></checkbox>
 
-                <div v-if="error" class="alert alert-danger">
+                <div v-if="error !== null" class="alert alert-danger">
                     <a class="text-danger" href="javascript:void(0)" @click="error = null">close</a><br />
                     {{ error }}
                 </div>
@@ -51,6 +51,7 @@
         loaderPrices: true,
         loaderSend: false,
         error: null,
+        errors: [],
         startedAt: null,
         advertPrice: null,
         video: true,
@@ -90,23 +91,24 @@
           video: this.video,
           from: this.from,
           to: this.to,
-          tutor: this.tutor.id,
+          tutor: this.tutor.id || null,
           published_at: this.startedAt,
-          theme: {
+          theme: this.advertPrice ? {
             id: this.advertPrice.id,
             name: this.advertPrice.name
-          },
+          } : null,
         };
 
         axios.post(`${this.prependUrl}/classroom/register`, post)
-          .then(response => {
-            console.log(response);
+          .then((response, error) => {
+            console.log(response, error);
             this.error = null;
             this.loaderSend = false;
           })
           .catch(err => {
-            this.error = err.message;
-            this.loaderSend = false;
+            console.log(err);
+//            this.error = err.message;
+//            this.loaderSend = false;
           });
       },
 

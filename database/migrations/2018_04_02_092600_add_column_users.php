@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Entity\User;
 
-class AddColumnUsers2 extends Migration
+class AddColumnUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -28,7 +28,8 @@ class AddColumnUsers2 extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['status', 'verify_token']);
+            $table->dropColumn('status');
+            $table->dropColumn('verify_token');
         });
     }
 }

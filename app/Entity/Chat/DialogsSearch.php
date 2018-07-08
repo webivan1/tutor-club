@@ -109,9 +109,13 @@ class DialogsSearch extends Dialogs
 
             $item['users'] = array_map(function ($user) {
                 $user['tutor'] = TutorProfile::select(['id'])
-                    ->where('user_id', $user['id'])
+                    ->where('user_id', $user['user_id'])
                     ->where('status', TutorProfile::STATUS_ACTIVE)
                     ->first();
+
+                if ($user['tutor']) {
+                    $user['tutor'] = $user['tutor']->toArray();
+                }
 
                 return $user;
             }, $item['users']);

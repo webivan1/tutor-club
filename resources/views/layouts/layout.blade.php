@@ -26,7 +26,7 @@
     @yield('body')
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js?t=' . time()) }}"></script>
     <script src="{{ asset('scripts/bootstrap/bootstrap.bundle.min.js') }}"></script>
     @yield('script.body')
 </body>

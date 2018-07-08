@@ -129,7 +129,7 @@ $content = $profile->content()->where('lang', app()->getLocale())->first();
                         <p>{{ $content->description }}</p>
 
                         <h5 class="text-muted mt-3">{{ t('largeDescription') }}:</h5>
-                        {!! $content->content !!}
+                        {!! clean($content->content) !!}
                     </div>
                 @endif
             </div>

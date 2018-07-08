@@ -21,10 +21,6 @@ class FormService
     {
         $this->registerEvent();
 
-        if (empty($file)) {
-            throw new \DomainException(t('home.errorUploadedFilesTutorForm'));
-        }
-
         // Create profile
         $profile = $this->updateOrCreateProfile(
             $request->input('country_code'),
@@ -119,10 +115,9 @@ class FormService
     /**
      * @param string $content
      * @return string
-     * @ToDo clear()
      */
     private function filterContent(string $content): string
     {
-        return strip_tags($content, '<p><strong><ul><li><br><i><em><a>');
+        return $content;
     }
 }

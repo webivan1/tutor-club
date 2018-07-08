@@ -30,11 +30,11 @@ class AddColClassroomAndChat extends Migration
     public function down()
     {
         Schema::table('classroom', function (Blueprint $table) {
-            $table->removeColumn('advert_prices_id');
+            $table->dropColumn('advert_prices_id');
         });
 
         Schema::table('messages', function (Blueprint $table) {
-            $table->removeColumn('classroom_id');
+            $table->dropColumn('classroom_id');
         });
     }
 }
