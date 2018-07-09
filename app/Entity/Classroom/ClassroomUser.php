@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property string $status
+ * @property classroom Classroom
  */
 class ClassroomUser extends Model
 {

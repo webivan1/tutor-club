@@ -288,6 +288,8 @@ Route::group(
             Route::get('/{room}/message', 'MessagesController@index');
             Route::post('/{room}/message', 'MessagesController@store');
             Route::post('/register', 'RegisterController@index');
+            Route::get('/invite/{classroom}/accept', 'InviteController@accept')->where('classroom', '\d+');
+            Route::get('/invite/{classroom}/reject', 'InviteController@reject')->where('classroom', '\d+');
         });
 
         Route::group([

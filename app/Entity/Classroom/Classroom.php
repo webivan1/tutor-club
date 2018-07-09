@@ -107,7 +107,7 @@ class Classroom extends Model
      */
     public function isStarting(): bool
     {
-        return $this->started_at->getTimestamp() >= time();
+        return $this->started_at->getTimestamp() <= time();
     }
 
     /**
@@ -115,7 +115,7 @@ class Classroom extends Model
      */
     public function isPending(): bool
     {
-        return !$this->isStarting() && $this->status === self::STATUS_PENDING;
+        return !$this->isStarting() && ($this->status === self::STATUS_PENDING || $this->status === self::STATUS_ACTIVE);
     }
 
     /**
