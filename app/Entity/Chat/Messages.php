@@ -3,6 +3,7 @@
 namespace App\Entity\Chat;
 
 use App\Entity\Classroom\Classroom;
+use App\Entity\Classroom\ClassroomUser;
 use App\Entity\User;
 use App\Events\Chat\CreateMessage;
 use App\Events\Chat\MessageEvent;
@@ -10,6 +11,7 @@ use App\Events\Chat\SendMessage;
 use App\Events\Chat\SendMessageArray;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Expression;
 
 class Messages extends Model
 {
@@ -131,7 +133,15 @@ class Messages extends Model
                 $builder->select(['id', 'name']);
             },
             'classroom' => function ($builder) {
-                $builder->select(['id', 'status', 'started_at', 'subject', 'price', 'minutes']);
+                $builder->select(['id', 'status', 'started_at', 'subject', 'price', 'minutes'])
+                    ->whereIn('status', [Classroom::STATUS_ACTIVE, Classroom::STATUS_PENDING])
+                    ->where('started_at', '>=', new Expression('NOW()'))
+                    ->with([
+                        'user' => function ($builder) {
+                            $builder->where('user_id', \Auth::id())
+                                ->where('status', ClassroomUser::STATUS_DISABLED);
+                        }
+                    ]);
             }
         ])->orderByDesc('created_at');
     }

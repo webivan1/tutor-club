@@ -29,7 +29,7 @@
 
             <div v-for="item in list.data">
                 <message v-if="!item.classroom" :item="item"></message>
-                <message-invite v-else :item="item"></message-invite>
+                <message-invite v-else :item="item" :user="user"></message-invite>
             </div>
         </div>
         <div v-if="!loader">
