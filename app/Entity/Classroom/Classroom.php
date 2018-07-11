@@ -115,7 +115,7 @@ class Classroom extends Model
      */
     public function isPending(): bool
     {
-        return !$this->isStarting() && ($this->status === self::STATUS_PENDING || $this->status === self::STATUS_ACTIVE);
+        return !$this->isStarting() && ($this->status === self::STATUS_PENDING || $this->isActiveStatus());
     }
 
     /**
@@ -140,6 +140,14 @@ class Classroom extends Model
     public function isCancel(): bool
     {
         return $this->status === self::STATUS_CANCEL;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActiveStatus(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
     }
 
     /**

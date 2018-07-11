@@ -18,19 +18,21 @@ class ActivateUserObserver
         /** @var Classroom $classroom */
         $classroom = $classroomUser->classroom;
 
-        $isTutor = false;
+        if (!$classroom->isActiveStatus()) {
+            $isTutor = false;
 
-        $userItems = $classroom->users()->where('status', ClassroomUser::STATUS_ACTIVE)->get()
-            ->each(function ($item) use (&$isTutor) {
-                if ($item->tutor === true && !$isTutor) {
-                    $isTutor = true;
-                }
+            $userItems = $classroom->users()->where('status', ClassroomUser::STATUS_ACTIVE)->get()
+                ->each(function ($item) use (&$isTutor) {
+                    if ($item->tutor === true && !$isTutor) {
+                        $isTutor = true;
+                    }
 
-                return $item;
-            });
+                    return $item;
+                });
 
-        if ($userItems->count() >= 2 && $isTutor) {
-            $classroom->update(['status' => Classroom::STATUS_ACTIVE]);
+            if ($userItems->count() >= 2 && $isTutor) {
+                $classroom->update(['status' => Classroom::STATUS_ACTIVE]);
+            }
         }
     }
 }
