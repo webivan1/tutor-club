@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Advert\Advert;
 use App\Events\Profile\TutorProfileEvent;
 use Illuminate\Database\Eloquent\Model;
 
@@ -259,6 +260,14 @@ class TutorProfile extends Model
     public function content()
     {
         return $this->hasMany(ContentProfile::class, 'profile_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function adverts()
+    {
+        return $this->hasMany(Advert::class, 'profile_id', 'id');
     }
 
     /**
