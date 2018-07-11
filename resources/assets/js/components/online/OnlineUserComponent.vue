@@ -27,7 +27,7 @@
       this.send();
 
       // Каждые 5 сек отправляем запрос
-      this.intervalSend = setInterval(this.send.bind(this), 5000);
+      this.intervalSend = setInterval(this.send.bind(this), 10000);
       this.intervalClose = setInterval(this.disableUserIsTimeoutActive.bind(this), 1000);
     },
     destroyed() {
@@ -49,7 +49,7 @@
       },
 
       disableUserIsTimeoutActive() {
-        if (this.isActive === true && this.lastTimerUpdate && this.diffSec(this.lastTimerUpdate.getTime()) > 10) {
+        if (this.isActive === true && this.lastTimerUpdate && this.diffSec(this.lastTimerUpdate.getTime()) > 30) {
           this.isActive = false;
         }
       }

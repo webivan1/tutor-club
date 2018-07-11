@@ -11,27 +11,23 @@ namespace App\Http\Controllers\Classroom;
 use App\Entity\Classroom\Classroom;
 use App\Entity\TutorProfile;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\OnlyTutor;
+use Illuminate\Http\Request;
 
 class ChooseLessonController extends Controller
 {
-    private $user;
-
     public function __construct()
     {
-        $this->user = \Auth::user();
-
-        if (!$this->isTutor()) {
-            abort(403);
-        }
+        $this->middleware([OnlyTutor::class]);
     }
 
-    public function choose()
+    public function choose(Request $request)
     {
-        return $this->user->
+        return Classroom::getListByTutor($request->user()->tutor);
     }
 
-    private function isTutor(): ?TutorProfile
+    public function invite(Classroom $classroom)
     {
-        return $this->user->tutor;
+
     }
 }

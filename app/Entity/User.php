@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Admin\RoleHasUser;
 use App\Entity\Classroom\Classroom;
+use App\Entity\Classroom\ClassroomUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
@@ -89,11 +90,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(TutorProfile::class, 'id', 'user_id')
             ->where('status', TutorProfile::STATUS_ACTIVE);
-    }
-
-    public function classrooms()
-    {
-        return $this->hasMany(Classroom::class, 'user_id', 'id');
     }
 
     /**

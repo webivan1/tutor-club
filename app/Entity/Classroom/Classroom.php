@@ -3,6 +3,7 @@
 namespace App\Entity\Classroom;
 
 use App\Entity\Advert\AdvertPrice;
+use App\Entity\TutorProfile;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -183,9 +184,21 @@ class Classroom extends Model
         ]);
     }
 
+    /**
+     * @param Builder $builder
+     */
     public function scopeIsNotStarted(Builder $builder)
     {
         $builder->where('started_at', '>=', new Expression('NOW()'))
             ->whereIn('status', [self::STATUS_ACTIVE, self::STATUS_PENDING]);
+    }
+
+    /**
+     * @param TutorProfile $profile
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public static function getListByTutor(TutorProfile $profile)
+    {
+        return self::where('tutor_id', $profile->id)->get();
     }
 }
