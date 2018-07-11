@@ -3,8 +3,10 @@
 namespace App\Entity\Classroom;
 
 use App\Entity\Advert\AdvertPrice;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Query\Expression;
 
 /**
  * @property integer $id
@@ -171,5 +173,11 @@ class Classroom extends Model
             'video' => $video,
             'status' => self::STATUS_PENDING
         ]);
+    }
+
+    public function scopeIsNotStarted(Builder $builder)
+    {
+        $builder->where('started_at', '>=', new Expression('NOW()'))
+            ->whereIn('status', [self::STATUS_ACTIVE, self::STATUS_PENDING]);
     }
 }

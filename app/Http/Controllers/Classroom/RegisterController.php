@@ -8,9 +8,6 @@
 
 namespace App\Http\Controllers\Classroom;
 
-use App\Entity\Classroom\Classroom;
-use App\Entity\Classroom\ClassroomUser;
-use App\Entity\TutorProfile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Classroom\RegisterRequest;
 use App\UseCases\Chat\SendInviteLesson;
