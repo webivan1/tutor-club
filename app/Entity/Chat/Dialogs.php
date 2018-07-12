@@ -2,6 +2,7 @@
 
 namespace App\Entity\Chat;
 
+use App\Entity\Files;
 use App\Entity\User;
 use App\Services\ElasticSearch\ElasticSearchModel;
 use App\Services\ElasticSearch\ElasticSearchService;
@@ -284,6 +285,7 @@ class Dialogs extends Model implements ModelSearch
             ],
             'users' => [
                 'type' => 'nested',
+                'include_in_parent' => true,
                 'properties' => [
                     'id' => [
                         'type' => 'integer',
@@ -296,8 +298,12 @@ class Dialogs extends Model implements ModelSearch
                     ],
                     'user' => [
                         'type' => 'nested',
+                        'include_in_parent' => true,
                         'properties' => [
                             'id' => [
+                                'type' => 'integer'
+                            ],
+                            'file_id' => [
                                 'type' => 'integer'
                             ],
                             'name' => [
@@ -350,11 +356,15 @@ class Dialogs extends Model implements ModelSearch
             ->with([
                 'users' => function (HasMany $builder) {
                     $builder->with(['user' => function ($builder) {
-                        $builder->select(['id', 'name']);
+                        $builder->select(['id', 'name', 'file_id']);
                     }]);
                 }
             ])
-            ->withCount('messages')
+            ->withCount([
+                'messages' => function ($builder) {
+                    $builder->where('classroom_id', 0);
+                }
+            ])
             ->groupBy('dialogs.id')
             ->first()
             ->toArray();

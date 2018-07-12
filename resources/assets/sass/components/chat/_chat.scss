@@ -14,11 +14,10 @@
   }
 
   .card-header {
-    @extend .bg-blue;
-    color: lighten(material-color('blue'), 50%);
+    color: white;
 
     a {
-      color: lighten(material-color('blue'), 50%);
+      color: white;
     }
   }
 

@@ -10,9 +10,15 @@
                 <div v-for="(item, key) in list.data" class="row c-p mb-2" @click="checkDialog(item)">
                     <div class="col-auto pr-0">
                         <div class="position-relative">
-                            <div class="avatar-block">
+                            <div v-if="!item.user.user.image" class="avatar-block">
                                 #{{ item.user.user.id }}
                             </div>
+                            <div class="avatar-block" :style="{
+                              backgroundImage: 'url(' + item.user.user.image + ')',
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center center',
+                              backgroundRepeat: 'no-repeat'
+                            }" v-else></div>
                             <online :user="item.user.user.id"></online>
                         </div>
                     </div>
@@ -20,13 +26,13 @@
                         <small class="float-right text-grey-400">
                             <timeago :since="filterDate(item.max_updated_at)" :auto-update="60"></timeago>
                         </small>
-                        <h5 class="text-indigo-300 mb-0">
+                        <h5 class="text-primary mb-0">
                             {{ item.user.user.name }}
                             <span v-if="item.message_no_read" class="badge badge-danger badge-pill">
                                 New
                             </span>
                         </h5>
-                        <div class="message-content text-grey">
+                        <div class="message-content">
                             <div><small><b>Theme dialog:</b> {{ item.title }}</small></div>
                             <div><small><b>Total messages:</b> {{ item.messages_count }}</small></div>
                         </div>

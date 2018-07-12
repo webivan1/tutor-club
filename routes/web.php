@@ -288,7 +288,7 @@ Route::group(
             Route::get('/invite/{classroom}/accept', 'InviteController@accept')->where('classroom', '\d+');
             Route::get('/invite/{classroom}/reject', 'InviteController@reject')->where('classroom', '\d+');
             Route::get('/choose', 'ChooseLessonController@choose');
-            Route::get('/choose/{classroom}', 'ChooseLessonController@invite')->where('classroom', '\d+');
+            Route::post('/choose/{classroom}', 'ChooseLessonController@send')->where('classroom', '\d+');
             Route::get('/{room}', 'DefaultController@index')->name('home');
             Route::get('/{room}/message', 'MessagesController@index');
             Route::post('/{room}/message', 'MessagesController@store');

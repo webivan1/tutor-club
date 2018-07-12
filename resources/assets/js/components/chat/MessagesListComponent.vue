@@ -91,16 +91,6 @@
         },
         deep: true
       },
-      'loader': {
-        handler: function (data) {
-          if (data === false) {
-            setTimeout(_ => {
-              this.scrollToBottom();
-            });
-          }
-        },
-        deep: true
-      },
       'tutor': {
         handler: function (data) {
           this.isActiveButtonCreateLesson = true;
@@ -139,15 +129,15 @@
       },
 
       registerEventScroll() {
-        if (this.$refs.mw) {
-          this.$refs.mw.onscroll = e => {
-            this.upScroll = true;
+        this.$refs.mw.onscroll = e => {
+          console.log(this.$refs.mw.scrollTop, this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight);
 
-            if (this.$refs.mw.scrollTop === this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight) {
-              this.upScroll = false;
-            }
-          };
-        }
+          this.upScroll = !this.isBottom();
+        };
+      },
+
+      isBottom() {
+        return this.$refs.mw.scrollTop === this.$refs.mw.scrollHeight - this.$refs.mw.clientHeight;
       },
 
       showModalRegisterClassroom() {

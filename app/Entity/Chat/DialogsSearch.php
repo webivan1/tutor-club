@@ -8,7 +8,9 @@
 
 namespace App\Entity\Chat;
 
+use App\Entity\Files;
 use App\Entity\TutorProfile;
+use App\Entity\User;
 use App\Services\ElasticSearch\ElasticSearchModel;
 use App\Services\ElasticSearch\ElasticSearchService;
 use Illuminate\Database\Query\Expression;
@@ -115,6 +117,10 @@ class DialogsSearch extends Dialogs
 
                 if ($user['tutor']) {
                     $user['tutor'] = $user['tutor']->toArray();
+                }
+
+                if ($image = Files::where('id', $user['user']['file_id'])->first()) {
+                    $user['user']['image'] = $image->getPreset('150x150');
                 }
 
                 return $user;

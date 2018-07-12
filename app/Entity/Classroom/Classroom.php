@@ -201,4 +201,13 @@ class Classroom extends Model
     {
         return self::where('tutor_id', $profile->id)->get();
     }
+
+    /**
+     * @param int $tutorId
+     * @return bool
+     */
+    public function hasTutor(int $tutorId): bool
+    {
+        return (int) $this->tutor_id === $tutorId;
+    }
 }

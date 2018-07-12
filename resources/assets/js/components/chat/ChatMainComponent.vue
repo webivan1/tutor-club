@@ -8,7 +8,7 @@
 
         <div class="chat" :class="{ active: buttonToggle }">
             <div class="card flex-vertical">
-                <div class="card-header" v-if="!loader" @click="toggle()">
+                <div class="card-header bg-secondary" v-if="!loader" @click="toggle()">
                     <a class="float-right" href="javascript:void(0)">
                         <span v-if="buttonToggle === false">
                             <i class="fas fa-angle-up"></i>

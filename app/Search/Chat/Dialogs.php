@@ -49,7 +49,7 @@ class Dialogs extends SearchElastic
                                     'should' => [
                                         ['term' => ['user_ids' => (int) $value]],
                                         ['query_string' => [
-                                            'default_operator' => 'AND',
+                                            //'default_operator' => 'AND',
                                             'fields' => ['title', 'users.user.name'],
                                             'query' => $value
                                         ]]

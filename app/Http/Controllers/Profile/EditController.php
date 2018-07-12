@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Entity\User;
+use App\Events\Chat\ChangeDialog;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\EditUserRequest;
 use App\Jobs\ImagickJob;

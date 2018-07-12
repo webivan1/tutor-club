@@ -21,6 +21,7 @@
                         :tutor="tutor"
                         :advert="advert"
                         :prependUrl="prependUrl"
+                        v-on:hide="hideModal"
                     ></choose-classroom>
                 </b-tab>
             </b-tabs>
