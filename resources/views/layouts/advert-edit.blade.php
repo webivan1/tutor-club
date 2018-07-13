@@ -33,7 +33,7 @@
     @endif
 
     <div class="mb-5">
-        <ul class="nav nav-tabs bg-dark">
+        <ul class="nav nav-tabs">
             <li class="nav-item">
                 {{ Html::link(route('cabinet.advert.update', request('advert')), t('home.editAdvertInfo'), [
                     'class' => 'nav-link ' . (!Request::routeIs('cabinet.advert.update') ?: 'active')

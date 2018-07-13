@@ -73,6 +73,19 @@ class Classroom extends Model
     const STATUS_CANCEL = 'cancel';
 
     /**
+     * @return array
+     */
+    public static function statuses(): array
+    {
+        return [
+            self::STATUS_PENDING => t('Pending'),
+            self::STATUS_CLOSED => t('Closed'),
+            self::STATUS_CANCEL => t('Disabled'),
+            self::STATUS_ACTIVE => t('Active')
+        ];
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function users()
@@ -95,6 +108,14 @@ class Classroom extends Model
     {
         return $this->belongsTo(ClassroomUser::class, 'id', 'classroom_id')
             ->where('tutor', true);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function tutorModel()
+    {
+        return $this->belongsTo(TutorProfile::class, 'tutor_id', 'id');
     }
 
     /**

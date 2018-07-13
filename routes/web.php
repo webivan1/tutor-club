@@ -147,6 +147,20 @@ Route::group(
                             ->middleware(['can:to-moderation']);
                     }
                 );
+
+                Route::group(
+                    [
+                        'prefix' => '/lessons',
+                        'namespace' => 'Lesson',
+                        'as' => 'lesson.'
+                    ],
+                    function () {
+                        Route::get('/', 'ListController@active')->name('list.active');
+                        Route::get('/pending', 'ListController@pending')->name('list.pending');
+                        Route::get('/disabled', 'ListController@disabled')->name('list.disabled');
+                        Route::get('/closed', 'ListController@closed')->name('list.closed');
+                    }
+                );
             }
         );
 
