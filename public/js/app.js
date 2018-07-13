@@ -58337,6 +58337,7 @@ try {
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('classroom', __webpack_require__(481));
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('checkbox', __webpack_require__(535));
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('classroom-register', __webpack_require__(549));
+  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('real-timer', __webpack_require__(560));
 
   [].forEach.call(document.querySelectorAll('.app-vue'), function (element) {
     new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
@@ -109819,6 +109820,126 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 559 */,
+/* 560 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(561)
+/* template */
+var __vue_template__ = __webpack_require__(562)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\realtimer\\RealTimerComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1c1fccfc", Component.options)
+  } else {
+    hotAPI.reload("data-v-1c1fccfc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 561 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_DateHelper__ = __webpack_require__(61);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['date'],
+  data: function data() {
+    return {
+      dateMoment: null
+    };
+  },
+  created: function created() {
+    var dateTz = __WEBPACK_IMPORTED_MODULE_1__helpers_DateHelper__["a" /* default */].getFormtatTimezone(this.date);
+    this.dateMoment = __WEBPACK_IMPORTED_MODULE_0_moment___default()(dateTz);
+  }
+});
+
+/***/ }),
+/* 562 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.dateMoment
+    ? _c("div", [
+        _c("b", [_vm._v(_vm._s(_vm.dateMoment.format("DD/MM/YYYY HH:mm")))]),
+        _vm._v(" "),
+        _c(
+          "small",
+          { staticClass: "text-grey" },
+          [
+            _vm._v("\n        ("),
+            _c("timeago", {
+              attrs: { since: _vm.dateMoment, "auto-update": 60 }
+            }),
+            _vm._v(")\n    ")
+          ],
+          1
+        )
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1c1fccfc", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

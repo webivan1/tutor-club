@@ -59,6 +59,7 @@ try {
   Vue.component('classroom', require('./components/classroom/ClassroomComponent.vue'));
   Vue.component('checkbox', require('./components/form/checkbox/CheckboxComponent.vue'));
   Vue.component('classroom-register', require('./components/classroom/ClassroomRegisterComponent.vue'));
+  Vue.component('real-timer', require('./components/realtimer/RealTimerComponent.vue'));
 
   [].forEach.call(document.querySelectorAll('.app-vue'), element => {
     new Vue({

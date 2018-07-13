@@ -13,7 +13,7 @@ use App\Entity\Advert\AdvertPrice;
     @include('lessons._nav')
 
     @if($models->total())
-        <table class="table">
+        <table class="table app-vue">
             <thead>
                 <tr>
                     <th>{!! $sort->link('id') !!}</th>
@@ -21,6 +21,7 @@ use App\Entity\Advert\AdvertPrice;
                     <th>{!! $sort->link('started_at') !!}</th>
                     <th>{{ t('Price') }}</th>
                     <th>{{ t('Tutor name') }}</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -28,13 +29,26 @@ use App\Entity\Advert\AdvertPrice;
                     <tr>
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->subject }}</td>
-                        <td>{{ $item->started_at->format('d/m/Y H:i') }}</td>
+                        <td>
+                            <real-timer date="{{ $item->started_at }}"></real-timer>
+                        </td>
                         <td>
                             {{ AdvertPrice::types()[$item->price_type] ?? '' }}
                             <b>{{ $item->price }}</b> / {{ $item->minutes }} {{ t('Minutes') }}
                         </td>
                         <td>
                             {{ Html::link(route('tutor.view', $item->tutorModel->user->id), $item->tutorModel->user->name) }}
+                        </td>
+                        <td>
+                            @if($item->isActive())
+                                {{ Html::link(route('classroom.home', $item), t('In classroom'), [
+                                    'class' => 'btn btn-success btn-sm'
+                                ]) }}
+                            @elseif(\Auth::user()->tutor && $item->hasTutor(\Auth::user()->tutor->id))
+                                {{ Html::link('/', t('Edit'), [
+                                    'class' => 'btn btn-warning btn-sm'
+                                ]) }}
+                            @endif
                         </td>
                     </tr>
                 @endforeach
