@@ -6,8 +6,9 @@ use App\Entity\Advert\AdvertPrice;
 
 @extends('layouts.profile')
 
-@section('title', t('SeoTitlelessonsListActive'))
-@section('description', t('SeoDescriptionlessonsListActive'))
+@section('title', t('SeoTitleLessonsListActive'))
+@section('description', t('SeoDescriptionLessonsListActive'))
+@section('h1', t('SeoHeadingLessonsListActive'))
 
 @section('content')
     @include('lessons._nav')
@@ -37,16 +38,27 @@ use App\Entity\Advert\AdvertPrice;
                             <b>{{ $item->price }}</b> / {{ $item->minutes }} {{ t('Minutes') }}
                         </td>
                         <td>
-                            {{ Html::link(route('tutor.view', $item->tutorModel->user->id), $item->tutorModel->user->name) }}
+                            @if ($item->tutorModel)
+                                {{ Html::link(route('tutor.view', $item->tutorModel->user->id), $item->tutorModel->user->name) }}
+                            @else
+                                -
+                            @endif
                         </td>
                         <td>
                             @if($item->isActive())
                                 {{ Html::link(route('classroom.home', $item), t('In classroom'), [
                                     'class' => 'btn btn-success btn-sm'
                                 ]) }}
-                            @elseif(\Auth::user()->tutor && $item->hasTutor(\Auth::user()->tutor->id))
-                                {{ Html::link('/', t('Edit'), [
+                            @endif
+
+                            @if(\Auth::user()->tutor && $item->hasTutor(\Auth::user()->tutor->id) && !$item->isActive())
+                                {{ Html::link(route('profile.lesson.edit.active', $item), t('Edit'), [
                                     'class' => 'btn btn-warning btn-sm'
+                                ]) }}
+                            @elseif(!$item->isActive() && $item->canClose())
+                                {{ Html::link(route('profile.lesson.remove', $item), t('Exit'), [
+                                    'class' => 'btn btn-danger btn-sm',
+                                    'onclick' => 'return confirm("Are you sure?");'
                                 ]) }}
                             @endif
                         </td>

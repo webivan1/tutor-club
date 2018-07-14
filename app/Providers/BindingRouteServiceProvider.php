@@ -28,6 +28,7 @@ class BindingRouteServiceProvider extends ServiceProvider
         \Route::bind('sendMessageDialog', [$this, 'sendMessageDialog']);
         \Route::bind('room', [$this, 'room']);
         \Route::bind('tutorProfile', [$this, 'tutorProfile']);
+        \Route::bind('lessonActive', [$this, 'lessonActive']);
     }
 
     /**
@@ -84,14 +85,15 @@ class BindingRouteServiceProvider extends ServiceProvider
     public function room($value)
     {
         /** @var Classroom $model */
-        $model = Classroom::findOrFail(intval($value));
+        $model = Classroom::with(['tutorModel'])->findOrFail(intval($value));
 
         if (!$model->isAccessUser(\Auth::id())) {
             abort(404, t('You have not access'));
         }
 
-        // relation call
-        $model->tutor;
+        if (!$model->isViewRoom()) {
+            abort(403, t('You can not open room now'));
+        }
 
         return $model;
     }
@@ -117,5 +119,25 @@ class BindingRouteServiceProvider extends ServiceProvider
         }
 
         return $profile;
+    }
+
+    /**
+     * Edit active classroom
+     *
+     * @param int $value
+     * @return Classroom
+     */
+    public function lessonActive($value)
+    {
+        /** @var Classroom $classroom */
+        $classroom = Classroom::findOrFail(intval($value));
+
+        $tutor = \Auth::user()->tutor;
+
+        if (!($tutor && $classroom->hasTutor($tutor->id)) || !$classroom->isActiveStatus() || $classroom->isStarting()) {
+            abort(403, t('You can not edit lesson'));
+        }
+
+        return $classroom;
     }
 }

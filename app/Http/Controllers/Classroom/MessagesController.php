@@ -19,7 +19,7 @@ class MessagesController extends Controller
      * @param Classroom $room
      * @return mixed
      */
-    public function index($room)
+    public function index(Classroom $room)
     {
         return ClassroomMessage::listData($room);
     }
@@ -30,7 +30,7 @@ class MessagesController extends Controller
      * @throws \DomainException
      * @return array
      */
-    public function store(CreateMessageRequest $request, $room)
+    public function store(CreateMessageRequest $request, Classroom $room)
     {
         try {
             return ClassroomMessage::add($request->input('message'), $room, \Auth::user());

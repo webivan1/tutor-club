@@ -42,6 +42,7 @@ class ClassroomList extends Classroom
     public function search(int $userId, int $pageSize = 10)
     {
         $query = self::from('classroom AS c')
+            ->select(['c.*'])
             ->join('classroom_users AS cu', function (JoinClause $join) use ($userId) {
                 $join->on('cu.classroom_id', 'c.id')
                     ->where('cu.user_id', $userId);
@@ -98,12 +99,16 @@ class ClassroomList extends Classroom
     public function withStatus(Builder $builder): void
     {
         if ($this->isSearchActive()) {
-            $builder->where('c.status', self::STATUS_ACTIVE);
+            $builder->where('c.status', self::STATUS_ACTIVE)
+                // Юзер подтвердил приглашение
+                ->where('cu.status', ClassroomUser::STATUS_ACTIVE);
         }
 
         if ($this->isSearchPending()) {
             $builder->where('c.status', self::STATUS_PENDING)
-                ->where('c.started_at', '>=', new Expression('NOW()'));
+                ->where('c.started_at', '>=', new Expression('NOW()'))
+                // Юзер пока не подтвердил приглашение
+                ->where('cu.status', ClassroomUser::STATUS_DISABLED);
         }
 
         if ($this->isSearchDisabled()) {
@@ -115,7 +120,8 @@ class ClassroomList extends Classroom
         }
 
         if ($this->isSearchClosed()) {
-            $builder->where('c.status', self::STATUS_CLOSED);
+            $builder->where('c.status', self::STATUS_CLOSED)
+                ->where('cu.status', ClassroomUser::STATUS_ACTIVE);
         }
     }
 

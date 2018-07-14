@@ -156,8 +156,14 @@ Route::group(
                     ],
                     function () {
                         Route::get('/', 'ListController@active')->name('list.active');
+                        Route::get('/active/{lessonActive}/edit', 'EditLessonController@index')
+                            ->name('edit.active')
+                            ->where('lessonActive', '\d+');
+                        Route::get('/remove/{classroom}', 'RemoveLessonController@index')
+                            ->name('remove')
+                            ->where('classroom', '\d+');
                         Route::get('/pending', 'ListController@pending')->name('list.pending');
-                        Route::get('/disabled', 'ListController@disabled')->name('list.disabled');
+//                        Route::get('/disabled', 'ListController@disabled')->name('list.disabled');
                         Route::get('/closed', 'ListController@closed')->name('list.closed');
                     }
                 );

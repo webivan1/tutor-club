@@ -155,7 +155,7 @@ class Classroom extends Model
      */
     public function isActive(): bool
     {
-        return $this->isStarting() && !$this->isClosed() && !$this->isCancel();
+        return $this->isStarting() && $this->isActiveStatus();
     }
 
     /**
@@ -177,9 +177,33 @@ class Classroom extends Model
     /**
      * @return bool
      */
+    public function isPendingStatus(): bool
+    {
+        return $this->status === self::STATUS_PENDING;
+    }
+
+    /**
+     * @return bool
+     */
     public function isAccessUser(int $userId): bool
     {
         return $this->users()->where('user_id', $userId)->exists();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isViewRoom(): bool
+    {
+        return $this->isActive() || $this->isClosed();
+    }
+
+    /**
+     * @return bool
+     */
+    public function canClose(): bool
+    {
+        return now()->subRealHours(6)->getTimestamp() <= $this->started_at->getTimestamp();
     }
 
     /**

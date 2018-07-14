@@ -18,7 +18,7 @@ class DefaultController extends Controller
      * @param Classroom $room
      * @return Response
      */
-    public function index($room)
+    public function index(Classroom $room)
     {
         return view('classroom.index', compact('room'));
     }

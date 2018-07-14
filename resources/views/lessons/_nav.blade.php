@@ -15,10 +15,10 @@
                 'class' => 'nav-link ' . (!Request::routeIs('profile.lesson.list.closed') ?: 'active')
             ]) }}
         </li>
-        <li class="nav-item">
-            {{ Html::link(route('profile.lesson.list.disabled'), t('Lessons is disabled'), [
-                'class' => 'nav-link ' . (!Request::routeIs('profile.lesson.list.disabled') ?: 'active')
-            ]) }}
-        </li>
+        {{--<li class="nav-item">--}}
+            {{--{{ Html::link(route('profile.lesson.list.disabled'), t('Lessons is disabled'), [--}}
+                {{--'class' => 'nav-link ' . (!Request::routeIs('profile.lesson.list.disabled') ?: 'active')--}}
+            {{--]) }}--}}
+        {{--</li>--}}
     </ul>
 </div>
