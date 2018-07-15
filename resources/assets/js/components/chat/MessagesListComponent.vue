@@ -122,11 +122,11 @@
       },
 
       showButtonRegisterLesson() {
-        if (this.dialog.user.tutor) {
+        if (this.dialog.user.hasOwnProperty('tutor')) {
           this.tutor = this.dialog.user.tutor;
         } else {
           this.dialog.users.forEach(user => {
-            if (parseInt(user.user_id) === parseInt(this.user) && user.tutor) {
+            if (parseInt(user.user_id) === parseInt(this.user) && user.hasOwnProperty('tutor')) {
               this.tutor = user.tutor;
             }
           });
