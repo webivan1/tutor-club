@@ -68,7 +68,19 @@
       },
 
       isInvite() {
-        return parseInt(this.user) !== parseInt(this.item.user.id) && this.item.classroom.user;
+        if (parseInt(this.user) === parseInt(this.item.user.id)) {
+          return false;
+        }
+
+        let status = false;
+
+        this.item.classroom.users.forEach(user => {
+          if (parseInt(this.user) === parseInt(user.user_id)) {
+            status = true;
+          }
+        });
+
+        return status;
       },
 
       accept() {

@@ -134,14 +134,10 @@ class Messages extends Model
             },
             'classroom' => function ($builder) {
                 $builder->select(['id', 'status', 'started_at', 'subject', 'price', 'minutes'])
-                    ->whereIn('status', [Classroom::STATUS_ACTIVE, Classroom::STATUS_PENDING])
-                    ->where('started_at', '>=', new Expression('NOW()'))
-                    ->with([
-                        'user' => function ($builder) {
-                            $builder->where('user_id', \Auth::id())
-                                ->where('status', ClassroomUser::STATUS_DISABLED);
-                        }
-                    ]);
+                    ->isNotStarted()
+                    ->with(['users' => function ($builder) {
+                        $builder->where('status', ClassroomUser::STATUS_DISABLED);
+                    }]);
             }
         ])->orderByDesc('created_at');
     }

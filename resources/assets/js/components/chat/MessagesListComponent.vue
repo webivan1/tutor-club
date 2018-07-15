@@ -28,7 +28,7 @@
             </div>
 
             <div v-for="item in list.data">
-                <message v-if="!item.classroom" :item="item"></message>
+                <message v-if="!('classroom' in item && item.classroom)" :item="item"></message>
                 <message-invite v-else :item="item" :user="user"></message-invite>
             </div>
         </div>

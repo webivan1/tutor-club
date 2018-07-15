@@ -40,7 +40,7 @@ class SendInviteLesson
     {
         $users = $classroom->users()->where('status', ClassroomUser::STATUS_DISABLED)->get();
 
-        if (empty($users)) {
+        if ($users->count() === 0) {
             return false;
         }
 
@@ -77,7 +77,7 @@ class SendInviteLesson
         $message = Messages::newInvite($dialog->id, $from, $classroom);
         $messageItem = $message->getItem($message->id);
 
-        $event = new SendMessageArray($messageItem, [$from, $to]);
+        $event = new SendMessageArray($messageItem, [$to]);
 
         event($event->onQueue(Messages::QUEUE_NAME));
     }
