@@ -55,8 +55,7 @@
     },
     created() {
       this.lang = document.querySelector("html").getAttribute("lang");
-      this.isTutor =
-        parseInt(this.roomData.tutor.user_id) === parseInt(this.userData.id);
+      this.isTutor = parseInt(this.roomData.tutor_model.user_id) === parseInt(this.userData.id);
     },
     mounted() {
       this.initMedia(stream => {
