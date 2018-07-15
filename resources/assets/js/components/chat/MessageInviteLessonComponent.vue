@@ -59,11 +59,11 @@
     },
     methods: {
       filterDate(date) {
-        return DateHelper.getFormtatTimezone(date);
+        return DateHelper.getFormatTimezone(date);
       },
 
       getDateStartLesson(date) {
-        let dateTimezone = DateHelper.getFormtatTimezone(date);
+        let dateTimezone = DateHelper.getFormatTimezone(date);
         return moment(dateTimezone).format('DD/MM/YYYY HH:mm');
       },
 

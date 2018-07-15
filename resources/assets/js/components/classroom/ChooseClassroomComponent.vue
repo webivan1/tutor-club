@@ -106,7 +106,7 @@
       },
 
       filterDate(date) {
-        let dateFormat = DateHelper.getFormtatTimezone(date);
+        let dateFormat = DateHelper.getFormatTimezone(date);
         return moment(dateFormat).format('DD/MM/YYYY HH:mm');
       }
     }

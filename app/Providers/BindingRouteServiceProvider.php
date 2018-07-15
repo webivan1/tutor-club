@@ -11,6 +11,7 @@ namespace App\Providers;
 use App\Entity\Category;
 use App\Entity\Chat\Dialogs;
 use App\Entity\Classroom\Classroom;
+use App\Entity\Classroom\ClassroomUser;
 use App\Entity\TutorProfile;
 use Illuminate\Support\ServiceProvider;
 
@@ -130,11 +131,14 @@ class BindingRouteServiceProvider extends ServiceProvider
     public function lessonActive($value)
     {
         /** @var Classroom $classroom */
-        $classroom = Classroom::findOrFail(intval($value));
+        $classroom = Classroom::with(['users' => function ($builder) {
+            $builder->where('tutor', false);
+        }])->findOrFail(intval($value));
 
         $tutor = \Auth::user()->tutor;
+        $lessonHasTutor = $tutor && $classroom->hasTutor($tutor->id);
 
-        if (!($tutor && $classroom->hasTutor($tutor->id)) || !$classroom->isActiveStatus() || $classroom->isStarting()) {
+        if (!($lessonHasTutor && !$classroom->isStarting() && !$classroom->isClosed())) {
             abort(403, t('You can not edit lesson'));
         }
 

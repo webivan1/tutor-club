@@ -19,7 +19,7 @@
       }
     },
     created() {
-      let dateTz = DataHelper.getFormtatTimezone(this.date);
+      let dateTz = DataHelper.getFormatTimezone(this.date);
       this.dateMoment = moment(dateTz);
     }
   }

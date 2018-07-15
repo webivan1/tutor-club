@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Classroom\RegisterRequest;
 use App\UseCases\Chat\SendInviteLesson;
 use App\UseCases\Classroom\Register;
+use Carbon\Carbon;
 use Illuminate\Http\Response;
 
 class RegisterController extends Controller
@@ -47,7 +48,8 @@ class RegisterController extends Controller
             $classroom = $this->register->run(
                 (int) $request->input('theme.id'),
                 (int) $request->input('tutor'),
-                (string) $request->input('published_at'),
+                $this->getDateTimezone($request->input('published_at'), $request->input('timezone')),
+//                (string) $request->input('published_at'),
                 (bool) $request->input('video'),
                 (array) $request->input('to')
             );
@@ -60,5 +62,17 @@ class RegisterController extends Controller
         }
 
         return ['message' => t('You registered lesson')];
+    }
+
+    /**
+     * @param string $date
+     * @param string $timezone
+     * @return string
+     */
+    private function getDateTimezone(string $date, string $timezone)
+    {
+        $carbon = new Carbon($date);
+//        $carbon->tz(new \DateTimeZone($timezone));
+        return $carbon->format('Y-m-d H:i:s');
     }
 }

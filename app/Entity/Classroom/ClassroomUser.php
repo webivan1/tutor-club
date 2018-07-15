@@ -67,7 +67,7 @@ class ClassroomUser extends Model
      */
     public function isActive(): bool
     {
-        return (bool) $this->status === self::STATUS_ACTIVE;
+        return $this->status === self::STATUS_ACTIVE;
     }
 
     /**
@@ -75,6 +75,6 @@ class ClassroomUser extends Model
      */
     public function isDisabled(): bool
     {
-        return (bool) $this->status === self::STATUS_DISABLED;
+        return $this->status === self::STATUS_DISABLED;
     }
 }

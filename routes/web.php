@@ -98,6 +98,12 @@ Route::group(
                 'as' => 'profile.'
             ],
             function () {
+                Route::post('/timezone', function (\Illuminate\Http\Request $request) {
+                    if ($request->user()->timezone !== $request->input('timezone')) {
+                        $request->user()->update(['timezone' => $request->input('timezone')]);
+                    }
+                });
+
                 Route::get('/online/user', 'OnlineUserController@index');
 
                 Route::get('/', 'HomeController@index')->name('home');
@@ -158,6 +164,9 @@ Route::group(
                         Route::get('/', 'ListController@active')->name('list.active');
                         Route::get('/active/{lessonActive}/edit', 'EditLessonController@index')
                             ->name('edit.active')
+                            ->where('lessonActive', '\d+');
+                        Route::post('/active/{lessonActive}/close', 'EditLessonController@close')
+                            ->name('close.active')
                             ->where('lessonActive', '\d+');
                         Route::get('/remove/{classroom}', 'RemoveLessonController@index')
                             ->name('remove')

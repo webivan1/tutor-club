@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
  * @property string $created_at
  * @property string $updated_at
  * @property integer $id
+ * @property string $timezone
  */
 class User extends Authenticatable
 {
@@ -40,7 +41,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'status', 'verify_token', 'active_at'
+        'name', 'email', 'password', 'status', 'verify_token', 'active_at', 'timezone'
     ];
 
     /**
@@ -277,5 +278,16 @@ class User extends Authenticatable
         }, array_slice($usernameArr, 0, 2));
 
         return implode('', $usernameArr);
+    }
+
+    /**
+     * Выводим дату с временной зоны пользователя
+     *
+     * @param null|string $date
+     * @return Carbon
+     */
+    public function getDate(?string $date = null): Carbon
+    {
+        return new Carbon($date, !$this->timezone ? null : new \DateTimeZone($this->timezone));
     }
 }

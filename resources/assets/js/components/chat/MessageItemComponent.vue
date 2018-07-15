@@ -34,7 +34,7 @@
     },
     methods: {
       filterDate(date) {
-        return DateHelper.getFormtatTimezone(date);
+        return DateHelper.getFormatTimezone(date);
       },
 
       isOwnMessage() {

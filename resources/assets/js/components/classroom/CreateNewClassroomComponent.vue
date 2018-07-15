@@ -55,6 +55,7 @@
 
 <script>
   import moment from 'moment'
+  import momentTz from 'moment-timezone'
 
   export default {
     props: ['to', 'from', 'tutor', 'advert', 'prependUrl'],
@@ -104,6 +105,7 @@
         this.loaderSend = true;
 
         let post = {
+          timezone: momentTz.tz.guess(),
           video: this.video,
           from: this.from,
           to: this.to,

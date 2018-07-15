@@ -13,6 +13,7 @@ import VueTimeago from 'vue-timeago'
 import datePicker from 'vue-bootstrap-datetimepicker'
 
 import { OnlineUsers } from './custom/OnlineUsers'
+import { UserTimezone } from './custom/UserTimezone'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -35,7 +36,8 @@ jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
 });
 
 Object.assign(window, {
-  onlineUser: new OnlineUsers()
+  onlineUser: new OnlineUsers(),
+  timezone: new UserTimezone()
 });
 
 try {
