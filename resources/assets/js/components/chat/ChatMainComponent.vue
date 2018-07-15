@@ -220,7 +220,7 @@
               });
             });
           })
-          .catch(err => console.log(err));
+          .catch(err => console.error(err));
       },
 
       /**
@@ -283,7 +283,7 @@
               this.messages.data = [].concat(response.data.data, models);
             }
           })
-          .catch(err => console.log(err));
+          .catch(err => console.error(err));
       },
 
       checkDialog(dialog) {

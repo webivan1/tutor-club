@@ -93,3 +93,21 @@ if (!function_exists('registerBreadcrumbs')) {
         }
     }
 }
+
+if (!function_exists('convertUserTimezone')) {
+    /**
+     * @param string $date
+     * @param null|string $timezone
+     * @return \Carbon\Carbon
+     */
+    function convertUserTimezone(string $date, ?string $timezone = null): \Carbon\Carbon {
+        if (\Auth::check() && \Auth::user()->timezone) {
+            $timezone = \Auth::user()->timezone;
+        }
+
+        $carbon = new \Carbon\Carbon($date, $timezone);
+        $carbon->tz(date_default_timezone_get());
+
+        return $carbon;
+    }
+}

@@ -21,9 +21,8 @@ use App\Entity\Advert\AdvertPrice;
                 <tr>
                     <th>{!! $sort->link('id') !!}</th>
                     <th>{{ t('Lesson theme') }}</th>
-                    <th>{!! $sort->link('started_at') !!}</th>
+                    <th>{!! $sort->link('closed_at') !!}</th>
                     <th>{{ t('Price') }}</th>
-                    <th>{{ t('Not confirmed') }}</th>
                     <th>{{ t('Tutor name') }}</th>
                     <th></th>
                 </tr>
@@ -34,14 +33,11 @@ use App\Entity\Advert\AdvertPrice;
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->subject }}</td>
                         <td>
-                            <real-timer date="{{ $item->started_at }}"></real-timer>
+                            <real-timer date="{{ $item->closed_at }}"></real-timer>
                         </td>
                         <td>
                             {{ AdvertPrice::types()[$item->price_type] ?? '' }}
                             <b>{{ $item->price }}</b> / {{ $item->minutes }} {{ t('Minutes') }}
-                        </td>
-                        <td>
-                            {{ $item->users ? $item->users->pluck('user.name')->implode(', ') : '-' }}
                         </td>
                         <td>
                             @if ($item->tutorModel)
@@ -51,21 +47,9 @@ use App\Entity\Advert\AdvertPrice;
                             @endif
                         </td>
                         <td>
-                            @if ($item->user->isDisabled())
-                                {{ Html::link(route('classroom.accept', $item), t('Accept'), [
-                                    'class' => 'btn btn-success btn-sm'
-                                ]) }}
-
-                                {{ Html::link(route('classroom.reject', $item), t('Reject'), [
-                                    'class' => 'btn btn-danger btn-sm'
-                                ]) }}
-                            @else
-                                @if(\Auth::user()->tutor && $item->hasTutor(\Auth::user()->tutor->id) && !$item->isActive())
-                                    {{ Html::link(route('profile.lesson.edit.active', $item), t('Edit'), [
-                                        'class' => 'btn btn-warning btn-sm'
-                                    ]) }}
-                                @endif
-                            @endif
+                            {{ Html::link(route('classroom.home', $item), t('In classroom'), [
+                                'class' => 'btn btn-success btn-sm'
+                            ]) }}
                         </td>
                     </tr>
                 @endforeach

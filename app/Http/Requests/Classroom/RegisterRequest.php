@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'timezone' => 'required|string',
+            'timezone' => 'required|timezone',
             'published_at' => 'required|date|date_format:Y-m-d H:i',
             'video' => 'nullable|boolean',
             'from' => 'required|integer|exists:users,id',

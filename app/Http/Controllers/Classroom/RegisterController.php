@@ -49,7 +49,6 @@ class RegisterController extends Controller
                 (int) $request->input('theme.id'),
                 (int) $request->input('tutor'),
                 $this->getDateTimezone($request->input('published_at'), $request->input('timezone')),
-//                (string) $request->input('published_at'),
                 (bool) $request->input('video'),
                 (array) $request->input('to')
             );
@@ -71,8 +70,6 @@ class RegisterController extends Controller
      */
     private function getDateTimezone(string $date, string $timezone)
     {
-        $carbon = new Carbon($date);
-//        $carbon->tz(new \DateTimeZone($timezone));
-        return $carbon->format('Y-m-d H:i:s');
+        return convertUserTimezone($date, $timezone)->format('Y-m-d H:i:s');
     }
 }

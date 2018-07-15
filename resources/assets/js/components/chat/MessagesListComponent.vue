@@ -82,9 +82,7 @@
           this.loaderMore = false;
 
           if (this.upScroll === false) {
-            setTimeout(_ => {
-              this.scrollToBottom();
-            });
+            setTimeout(_ => this.scrollToBottom());
           }
 
           this.nextPage = data.next_page_url;
@@ -96,6 +94,13 @@
           this.isActiveButtonCreateLesson = true;
         },
         deep: true
+      },
+      'loader': {
+        handler: function (data) {
+          if (data === false && !this.$refs.mw) {
+            setTimeout(_ => this.registerEventScroll());
+          }
+        }
       }
     },
     created() {
@@ -129,11 +134,12 @@
       },
 
       registerEventScroll() {
-        this.$refs.mw.onscroll = e => {
-          console.log(this.$refs.mw.scrollTop, this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight);
-
-          this.upScroll = !this.isBottom();
-        };
+        if (this.$refs.mw) {
+          if (!this.$refs.mw.classList.contains('active-scroll')) {
+            this.$refs.mw.classList.add('active-scroll');
+            this.$refs.mw.onscroll = e => this.upScroll = !this.isBottom();
+          }
+        }
       },
 
       isBottom() {
@@ -153,8 +159,6 @@
       },
 
       scrollToBottom() {
-        console.log('DOWN', this.$refs.mw.scrollHeight, this.$refs.mw.clientHeight);
-
         if (this.$refs.mw && this.upScroll === false) {
           this.$refs.mw.scrollTop = this.$refs.mw.scrollHeight + this.$refs.mw.clientHeight;
         }
@@ -188,7 +192,7 @@
           })
           .catch(err => {
             this.loaderSend = false;
-            console.log(err);
+            console.error(err);
           });
       },
     }

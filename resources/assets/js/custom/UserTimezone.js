@@ -3,7 +3,9 @@ import moment from 'moment-timezone'
 export class UserTimezone {
 
   constructor() {
-    this.send();
+    if (!(localStorage.getItem('timezone') && localStorage.getItem('timezone') === UserTimezone.getTimezone())) {
+      this.send();
+    }
   }
 
   static getTimezone() {
@@ -12,7 +14,9 @@ export class UserTimezone {
 
   send() {
     axios.post('/profile/timezone', { timezone: UserTimezone.getTimezone() })
-      .then(response => {})
+      .then(response => {
+        localStorage.setItem('timezone', UserTimezone.getTimezone());
+      })
       .catch(err => {})
   }
 

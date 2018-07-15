@@ -98,14 +98,8 @@ Route::group(
                 'as' => 'profile.'
             ],
             function () {
-                Route::post('/timezone', function (\Illuminate\Http\Request $request) {
-                    if ($request->user()->timezone !== $request->input('timezone')) {
-                        $request->user()->update(['timezone' => $request->input('timezone')]);
-                    }
-                });
-
+                Route::post('/timezone', 'TimezoneController@index');
                 Route::get('/online/user', 'OnlineUserController@index');
-
                 Route::get('/', 'HomeController@index')->name('home');
 
                 Route::group(['prefix' => '/email', 'as' => 'email.'], function () {
@@ -314,8 +308,8 @@ Route::group(
             'middleware' => ['auth']
         ], function () {
             Route::post('/register', 'RegisterController@index');
-            Route::get('/invite/{classroom}/accept', 'InviteController@accept')->where('classroom', '\d+');
-            Route::get('/invite/{classroom}/reject', 'InviteController@reject')->where('classroom', '\d+');
+            Route::get('/invite/{classroom}/accept', 'InviteController@accept')->where('classroom', '\d+')->name('accept');
+            Route::get('/invite/{classroom}/reject', 'InviteController@reject')->where('classroom', '\d+')->name('reject');
             Route::get('/choose', 'ChooseLessonController@choose');
             Route::post('/choose/{classroom}', 'ChooseLessonController@send')->where('classroom', '\d+');
             Route::get('/{room}', 'DefaultController@index')->name('home');

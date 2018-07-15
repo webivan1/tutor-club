@@ -13,12 +13,13 @@ use App\Entity\Classroom\ClassroomUser;
 use App\Http\Controllers\Controller;
 use App\Observers\Classroom\ActivateUserObserver;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class InviteController extends Controller
 {
     /**
      * @param Classroom $classroom
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
     public function accept(Classroom $classroom)
     {
@@ -32,7 +33,7 @@ class InviteController extends Controller
 
     /**
      * @param Classroom $classroom
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
     public function reject(Classroom $classroom)
     {
@@ -43,11 +44,15 @@ class InviteController extends Controller
     }
 
     /**
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
-    private function getSuccessResponse(): JsonResponse
+    private function getSuccessResponse()
     {
-        return response()->json(['status' => 'ok']);
+        if (request()->ajax()) {
+            return response()->json(['status' => 'ok']);
+        } else {
+            return back();
+        }
     }
 
     /**

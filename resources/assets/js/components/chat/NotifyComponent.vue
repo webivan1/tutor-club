@@ -37,8 +37,6 @@
         }
       },
       mounted() {
-        console.log('INIT');
-
         Echo.channel(`add.dialog.${this.user}`)
           .on('dialog', e => this.newDialogEvent(e));
 

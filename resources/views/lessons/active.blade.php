@@ -57,7 +57,7 @@ use App\Entity\Advert\AdvertPrice;
                                 {{ Html::link(route('profile.lesson.edit.active', $item), t('Edit'), [
                                     'class' => 'btn btn-warning btn-sm'
                                 ]) }}
-                            @elseif(!$item->isActive() && $item->canClose())
+                            @elseif($item->canClose())
                                 {{ Html::link(route('profile.lesson.remove', $item), t('Exit'), [
                                     'class' => 'btn btn-danger btn-sm',
                                     'onclick' => 'return confirm("Are you sure?");'

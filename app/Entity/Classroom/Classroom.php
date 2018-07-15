@@ -131,7 +131,7 @@ class Classroom extends Model
      */
     public function isStarting(): bool
     {
-        return $this->started_at->getTimestamp() <= \Auth::user()->getDate()->getTimestamp();
+        return $this->started_at->getTimestamp() <= time();
     }
 
     /**
@@ -203,7 +203,7 @@ class Classroom extends Model
      */
     public function canClose(): bool
     {
-        return \Auth::user()->getDate()->addHours(6)->getTimestamp() > $this->started_at->getTimestamp();
+        return $this->started_at->subHours(6)->getTimestamp() >= time();
     }
 
     /**

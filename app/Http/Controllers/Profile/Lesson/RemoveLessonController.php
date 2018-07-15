@@ -37,7 +37,7 @@ class RemoveLessonController extends Controller
         try {
             $this->service->remove($classroom, \Auth::id());
         } catch (\DomainException $e) {
-            return back()->with('error', $e->getMessage());
+            return back()->with('danger', $e->getMessage());
         }
 
         return back()->with('success', t('You left the lesson'));
