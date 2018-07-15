@@ -119,7 +119,7 @@ class DialogsSearch extends Dialogs
                     $user['tutor'] = $user['tutor']->toArray();
                 }
 
-                if ($image = Files::where('id', $user['user']['file_id'])->first()) {
+                if (isset($user['user']['file_id']) && $image = Files::where('id', $user['user']['file_id'])->first()) {
                     $user['user']['image'] = $image->getPreset('150x150');
                 }
 
