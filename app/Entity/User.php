@@ -149,7 +149,7 @@ class User extends Authenticatable
             'email' => $email,
             'password' => $password,
             'status' => !$status ? self::STATUS_WAIT : $status,
-            'verify_token' => $status ? Str::random(23) : null
+            'verify_token' => Str::random(23)
         ]);
     }
 

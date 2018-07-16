@@ -5,7 +5,11 @@
 
     <p>Привет Вася!</p>
 
-    <?php var_dump($user) ?>
+    <pre><?php var_dump([
+        'pass' => $user->getOriginPassword(),
+        'state' => $user->isWait(),
+        'token' => $user->verify_token
+    ]) ?></pre>
 
     {{ t('mail.hello', ['username' => $user->name]) }}
     {{ t('mail.register_info', ['pass' => $user->getOriginPassword()]) }}
