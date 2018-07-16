@@ -3,7 +3,7 @@
 @section('content')
     @parent
 
-    <?php dump($user, $user->getOriginPassword(), $user->verify_token, $user->isWait()) ?>
+    <p>Привет Вася!</p>
 
     {{ t('mail.hello', ['username' => $user->name]) }}
     {{ t('mail.register_info', ['pass' => $user->getOriginPassword()]) }}
