@@ -36,7 +36,7 @@ class RegisterEvent
      */
     public function creating(User $user)
     {
-        $user->setOriginPassword($user->password);
+        $user->setOriginPassword($user->password); // @ToDo hidden field
         $user->password = bcrypt($user->password);
     }
 

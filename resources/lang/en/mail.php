@@ -9,5 +9,5 @@
 return [
     'hello' => 'Hello :username',
     'register_info' => 'You are success to registration! Your password: :pass',
-    'activation_link' => ''
+    'activation_link' => 'Click on me to activate my account!'
 ];
