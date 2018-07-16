@@ -5,6 +5,8 @@
 
     <p>Привет Вася!</p>
 
+    <?php var_dump($user) ?>
+
     {{ t('mail.hello', ['username' => $user->name]) }}
     {{ t('mail.register_info', ['pass' => $user->getOriginPassword()]) }}
 
