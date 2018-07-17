@@ -14,10 +14,11 @@
   }
 
   .card-header {
-    color: white;
+    background: $primary-inverse;
+    color: $secondary;
 
     a {
-      color: white;
+      color: $secondary;
     }
   }
 

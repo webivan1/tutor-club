@@ -10,7 +10,7 @@
         <div class="row mb-5">
             @foreach (chunk_column($childCategories, 3) as $categoryGroup)
                 <div class="col-md-4">
-                    <div class="card bg-info">
+                    <div class="card bg-primary">
                         <div class="list-group">
                             @foreach ($categoryGroup as $item)
                                 <a class="list-group-item text-white" href="{{ route('category.show', $item['slug']) }}">

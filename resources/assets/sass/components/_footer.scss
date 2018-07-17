@@ -1,0 +1,14 @@
+footer {
+  background: $secondary;
+  color: $primary-inverse;
+  //border-top: ;
+  padding: 2rem 0;
+
+  a {
+    color: $primary-inverse;
+
+    &:hover, &:active, &:focus {
+      color: lighten($primary-inverse, 10%);
+    }
+  }
+}
