@@ -41,7 +41,7 @@
         </div>
     </nav>
 
-    <main>
+    <main class="app-content">
         <div class="container pt-3 pb-3">
             <div class="mb-3">
                 @section('breadcrumbs', Breadcrumbs::render())
@@ -71,4 +71,6 @@
         </div>
         @endauth
     </main>
+
+    @include('layouts._footer')
 @endsection
