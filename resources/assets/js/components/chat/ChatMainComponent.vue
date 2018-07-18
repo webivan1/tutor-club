@@ -20,7 +20,6 @@
                             <i class="fas fa-times"></i>
                         </span>
                     </a>
-                    <pre>{{ newMessages }}</pre>
                     <i :class="{ 'animated infinite pulse text-indigo-700': newMessages.length > 0 }" :title="data.messages.heading" class="fas fa-comments"></i>
                 </div>
                 <div class="card-header" v-else>
