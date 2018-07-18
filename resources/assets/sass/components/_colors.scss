@@ -1,3 +1,11 @@
+.text-primary-inverse {
+  color: $primary-inverse !important;
+}
+
+.bg-primary-inverse {
+  background: $primary-inverse !important;
+}
+
 @each $color-name, $values in $material-colors {
   .text-#{$color-name} {
     color: map_get($values, '500') !important;

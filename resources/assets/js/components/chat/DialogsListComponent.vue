@@ -34,7 +34,6 @@
                         </h5>
                         <div class="message-content">
                             <div><small><b>Theme dialog:</b> {{ item.title }}</small></div>
-                            <div><small><b>Total messages:</b> {{ item.messages_count }}</small></div>
                         </div>
                     </div>
                 </div>

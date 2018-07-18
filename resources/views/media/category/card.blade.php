@@ -4,19 +4,23 @@
     ]) }}
 
     <div class="card-body">
+        @if ($newsItem->published_at)
+            <div class="text-right mb-2">
+                <small class="text-muted fs-12">
+                    <i class="fas fa-calendar-alt"></i> {{ $newsItem->published_at->format('d/m/Y') }}
+                </small>
+            </div>
+        @endif
+
         <h5 class="card-title">{{ $newsItem->title }}</h5>
         <p class="card-text">{{ substr(strip_tags($newsItem->content), 0, 100) }}</p>
 
-        @if ($newsItem->published_at)
-            <p class="card-text">{{ date('d.m.Y', strtotime($newsItem->published_at)) }}</p>
-        @endif
+
     </div>
 
-    <div class="card-footer">
-        <small class="text-muted">
-            <a href="{{ route('media.material.show', $newsItem->slug) }}" class="">
-                {{ t('view news') }}
-            </a>
-        </small>
+    <div class="card-footer text-right">
+        <a href="{{ route('media.material.show', $newsItem->slug) }}" class="mdc-button mdc-button--raised">
+            {{ t('view news') }}
+        </a>
     </div>
 </div>

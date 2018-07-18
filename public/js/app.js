@@ -98752,6 +98752,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -98773,6 +98777,7 @@ var SHOW_MESSAGES = 'messages';
   data: function data() {
     return {
       data: {},
+      newMessages: [],
 
       buttonToggle: false,
       show: SHOW_DIALOGS,
@@ -98818,8 +98823,10 @@ var SHOW_MESSAGES = 'messages';
       if (this.isMessages() && parseInt(this.dialog.id) === parseInt(message.dialog_id)) {
         // Просто добавляем его в массив
         this.messages.data.push(message);
-        // Даем звукой сигнал едва заметный @ToDo
+        this.$refs.volumeSmall.play();
       } else {
+        this.addNoReadDialog(message.dialog_id);
+
         ee.emit('add.custom.notify', {
           id: message.id,
           text: message.message,
@@ -98828,7 +98835,33 @@ var SHOW_MESSAGES = 'messages';
             _this2.checkDialog(message.dialog_id);
           }
         });
-        // Даем звукой сигнал @ToDo
+        this.$refs.volume.play();
+      }
+    },
+    addNoReadDialog: function addNoReadDialog(dialogId) {
+      var dialog = parseInt(dialogId);
+
+      this.dialogs.data.forEach(function (item) {
+        if (parseInt(item.id) === dialog) {
+          item.message_no_read = 1;
+        }
+      });
+
+      if (this.newMessages.indexOf(dialog) === -1) {
+        this.newMessages.push(dialog);
+      }
+    },
+    removeNoReadDialog: function removeNoReadDialog(dialogId) {
+      var dialog = parseInt(dialogId);
+
+      this.dialogs.data.forEach(function (item) {
+        if (parseInt(item.id) === dialog) {
+          item.message_no_read = null;
+        }
+      });
+
+      if (this.newMessages.indexOf(dialog) !== -1) {
+        this.newMessages.splice(this.newMessages.indexOf(dialog), 1);
       }
     },
 
@@ -98906,6 +98939,12 @@ var SHOW_MESSAGES = 'messages';
         _this3.dialogs = response.data;
         _this3.loader = false;
         typeof callback === 'function' ? callback() : null;
+
+        _this3.dialogs.data.forEach(function (item) {
+          if (item.message_no_read) {
+            _this3.addNoReadDialog(item.id);
+          }
+        });
 
         ee.on('dialog.open', function (data) {
           _this3.buttonToggle === false ? _this3.toggle() : null;
@@ -99000,13 +99039,7 @@ var SHOW_MESSAGES = 'messages';
       });
     },
     checkDialog: function checkDialog(dialog) {
-      this.dialogs.data.map(function (item) {
-        if (parseInt(item.id) === parseInt(dialog.id)) {
-          item.message_no_read = null;
-        }
-
-        return item;
-      });
+      this.removeNoReadDialog(dialog.id);
 
       // режим просмотра сообщений
       this.show = SHOW_MESSAGES;
@@ -99087,7 +99120,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -99342,13 +99374,6 @@ var render = function() {
                       _c("small", [
                         _c("b", [_vm._v("Theme dialog:")]),
                         _vm._v(" " + _vm._s(item.title))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", [
-                      _c("small", [
-                        _c("b", [_vm._v("Total messages:")]),
-                        _vm._v(" " + _vm._s(item.messages_count))
                       ])
                     ])
                   ])
@@ -100563,6 +100588,13 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("audio", { ref: "volume", attrs: { src: "/volume/chat.mp3" } }),
+      _vm._v(" "),
+      _c("audio", {
+        ref: "volumeSmall",
+        attrs: { src: "/volume/chat-small.mp3" }
+      }),
+      _vm._v(" "),
       _c("notify", {
         attrs: { user: _vm.user },
         on: { "new-dialog": _vm.addDialog, "open-dialog": _vm.checkDialog }
@@ -100601,8 +100633,14 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
+                  _c("pre", [_vm._v(_vm._s(_vm.newMessages))]),
+                  _vm._v(" "),
                   _c("i", {
                     staticClass: "fas fa-comments",
+                    class: {
+                      "animated infinite pulse text-indigo-700":
+                        _vm.newMessages.length > 0
+                    },
                     attrs: { title: _vm.data.messages.heading }
                   })
                 ]

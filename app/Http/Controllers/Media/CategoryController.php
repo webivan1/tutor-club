@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         $category->isActive() ?: abort(404);
 
-        $news = $category->news()->listData()->paginate(6);
+        $news = $category->news()->listData()->paginate(9);
 
         return view('media.category.index', compact('category', 'news'));
     }

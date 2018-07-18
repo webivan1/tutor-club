@@ -1,5 +1,8 @@
 <template>
     <div>
+        <audio ref="volume" src="/volume/chat.mp3"></audio>
+        <audio ref="volumeSmall" src="/volume/chat-small.mp3"></audio>
+
         <notify
             :user="user"
             v-on:new-dialog="addDialog"
@@ -17,7 +20,8 @@
                             <i class="fas fa-times"></i>
                         </span>
                     </a>
-                    <i :title="data.messages.heading" class="fas fa-comments"></i>
+                    <pre>{{ newMessages }}</pre>
+                    <i :class="{ 'animated infinite pulse text-indigo-700': newMessages.length > 0 }" :title="data.messages.heading" class="fas fa-comments"></i>
                 </div>
                 <div class="card-header" v-else>
                     <div class="ld ld-ring ld-spin-fast float-right fs-1"></div>
@@ -72,6 +76,7 @@
     data() {
       return {
         data: {},
+        newMessages: [],
 
         buttonToggle: false,
         show: SHOW_DIALOGS,
@@ -115,8 +120,10 @@
         if (this.isMessages() && parseInt(this.dialog.id) === parseInt(message.dialog_id)) {
           // Просто добавляем его в массив
           this.messages.data.push(message);
-          // Даем звукой сигнал едва заметный @ToDo
+          this.$refs.volumeSmall.play();
         } else {
+          this.addNoReadDialog(message.dialog_id);
+
           ee.emit('add.custom.notify', {
             id: message.id,
             text: message.message,
@@ -125,7 +132,35 @@
               this.checkDialog(message.dialog_id);
             }
           });
-          // Даем звукой сигнал @ToDo
+          this.$refs.volume.play();
+        }
+      },
+
+      addNoReadDialog(dialogId) {
+        let dialog = parseInt(dialogId);
+
+        this.dialogs.data.forEach(item => {
+          if (parseInt(item.id) === dialog) {
+            item.message_no_read = 1;
+          }
+        });
+
+        if (this.newMessages.indexOf(dialog) === -1) {
+          this.newMessages.push(dialog);
+        }
+      },
+
+      removeNoReadDialog(dialogId) {
+        let dialog = parseInt(dialogId);
+
+        this.dialogs.data.forEach(item => {
+          if (parseInt(item.id) === dialog) {
+            item.message_no_read = null;
+          }
+        });
+
+        if (this.newMessages.indexOf(dialog) !== -1) {
+          this.newMessages.splice(this.newMessages.indexOf(dialog), 1);
         }
       },
 
@@ -200,6 +235,12 @@
             this.dialogs = response.data;
             this.loader = false;
             typeof callback === 'function' ? callback() : null;
+
+            this.dialogs.data.forEach(item => {
+              if (item.message_no_read) {
+                this.addNoReadDialog(item.id);
+              }
+            });
 
             ee.on('dialog.open', data => {
               this.buttonToggle === false ? this.toggle() : null;
@@ -287,13 +328,7 @@
       },
 
       checkDialog(dialog) {
-        this.dialogs.data.map(item => {
-          if (parseInt(item.id) === parseInt(dialog.id)) {
-            item.message_no_read = null;
-          }
-
-          return item;
-        });
+        this.removeNoReadDialog(dialog.id);
 
         // режим просмотра сообщений
         this.show = SHOW_MESSAGES;
