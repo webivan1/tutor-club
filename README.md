@@ -58,3 +58,7 @@
 
 ### Tests
     - Запуск тестов для винды - vendor\bin\phpunit
+
+License
+----
+Original BSD license

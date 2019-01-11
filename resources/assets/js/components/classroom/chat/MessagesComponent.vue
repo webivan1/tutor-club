@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="flex-auto-height" ref="wrapper">
         <div v-if="loader">
             loading...
         </div>
-        <div v-else class="card">
-            <div ref="wrapper" class="card-body classroom-messages-list">
+        <div v-else>
+            <div class="classroom-messages-list">
                 <div v-if="nextPageUrl" class="text-center">
                     <div v-if="afterLoader">loading...</div>
                     <div v-else>
@@ -20,29 +20,13 @@
                         'message-candidate': !item.isTutor && item.user_id !== user.id,
                         'message-you': !item.isTutor && item.user_id === user.id
                     }" class="center-block container-fluid">
-                        <div class="row">
-                            <div class="col-auto">
-                                <button
-                                    :class="{
-                                        'btn-danger': item.isTutor,
-                                        'btn-info': !item.isTutor && item.user_id !== user.id,
-                                        'btn-success': !item.isTutor && item.user_id === user.id
-                                    }"
-                                    class="btn bmd-btn-fab bmd-btn-fab-sm"
-                                >
-                                    {{ item.label }}
-                                </button>
-                                <h6 class="message-name">
-                                    {{ item.user.name }}<br />
-                                    <small>
-                                        <timeago :since="filterDate(item.created_at)" :auto-update="60"></timeago>
-                                    </small>
-                                </h6>
-                            </div>
-                            <div class="col">
-                                <div class="message-text" v-html="item.message"></div>
-                            </div>
-                        </div>
+                        <small>
+                            {{ item.user.name }}
+                            <small>
+                                <timeago :since="filterDate(item.created_at)" :auto-update="60"></timeago>
+                            </small>
+                        </small>
+                        <div class="message-text" v-html="item.message"></div>
                     </div>
                 </div>
             </div>
@@ -58,7 +42,7 @@
 
       if (this.$refs.wrapper) {
         this.$refs.wrapper.onscroll = e => {
-          this.upScroll = true;
+          //this.upScroll = true;
 
           if (this.bottom() === this.$refs.wrapper.scrollTop) {
             this.upScroll = false;

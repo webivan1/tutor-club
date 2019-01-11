@@ -290,4 +290,14 @@ class User extends Authenticatable
     {
         return new Carbon($date, !$this->timezone ? null : new \DateTimeZone($this->timezone));
     }
+
+    public function isTutor(): bool
+    {
+        return $this->tutor ? true : false;
+    }
+
+    public function tutorId(): ?int
+    {
+        return $this->isTutor() ? $this->tutor->id : null;
+    }
 }

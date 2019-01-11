@@ -1,8 +1,14 @@
 <template>
     <div class="card">
-        <div class="card-body">
+        <div class="btn-group bg-grey-200">
+            <button type="button" class="btn btn-secondary" :class="{ active: isVideo }" @click="isVideo = !isVideo">
+                <i v-if="isVideo" class="fas fa-video-slash"></i>
+                <i class="fas fa-video" v-else></i>
+            </button>
+        </div>
+        <div v-if="isVideo" class="bg-grey-100 card-body px-2 py-2 video-block position-relative">
             <div v-if="tutor === true">
-                <div v-if="streams.length === 0">loading...</div>
+                <div v-if="streams.length === 0"></div>
                 <div v-else-if="streams.length > 1">
                     <div class="embed-responsive embed-responsive-16by9">
                         <video class="embed-responsive-item" :src="createUrl(streams[0].stream)" autoplay></video>
@@ -25,6 +31,11 @@
                     </div>
                 </div>
             </div>
+            <div v-if="localStream" class="local-video">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <video class="embed-responsive-item" :src="createUrl(localStream)" autoplay></video>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -41,7 +52,8 @@
         p2p: null,
         channel: null,
         loader: true,
-        streams: []
+        streams: [],
+        isVideo: true
       }
     },
     created() {

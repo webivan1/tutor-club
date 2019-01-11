@@ -8,3 +8,7 @@ $font-size-min: 8;
 
   $font-size-min: $font-size-min + 1;
 }
+
+.overflow-y-auto {
+  overflow-y: auto;
+}

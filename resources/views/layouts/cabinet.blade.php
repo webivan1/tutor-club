@@ -19,6 +19,11 @@
                         ]) }}
                     </li>
                     <li class="nav-item">
+                        {{ Html::link(route('profile.lesson.list.active'), t('My lessons'), [
+                            'class' => 'nav-link ' . (!Request::routeIs('profile.lesson.*') ?: 'active')
+                        ]) }}
+                    </li>
+                    <li class="nav-item">
                         {{ Html::link(route('profile.tutor.home'), t('home.profileTutorLink'), [
                             'class' => 'nav-link ' . (!Request::routeIs('profile.tutor.*') ?: 'active')
                         ]) }}

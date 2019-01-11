@@ -3,13 +3,13 @@
 }
 
 .classroom-messages-list {
-  max-height: 500px;
-  overflow-y: auto;
-  padding-top: 20px;
+  //max-height: 500px;
+  //overflow-y: auto;
+  padding: 20px 0;
 }
 
 .message-candidate, .message-you, .message-hiring-manager {
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .message-candidate {
@@ -56,4 +56,15 @@
   margin-left: 7px;
   display: inline-block;
   vertical-align: middle;
+}
+
+.video-block {
+  min-height: 200px;
+}
+
+.local-video {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 120px;
 }

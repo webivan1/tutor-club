@@ -1,0 +1,1 @@
+Copyright © 2019 by webivan1 (info.babki@gmail.com) and sitora-n (sitora.n@gmail.com)

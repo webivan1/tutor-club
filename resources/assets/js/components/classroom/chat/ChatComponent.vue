@@ -1,22 +1,24 @@
 <template>
-    <div>
-        <Messages
-            ref="message"
-            :t="t"
-            :user="user"
-            :host="host"
-            :room="room"
-            :lang="lang"
-        ></Messages>
+    <div class="flex-auto-height">
+        <div class="flex-vertical">
+            <Messages
+                ref="message"
+                :t="t"
+                :user="user"
+                :host="host"
+                :room="room"
+                :lang="lang"
+            ></Messages>
 
-        <FormChat
-            ref="form"
-            :t="t"
-            :host="host"
-            :room="room"
-            :lang="lang"
-            v-on:send="onMessage"
-        ></FormChat>
+            <FormChat
+                ref="form"
+                :t="t"
+                :host="host"
+                :room="room"
+                :lang="lang"
+                v-on:send="onMessage"
+            ></FormChat>
+        </div>
     </div>
 </template>
 

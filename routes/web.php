@@ -155,7 +155,6 @@ Route::group(
                         'as' => 'lesson.'
                     ],
                     function () {
-                        Route::get('/', 'ListController@active')->name('list.active');
                         Route::get('/active/{lessonActive}/edit', 'EditLessonController@index')
                             ->name('edit.active')
                             ->where('lessonActive', '\d+');
@@ -165,8 +164,9 @@ Route::group(
                         Route::get('/remove/{classroom}', 'RemoveLessonController@index')
                             ->name('remove')
                             ->where('classroom', '\d+');
+
+                        Route::get('/', 'ListController@active')->name('list.active');
                         Route::get('/pending', 'ListController@pending')->name('list.pending');
-//                        Route::get('/disabled', 'ListController@disabled')->name('list.disabled');
                         Route::get('/closed', 'ListController@closed')->name('list.closed');
                     }
                 );
@@ -313,6 +313,7 @@ Route::group(
             Route::get('/choose', 'ChooseLessonController@choose');
             Route::post('/choose/{classroom}', 'ChooseLessonController@send')->where('classroom', '\d+');
             Route::get('/{room}', 'DefaultController@index')->name('home');
+            Route::get('/{room}/close', 'DefaultController@close')->name('home.close');
             Route::get('/{room}/message', 'MessagesController@index');
             Route::post('/{room}/message', 'MessagesController@store');
         });
