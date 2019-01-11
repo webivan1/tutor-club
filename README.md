@@ -61,4 +61,4 @@
 
 License
 ----
-Original BSD license
+MIT
